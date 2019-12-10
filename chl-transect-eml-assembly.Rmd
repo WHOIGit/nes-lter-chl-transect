@@ -38,28 +38,24 @@ lapply(libs, require, character.only = TRUE)
 cruiselist <- c("en608","en617", "en627", "en644", "ar22", "ar32")
   
 # pull from API if compiled cruise data file doesnt exist in directory
-if (!file.exists("nes-lter-chl-transect.csv")) {
+if (!file.exists("chl-transect-api.csv")) {
 
   # compile cruise data from api
   transect_chl <- read_from_api(type = "chl", cruises = cruiselist)
 
   # write csv file of concatenated cruises
-  write.csv(transect_chl, 'nes-lter-chl-transect.csv', row.names=FALSE)
+  write.csv(transect_chl, 'chl-transect-api.csv', row.names=FALSE)
 } else {
   # read in existant data file
-  transect_chl <- read_csv("nes-lter-chl-transect.csv")
+  transect_chl <- read_csv("chl-transect-api.csv")
 }
 
 ```
 
 ## Compile SMD Chl Data
 
-Fields to add to SMD data (this info will be supplied by the bottle summary)
-• depth
-• lat & lon
-• datetime
+Cruises that use 12-bottle rosettes will have hyphenated casts (done in rapid succession, considered to be paired)
 
-Cruises that use 12-bottle rosettes will have hyphenated casts (done in rapid succession)
 ```{r}
 
 # store and read in the SMD files in the directory
@@ -85,9 +81,101 @@ smd_expanded$niskin_expand <- as.numeric(smd_expanded$niskin_expand)
 
 ```
 
-## Load CTD Bottle Summary and Metadata from API
+## Utility Function: Find Paired Casts
+
+Input: df = data frame; min.time = window of minimum time difference (in mins)
+
+Output: Adds a field to the df indicating the associated paired cast if it exists
+
 ```{r}
 
+find_paired_casts <- function(df, min.time) {
+  
+  # cruiselist <- unique(df$cruise)
+  # # read in ctd data
+  # ctd_metadata <- read_from_api(type = "metadata", cruises = cruiselist)
+  # ctd_summary <- read_from_api(type = "summary", cruises = cruiselist)
+    
+  # define column to display paired cast
+  df$paired_cast <- NA_character_
+
+  for (j in 1:nrow(df)) {
+    # store values for current row
+    df_cruise <- df$cruise[j]
+    df_cast <- df$cast_expand[j]
+  
+    # isolate cast metadata and bottle summary
+    cast_metadata <- ctd_metadata %>% filter(cruise == df_cruise & cast == df_cast)
+    cast_summary <- ctd_summary %>% filter(cruise == df_cruise & cast == df_cast)
+    
+    # define the min and max time for the cast 
+    df_date_max <- max(cast_summary$date)
+    df_date_min <- min(cast_summary$date)
+  
+    # find the cast before from the bottle summary
+    cast_before <- ctd_summary %>% 
+      filter(cruise == df_cruise & cast == (df_cast-1))
+    # find the cast after from the ctd metadata
+    cast_after <- ctd_metadata %>% 
+      filter(cruise == df_cruise & cast == (df_cast+1))
+  
+    # deterine the time difference
+    time_before <- min(abs(as.numeric(difftime(df_date_min, cast_before$date, units = "mins"))),
+                       na.rm = TRUE)
+    time_after <- min(abs(as.numeric(difftime(df_date_max, cast_after$date, units = "mins"))),
+                      na.rm = TRUE)
+    
+    # determine paired casts if they exist
+    if (time_after > min.time & time_before > min.time) {
+      j <- j + 1
+      next
+    }
+    if (time_before < min.time) {
+      # isolate cast metadata to extract station
+      before_metadata <- ctd_metadata %>% filter(cruise == df_cruise & cast == (df_cast-1))
+      if (isFALSE(cast_metadata$nearest_station == before_metadata$nearest_station)) {
+          print(paste0("paired cast found for cruise ", df_cruise, 
+                       " and cast ", df_cast, ", but nearest station did not match"))
+        j <- j + 1
+        next
+      } else {
+        df$paired_cast[j] <- df_cast - 1
+      }
+    }
+    if (time_after < min.time) {
+      if (isFALSE(cast_metadata$nearest_station == cast_after$nearest_station)) {
+          print(paste0("paired cast found for cruise ", df_cruise, 
+                       " and cast ", df_cast, ", but nearest station did not match"))
+        j <- j + 1
+        next
+      } else {
+        df$paired_cast[j] <- df_cast + 1
+      }
+    }
+  }
+return(df)
+}
+
+```
+
+## Utility Function: Depth Window
+Input: Depth
+Output: Acceptable depth difference
+
+```{r}
+
+depth_window <- function(x) {
+  # Define the relationship between the depth and the depth difference
+  y <- (2/29)*x + 2
+  return(y)
+}
+
+# Example
+# depth_window(50.091)
+```
+
+## Load CTD Bottle Summary and Metadata from API
+```{r}
 # compile ctd bottle summary
 # pull from API if compiled cruise data file doesnt exist in directory
 if (!file.exists("ctd-bottle-summary.csv")) {
@@ -111,138 +199,13 @@ if (!file.exists("ctd-metadata.csv")) {
   # read in existant data file
   ctd_metadata <- read_csv("ctd-metadata.csv")
 }
-
-
-# merge depth from bottle summary using cruise-cast-bottle
-# smd_metadata <- left_join(smd_expanded, ctd_summary, 
-#                        by = c("cruise", 
-#                               "cast_expand" = "cast", 
-#                               "niskin_expand" = "niskin")) %>%
-#   distinct()
-# 
-# 
-# smd_key <- smd_metadata %>%
-#   group_by(cruise, cast_expand, niskin) %>%
-#   summarise(avg_depth = mean(depth))
-# # this will be used in the next chunk to match transect niskin bottles
-# 
-# # CODE REDACTED
-# # populate the key with date, lat, and lon
-# smd_key$date <- Sys.time()
-# smd_key$latitude <- 0
-# smd_key$longitude <- 0
-# 
-# for (j in 1:nrow(smd_key)) {
-#   # store cruise and case for given row
-#   voyage <- smd_key$cruise[j]
-#   cast <- smd_key$cast_expand[j]
-# 
-#   # subset data by cruise-cast
-#   smd_subset <- smd_metadata %>% filter(cruise == voyage &
-#                                         cast_expand == cast)
-#   
-#   # populate with info from the second row of each cruise-cast grouping
-#   smd_key$date[j] <- smd_subset$date[2]
-#   smd_key$latitude[j] <- smd_subset$latitude[2]
-#   smd_key$longitude[j] <- smd_subset$longitude[2]
-#  
-# }
 ```
 
-## Utility Function: Find Paired Casts
+## Determining bottle other method
 
-Input: df = data frame, min.time = window of minimum time difference (in mins)
- - Data needed: CTD bottle summary and metadata for casts in question
- 
-Output: 
-
-
-```{r}
-
-find_paired_cast <- function(df, min.time) {
-
-# cruiselist <- unique(df$cruise)
-# # read in ctd data
-# ctd_metadata <- read_from_api(type = "metadata", cruises = cruiselist)
-# ctd_summary <- read_from_api(type = "summary", cruises = cruiselist)
-
-# define column to display paired cast
-df$paired_cast <- NA_character_
-
-for (j in 1:nrow(df)) {
-  # store values for current row
-  df_cruise <- df$cruise[j]
-  df_cast <- df$cast_expand[j]
-
-  # isolate cast metadata and bottle summary
-  cast_metadata <- ctd_metadata %>% filter(cruise == df_cruise & cast == df_cast)
-  cast_summary <- ctd_summary %>% filter(cruise == df_cruise & cast == df_cast)
-  
-  # define the min and max time for the cast 
-  df_date_max <- max(cast_summary$date)
-  df_date_min <- min(cast_summary$date)
-
-  # find the cast before from the bottle summary
-  cast_before <- ctd_summary %>% 
-    filter(cruise == df_cruise & cast == (df_cast-1))
-  # find the cast after from the ctd metadata
-  cast_after <- ctd_metadata %>% 
-    filter(cruise == df_cruise & cast == (df_cast+1))
-
-  # deterine the time difference
-  time_before <- min(abs(as.numeric(difftime(df_date_min, cast_before$date, units = "mins"))),
-                     na.rm = TRUE)
-  time_after <- min(abs(as.numeric(difftime(df_date_max, cast_after$date, units = "mins"))),
-                    na.rm = TRUE)
-  
-  # determine paired casts if they exist
-  if (time_after > min.time & time_before > min.time) {
-    j <- j + 1
-    next
-  }
-  if (time_before < min.time) {
-    # isolate cast metadata to extract station
-    before_metadata <- ctd_metadata %>% filter(cruise == df_cruise & cast == (df_cast-1))
-    if (isFALSE(cast_metadata$nearest_station == before_metadata$nearest_station)) {
-        print(paste0("paired cast found for cruise ", df_cruise, 
-                     " and cast ", df_cast, ", but nearest station did not match"))
-      j <- j + 1
-      next
-    } else {
-      df$paired_cast[j] <- df_cast - 1
-    }
-  }
-  if (time_after < min.time) {
-    if (isFALSE(cast_metadata$nearest_station == cast_after$nearest_station)) {
-        print(paste0("paired cast found for cruise ", df_cruise, 
-                     " and cast ", df_cast, ", but nearest station did not match"))
-      j <- j + 1
-      next
-    } else {
-      df$paired_cast[j] <- df_cast + 1
-    }
-  }
-}
-return(df)
-}
-
-```
-
-## Utility Function: Depth Window
-```{r}
-
-depth_window <- function(x) {
-  y <- (2/29)*x + 2
-  return(y)
-}
-
-# Example
-# depth_window(50.091)
-```
-
-
-## Generating Bottle other method
-Extract corresponding transect niskin based on depth window. Grouping by cruise and cast
+This chunk will:
+  • determine depth, lat & lon, and datetime for SMD data (merged from bottle summary)
+  • determine chl transect bottles associated SMD bottles based on depth window
 
 ```{r}
 
@@ -260,10 +223,10 @@ smd_key <- left_join(smd_expanded, ctd_summary,
             longitude = mean(longitude))
 
 # determine paired casts for the dataset
-smd_key <- find_paired_cast(smd_key, min.time = 50)
+smd_key <- find_paired_casts(smd_key, min.time = 50)
 
 # create row to populate with bottle other method
-smd_key$bottle_other_method <- -9999
+smd_key$bottle_other_method <- NA_integer_
 
 # loop through rows
 for (i in 1:nrow(smd_key)) {
@@ -290,42 +253,6 @@ for (i in 1:nrow(smd_key)) {
       i <- i + 1
       next
     }
-    
-  #   # Case: no surrounding casts found in chl transect
-  #   if (isFALSE((smd_cast + 1) %in% transect_cruise$cast |
-  #               (smd_cast - 1) %in% transect_cruise$cast)) {
-  #     print("no nearby casts")
-  #     i <- i + 1
-  #     next
-  #   # Case: surrounding casts found in chl transect
-  #   } else {
-  #     # filter ctd_metadata to find the nearby sampling events
-  #     actual <- ctd_metadata %>% 
-  #       filter(cruise == smd_cruise & cast == smd_cast)
-  #     neighbors <- ctd_metadata %>% 
-  #       filter(cruise == smd_cruise) %>%
-  #       filter(cast == (smd_cast+1) | cast == (smd_cast-1))
-  #     
-  #     # find index of the nearest station for the neighboring cast
-  #     loc <- which(actual$nearest_station == neighbors$nearest_station)
-  #     # reassign cast
-  #     smd_cast <- neighbors$cast[loc]
-  #     }
-  # }
-  
-  # Case: the neighboring cast found does not exist in the chl transect data
-  # if (isFALSE(smd_cast %in% transect_cruise$cast)) {  
-  #   print("No associated cast found in chl transect data")
-  #   i <- i + 1
-  #   next
-  # }
-  
-  # Case: no neighboring cast with the same nearest station was found in metadata
-  # if(length(smd_cast) == 0) {
-  #   print(paste0("No nearby cast found in ctd metadata for cruise ",
-  #         smd_cruise, ", cast ", smd_key$cast_expand[i], ", average depth: ", smd_depth))
-  #   i <- i + 1
-  #   next
   }
   
   # further subset the chl transect to isolate cruise-cast data
@@ -352,12 +279,18 @@ for (i in 1:nrow(smd_key)) {
 ```
 
 
-## Populating Supplementary Fields
+## Preparing Datasets for Merge
 
 This step will populate the fields:
   • bottle_other_method for transect_chl
   • date, lat, long, (avg) depth, and bottle_other_method for smd_chl
   • add a method of sampling column  (ethanol or acetone)
+  
+Additional steps:
+  • reorganize the columns
+  • merge the transect_chl and smd_chl datasets
+  • round numerical columns
+  
 ```{r}
 
 ## transect chl
@@ -382,10 +315,6 @@ smd_chl_final <- smd_key %>% ungroup() %>%
   right_join(smd_chl, by = c("cruise", "cast", "niskin"))
 # add method_sample col
 
-```
-
-## Merge Datasets
-```{r}
 # define headers for columns in desired order
 headers <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "replicate",
                                   "vol_filtered", "filter_size", "tau_calibration", "fd_calibration", "rb", "ra", "blank",
@@ -409,10 +338,12 @@ chl_all <- bind_rows(transect_chl_final, smd_chl_final)
 # all_chl$mv_containing_col[is.na(all_chl$mv_containing_col)] <- -9999
 
 # write csv file of concatenated cruises
-# write.csv(chl_all, 'nes-lter-chl-transect.csv', row.names=FALSE)
+write.csv(chl_all, 'nes-lter-chl-transect.csv', row.names=FALSE)
 ```
 
 ## QA: Compare datasets
+
+Compare the average chl for groupings of cruise, cast, bottle, and filter_size.
 
 ```{r}
 
@@ -492,5 +423,49 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 # Map Check
 map_locs(df = chl_all, xvar = "longitude", yvar = "latitude",
          region = "transect", colorvar = "cruise")
+
+```
+
+## EML Assembly
+
+This chunk outputs the final xml file for EDI through the following steps:
+
+Step 1: Populating EML Assembly Line templates with metadata
+Step 2: Calculating the geospatial and temporal coverage 
+Step 3: Making the XML file 
+Step 4: Inserting a custom NES-LTER parent project node 
+
+```{r}
+
+# define input files
+metadata <- "chl-transect-info"
+edi_filename <- "nes-lter-chl-transect"
+pkg_id <- "knb-lter-nes.8.1"
+
+# Make EML Templates 
+xlsx_to_template(metadata.path = metadata, 
+                 edi.filename = edi_filename, 
+                 rights = "CCBY")
+
+# Data Coverage
+# isolate date and geospatial columns for input
+date_col <- as.Date(chl_all$date)
+lat_col <- chl_all$latitude
+lon_col <- chl_all$longitude
+# run function to determine geospatial and temporal coverage
+coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
+
+# Make EML
+make_eml(path = getwd(),
+         dataset.title = "Chlorophyll from CTD rosette data from NES-LTER transect cruises, ongoing since 2017.",
+         data.table = paste0(edi_filename, ".csv"),
+         data.table.description = "Chlorophyll from CTD rosette data cleaned for EDI",
+         temporal.coverage = c(coverage$startdate, coverage$enddate),
+         geographic.description = "NES-LTER Transect",
+         geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
+         maintenance.description = "ongoing",
+         user.id = "NES",
+         user.domain = "LTER",
+         package.id = pkg_id)
 
 ```
