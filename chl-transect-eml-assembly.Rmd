@@ -300,7 +300,10 @@ transect_chl_final <- smd_key %>% ungroup() %>%
             by = c("cruise", "cast" = "cast_expand", "niskin" = "bottle_other_method")) %>%
   rename_at("niskin.y", ~"bottle_other_method")
 # add method_sample col
-
+# transect_chl_final$method_sample <- "ethanol"
+# convert data types to enable cbind with smd data
+transect_chl_final$cast <- as.character(transect_chl_final$cast)
+transect_chl_final$niskin <- as.character(transect_chl_final$niskin)
 
 ## SMD chl
 smd_chl_final <- smd_key %>% ungroup() %>% 
@@ -314,6 +317,9 @@ smd_chl_final <- smd_key %>% ungroup() %>%
             longitude = mean(longitude)) %>%
   right_join(smd_chl, by = c("cruise", "cast", "niskin"))
 # add method_sample col
+# smd_chl_final$method_sample <- "acetone"
+# convert data types to enable cbind with smd data
+smd_chl_final$bottle_other_method <- as.character(smd_chl_final$bottle_other_method)
 
 # define headers for columns in desired order
 headers <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "replicate",
@@ -326,14 +332,24 @@ smd_chl_final <- smd_chl_final[, headers]
 # merge datasets by row
 chl_all <- bind_rows(transect_chl_final, smd_chl_final)
 
+# column sorting
+# define order for filter size and cast columns
+size_sort <- c(">0",">5","<10",">10",">20")
+cast_sort <- str_sort(unique(chl_all$cast), numeric = TRUE)
+# sort by cruise-cast-size
+chl_all <- chl_all[with(chl_all, order(cruise, match(cast, cast_sort),
+                                    match(filter_size, size_sort))), ]
+
 # nearest station will be determined by Joe's python script?
 
+# column rounding
 # define numerical attributes
 # num_cols <- c("tau_calibration", "fd_calibration", "rb", "ra", "blank",
 #                                   "rb_blank", "ra_blank", "chl", "phaeo")
 # round the nutrient values to the thousandths place
 # all_chl$num_cols <- round(all_chl$num_cols, 3)
 
+# missing values
 # set missing values in distance to -9999
 # all_chl$mv_containing_col[is.na(all_chl$mv_containing_col)] <- -9999
 
