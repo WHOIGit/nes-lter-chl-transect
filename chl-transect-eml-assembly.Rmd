@@ -81,12 +81,13 @@ smd_expanded$niskin_expand <- as.numeric(smd_expanded$niskin_expand)
 
 ```
 
-## Utility Function: Find Paired Casts
+## MODIFIED Utility Function: Find Paired Casts
 
 Input: df = data frame; min.time = window of minimum time difference (in mins)
 
 Output: Adds a field to the df indicating the associated paired cast if it exists
 
+Note: this function is modified from the utilities function 
 ```{r}
 
 find_paired_casts <- function(df, min.time) {
@@ -102,7 +103,7 @@ find_paired_casts <- function(df, min.time) {
   for (j in 1:nrow(df)) {
     # store values for current row
     df_cruise <- df$cruise[j]
-    df_cast <- df$cast_expand[j]
+    df_cast <- df$cast_expand[j] # the smd cast had to be expanded 
   
     # isolate cast metadata and bottle summary
     cast_metadata <- ctd_metadata %>% filter(cruise == df_cruise & cast == df_cast)
@@ -162,6 +163,7 @@ return(df)
 Input: Depth
 Output: Acceptable depth difference
 
+This is a linear relationship based on our expectations for depth differences in observations. We expect lesser difference at lesser depths, and vice versa.
 ```{r}
 
 depth_window <- function(x) {
@@ -172,6 +174,7 @@ depth_window <- function(x) {
 
 # Example
 # depth_window(50.091)
+# output: 5.454552
 ```
 
 ## Load CTD Bottle Summary and Metadata from API
@@ -291,6 +294,11 @@ Additional steps:
   • merge the api_chl and smd_chl datasets
   • round numerical columns
   
+In Progress: 
+  • The method sample column still needs to be defined
+  • add project_id column (smd = LTER, api = if cruise AR22/32, yes = "JP", no = "LTER")
+      - This is to accomodate that the api doesnt yet provide project_id
+  
 ```{r}
 
 ## API transect chl
@@ -299,7 +307,7 @@ api_chl_final <- smd_key %>% ungroup() %>%
   left_join(api_chl, .,
             by = c("cruise", "cast" = "cast_expand", "niskin" = "bottle_other_method")) %>%
   rename_at("niskin.y", ~"bottle_other_method")
-# add method_sample col
+# add method_sample col (placeholder data)
 api_chl_final$method_sample <- "ethanol"
 # convert data types to enable cbind with smd data
 api_chl_final$cast <- as.character(api_chl_final$cast)
@@ -316,8 +324,10 @@ smd_chl_final <- smd_key %>% ungroup() %>%
             latitude = mean(latitude),
             longitude = mean(longitude)) %>%
   right_join(smd_chl, by = c("cruise", "cast", "niskin"))
-# add method_sample col
+# add method_sample col (placeholder data)
 smd_chl_final$method_sample <- "acetone"
+# add project_id
+smd_chl_final$project_id <- "LTER"
 # convert data types to enable cbind with smd data
 smd_chl_final$bottle_other_method <- as.character(smd_chl_final$bottle_other_method)
 
@@ -349,6 +359,8 @@ write.csv(chl_all, 'nes-lter-chl-transect.csv', row.names=FALSE)
 ```
 
 ## Utility function: Nearest Station & Station Distance
+
+Make this function its own repo: nearest-station-generalized.Rmd in nes-lter-notbooks
 
 ```{r}
 
