@@ -326,8 +326,6 @@ smd_chl_final <- smd_key %>% ungroup() %>%
   right_join(smd_chl, by = c("cruise", "cast", "niskin"))
 # add method_sample col (placeholder data)
 smd_chl_final$method_sample <- "acetone"
-# add project_id
-smd_chl_final$project_id <- "LTER"
 # convert data types to enable cbind with smd data
 smd_chl_final$bottle_other_method <- as.character(smd_chl_final$bottle_other_method)
 
@@ -350,9 +348,10 @@ cast_sort <- str_sort(unique(chl_all$cast), numeric = TRUE)
 chl_all <- chl_all[with(chl_all, order(cruise, match(cast, cast_sort),
                                     match(filter_size, size_sort))), ]
 
-# missing values
-# set missing values in distance to -9999
-# all_chl$mv_containing_col[is.na(all_chl$mv_containing_col)] <- -9999
+# add project_id
+chl_all$project_id <- ifelse(chl_all$cruise == "AR22" | 
+                                     chl_all$cruise == "AR32", 
+                                   yes = "JP", no = "LTER")
 
 # write csv file of concatenated cruises
 write.csv(chl_all, 'nes-lter-chl-transect.csv', row.names=FALSE)

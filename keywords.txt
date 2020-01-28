@@ -1,0 +1,5 @@
+keyword	keywordThesaurus
+Primary production	LTER Core Research Areas
+chlorophyll	LTER Controlled Vocabulary
+oceanography	LTER Controlled Vocabulary
+seawater	LTER Controlled Vocabulary

@@ -1,0 +1,23 @@
+attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCode	missingValueCodeExplanation
+cruise	Identifier for research cruise generally including abbreviation for research vessel and voyage number	character				
+cast	CTD rosette cast number chronological order per cruise	character				
+niskin	Rosette bottle position number	character				
+bottle_other_method	Associated niskin from the other method	character			NaN	No associated bottle from the other method
+date	Date and time in UTC when rosette bottle closed	Date		YYYY-MM-DD hh:mm:ss		
+latitude	Ships latitude when the rosette bottle closed	numeric	degree			
+longitude	Ships longitude when the rosette bottle closed	numeric	degree			
+depth	Depth of sample below sea surface	numeric	meter			
+method_sample	Method by which the associated sample was processed	categorical				
+replicate	Lowercase letter indicating replicate subsample drawn from the same rosette bottle	character				
+vol_filtered	Volume of seawater filtered for each sample	numeric	milliliter			
+filter_size	Size fraction of the filtered sample	character				
+tau_calibration	TBD	numeric	dimensionless		NaN	Missing value
+fd_calibration	TBD	numeric	dimensionless		NaN	Missing value
+rb	TBD	numeric	dimensionless		NaN	Missing value
+ra	TBD	numeric	dimensionless		NaN	Missing value
+blank	TBD	numeric	dimensionless		NaN	Missing value
+rb_blank	TBD	numeric	dimensionless		NaN	Missing value
+ra_blank	TBD	numeric	dimensionless		NaN	Missing value
+chl	Chllorophyl a concentration corrected for phaeophytin	numeric	microgramsPerLiter		NaN	Missing value
+phaeo	Phaeophytin concentration	numeric	microgramsPerLiter		NaN	Missing value
+project_id	Project associated with the sample collected	categorical				
