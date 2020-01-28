@@ -218,6 +218,10 @@ read_from_api <- function(type, cruises) {
     urls <- paste0("https://nes-lter-data.whoi.edu/api/ctd/", z$Var1, "/bottles.csv")
     urls <- unlist(urls)
   }
+  if (type == "stations") {
+    urls <- paste0("https://nes-lter-data.whoi.edu/api/stations/", z$Var1, ".csv")
+    urls <- unlist(urls)
+  }
   
   ## Cruise Compilation ##
   # case: more than one cruise given
@@ -225,10 +229,18 @@ read_from_api <- function(type, cruises) {
     # begin compilation  
     prev_cruise <- read_csv(urls[1])
     
+    if (isFALSE("cruise" %in% names(prev_cruise))) {
+      prev_cruise$cruise <- toupper(cruises[1])
+    }
+    
     # loop through urls to compile cruise data into one file
     for (k in 2:length(urls)){
       # read in data per cruise
       next_cruise <- read_csv(urls[k])
+      
+      if (isFALSE("cruise" %in% names(next_cruise))) {
+        next_cruise$cruise <- toupper(cruises[k])
+      }
       
       # bind the next cruise to the compiled cruise dataset
       all <- plyr::rbind.fill(prev_cruise, next_cruise)

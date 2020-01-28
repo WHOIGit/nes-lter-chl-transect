@@ -26,7 +26,7 @@ source("edi-utilities.R")
 # install_github("EDIorg/EMLassemblyline")
 
 # define R packages to require
-libs <- c("tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2")
+libs <- c("tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2", "geosphere")
 # load libraries
 lapply(libs, require, character.only = TRUE)
 ```
@@ -41,13 +41,13 @@ cruiselist <- c("en608","en617", "en627", "en644", "ar22", "ar32")
 if (!file.exists("chl-transect-api.csv")) {
 
   # compile cruise data from api
-  transect_chl <- read_from_api(type = "chl", cruises = cruiselist)
+  api_chl <- read_from_api(type = "chl", cruises = cruiselist)
 
   # write csv file of concatenated cruises
-  write.csv(transect_chl, 'chl-transect-api.csv', row.names=FALSE)
+  write.csv(api_chl, 'chl-transect-api.csv', row.names=FALSE)
 } else {
   # read in existant data file
-  transect_chl <- read_csv("chl-transect-api.csv")
+  api_chl <- read_csv("chl-transect-api.csv")
 }
 
 ```
@@ -236,16 +236,16 @@ for (i in 1:nrow(smd_key)) {
   smd_depth <- smd_key$depth[i]
   
   # subset the chl transect data by cruise
-  transect_cruise <- transect_chl %>%
+  api_cruise <- api_chl %>%
     select(cruise, cast, niskin, date, latitude, longitude, depth) %>%
     distinct() %>%
     filter(cruise == smd_cruise)
 
   # Case: the SMD cast is not found in chl transect 
-  if (isFALSE(smd_cast %in% transect_cruise$cast)) {
+  if (isFALSE(smd_cast %in% api_cruise$cast)) {
     
     # Case: paired cast exists in chl transect
-    if (smd_key$paired_cast[i] %in% transect_cruise$cast) {
+    if (smd_key$paired_cast[i] %in% api_cruise$cast) {
       smd_cast <- smd_key$paired_cast[i]
     } else {
       print(paste0("No associated cast found for cruise ", smd_cruise, 
@@ -256,15 +256,15 @@ for (i in 1:nrow(smd_key)) {
   }
   
   # further subset the chl transect to isolate cruise-cast data
-  transect_cast <- transect_cruise %>% filter(cast == smd_cast)
+  api_cast <- api_cruise %>% filter(cast == smd_cast)
   
   # find the index of the nearest depth
-  ind <- which.min(abs(smd_depth - transect_cast$depth))
+  ind <- which.min(abs(smd_depth - api_cast$depth))
   
   # Print minimum depth difference if it exceeds 2m
-  if (min(abs(smd_depth - transect_cast$depth)) > depth_window(smd_depth)) {
+  if (min(abs(smd_depth - api_cast$depth)) > depth_window(smd_depth)) {
     # store min depth window
-    depth <- min(abs(smd_depth - transect_cast$depth))
+    depth <- min(abs(smd_depth - api_cast$depth))
     # describe cruise, cast, and depth which exceeds the depth window
     print(paste0("High depth difference of ", depth, " for cruise ", 
                  smd_cruise, ", cast ", smd_key$cast_expand[i], ", average depth: ", smd_depth))
@@ -273,7 +273,7 @@ for (i in 1:nrow(smd_key)) {
     next
   }
   # populate field for niskin number associated with other method
-  smd_key$bottle_other_method[i] <- transect_cast$niskin[ind]
+  smd_key$bottle_other_method[i] <- api_cast$niskin[ind]
 }
 
 ```
@@ -282,28 +282,28 @@ for (i in 1:nrow(smd_key)) {
 ## Preparing Datasets for Merge
 
 This step will populate the fields:
-  • bottle_other_method for transect_chl
+  • bottle_other_method for api_chl
   • date, lat, long, (avg) depth, and bottle_other_method for smd_chl
   • add a method of sampling column  (ethanol or acetone)
   
 Additional steps:
   • reorganize the columns
-  • merge the transect_chl and smd_chl datasets
+  • merge the api_chl and smd_chl datasets
   • round numerical columns
   
 ```{r}
 
-## transect chl
-transect_chl_final <- smd_key %>% ungroup() %>% 
+## API transect chl
+api_chl_final <- smd_key %>% ungroup() %>% 
   select(cruise, cast_expand, niskin, bottle_other_method) %>%
-  left_join(transect_chl, .,
+  left_join(api_chl, .,
             by = c("cruise", "cast" = "cast_expand", "niskin" = "bottle_other_method")) %>%
   rename_at("niskin.y", ~"bottle_other_method")
 # add method_sample col
-# transect_chl_final$method_sample <- "ethanol"
+api_chl_final$method_sample <- "ethanol"
 # convert data types to enable cbind with smd data
-transect_chl_final$cast <- as.character(transect_chl_final$cast)
-transect_chl_final$niskin <- as.character(transect_chl_final$niskin)
+api_chl_final$cast <- as.character(api_chl_final$cast)
+api_chl_final$niskin <- as.character(api_chl_final$niskin)
 
 ## SMD chl
 smd_chl_final <- smd_key %>% ungroup() %>% 
@@ -317,20 +317,20 @@ smd_chl_final <- smd_key %>% ungroup() %>%
             longitude = mean(longitude)) %>%
   right_join(smd_chl, by = c("cruise", "cast", "niskin"))
 # add method_sample col
-# smd_chl_final$method_sample <- "acetone"
+smd_chl_final$method_sample <- "acetone"
 # convert data types to enable cbind with smd data
 smd_chl_final$bottle_other_method <- as.character(smd_chl_final$bottle_other_method)
 
 # define headers for columns in desired order
-headers <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "replicate",
+headers <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "method_sample", "replicate",
                                   "vol_filtered", "filter_size", "tau_calibration", "fd_calibration", "rb", "ra", "blank",
                                   "rb_blank", "ra_blank", "chl", "phaeo")
 # reorder columns as necessary
-transect_chl_final <- transect_chl_final[, headers]
+api_chl_final <- api_chl_final[, headers]
 smd_chl_final <- smd_chl_final[, headers]
 
 # merge datasets by row
-chl_all <- bind_rows(transect_chl_final, smd_chl_final)
+chl_all <- bind_rows(api_chl_final, smd_chl_final)
 
 # column sorting
 # define order for filter size and cast columns
@@ -340,21 +340,103 @@ cast_sort <- str_sort(unique(chl_all$cast), numeric = TRUE)
 chl_all <- chl_all[with(chl_all, order(cruise, match(cast, cast_sort),
                                     match(filter_size, size_sort))), ]
 
-# nearest station will be determined by Joe's python script?
-
-# column rounding
-# define numerical attributes
-# num_cols <- c("tau_calibration", "fd_calibration", "rb", "ra", "blank",
-#                                   "rb_blank", "ra_blank", "chl", "phaeo")
-# round the nutrient values to the thousandths place
-# all_chl$num_cols <- round(all_chl$num_cols, 3)
-
 # missing values
 # set missing values in distance to -9999
 # all_chl$mv_containing_col[is.na(all_chl$mv_containing_col)] <- -9999
 
 # write csv file of concatenated cruises
 write.csv(chl_all, 'nes-lter-chl-transect.csv', row.names=FALSE)
+```
+
+## Utility function: Nearest Station & Station Distance
+
+```{r}
+
+# library(geosphere)
+
+
+chl <- read_csv('nes-lter-chl-transect.csv')
+
+# define the list of cruises to acquire data from
+cruiselist <- unique(chl$cruise)
+
+# Utility functions: Nearest Station & Station Distance
+find_distance <- function(df_lon, df_lat, ref_lon, ref_lat){
+    station_distance <- distm(c(df_lon, df_lat, ref_lon, ref_lat), 
+                              fun = distHaversine)
+}
+
+nearest_station <- function(df){
+  distances <- map(station_locs, find_distance, )
+}
+
+add_station_info <- function(df){
+  df$nearest_station <- NA_character_
+  df$station_distance <- NA_integer_
+  
+  # stations <- purrr::map(cruiselist, read_from_api, type = "stations") %>%
+  #   reduce(rbind)
+
+  for (j in 1:length(cruises)) {
+    # load in stations for each cruise
+    stations <- read_from_api("stations", cruiselist[1])
+    
+    # some apply function to find the nearest station and station distance
+    
+    # subset the chl data by cruise
+    df_cruise <- df %>% filter(cruise == (cruiselist[1]))
+    # find the station distances
+    # apply(df, 1, function(x){
+    #   
+    # })
+    
+    for (k in 1:nrow(df)){
+      
+    }
+  }
+
+}
+
+
+
+```
+
+
+## Read in chl-transect processed for nearest station
+
+ATTENTION: Run nearest_station_generalized.ipynb BEFORE executing this chunk!!
+
+Load in cruise data processed by nearest_station_generalized.ipynb, a python script run in a Jupyter Notebook which determinesnearest station, and station distance (developed by Joe Futrelle). This output was saved as a csv in the working directory which is read by this chunk.
+
+```{r}
+
+if (!file.exists("api_nearest_stations.csv")) {
+  print("Run nearest_station_generalized.ipynb to generate chl transect output with nearest station and station distance fields")
+} else {
+  # read in csv
+  chl_edi <- read_csv('api_nearest_stations.csv')
+
+  # column rounding
+  # define numerical attributes
+  num_cols <- c("depth", "tau_calibration", "fd_calibration", "rb", "ra", "blank",
+                                  "rb_blank", "ra_blank", "chl", "phaeo")
+  # round the numerical values
+  chl_all[num_cols] <- round(chl_all[num_cols], 3)
+  chl_all$latitude <- round(chl_all$latitude, 5)
+  chl_all$longitude <- round(chl_all$longitude, 5)
+}
+
+# write the file
+# write.csv(chl_edi, 'nes-lter-chl-transect.csv', row.names=FALSE)
+```
+
+## QA: Station Distance Outliers
+
+Isolate samples that were taken at a distance greater than 2km from the nearest station
+```{r}
+
+st_dist_outliers <- chl_edi %>% filter(station_distance > 2)
+
 ```
 
 ## QA: Compare datasets
@@ -429,7 +511,6 @@ for (k in 1:nrow(qa_smd)) {
 
 ```
 
-
 ## QA: Map Sampling Locations
 
 Call the map_locs function from edi-utility.R to map the sampling locations. Perform a visual check.
@@ -465,9 +546,9 @@ xlsx_to_template(metadata.path = metadata,
 
 # Data Coverage
 # isolate date and geospatial columns for input
-date_col <- as.Date(chl_all$date)
-lat_col <- chl_all$latitude
-lon_col <- chl_all$longitude
+date_col <- as.Date(chl_edi$date)
+lat_col <- chl_edi$latitude
+lon_col <- chl_edi$longitude
 # run function to determine geospatial and temporal coverage
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
