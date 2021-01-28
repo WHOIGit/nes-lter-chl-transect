@@ -14,7 +14,7 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 rm(list = ls())
 
 # assign relative path to directory
-dir <- "/Users/jaxinewolfe/Documents/WHOI/NESLTER/nes-lter-chl-transect/"
+dir <- "C:/Users/wanglab/Documents/GitHub/nes-lter-chl-transect"
 # set as working directory
 setwd(dir)
 
@@ -463,7 +463,8 @@ qa_smd <- smd_key %>%
   summarise(avg_chl = mean(chl, na.rm = TRUE))
 
 # summarize transect data for comparison
-qa_transect <- transect_chl_final %>%
+# KM changed api_chl_final from transect_chl_final because error message saying transect_chl_final doesn't exist
+qa_transect <- api_chl_final %>%
   group_by(cruise, cast, niskin, filter_size) %>%
   summarise(avg_chl = mean(chl, na.rm = TRUE))
 
@@ -576,4 +577,9 @@ make_eml(path = getwd(),
          user.domain = "LTER",
          package.id = pkg_id)
 
+```
+
+```{r}
+# Insert Custom Project Node
+project_insert(edi_pkg = pkg_id)
 ```
