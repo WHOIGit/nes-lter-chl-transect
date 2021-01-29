@@ -14,9 +14,12 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 rm(list = ls())
 
 # assign relative path to directory
-dir <- "C:/Users/wanglab/Documents/GitHub/nes-lter-chl-transect"
+#dir <- "C:/Users/wanglab/Documents/GitHub/nes-lter-chl-transect"
 # set as working directory
-setwd(dir)
+#setwd(dir)
+library(here)
+here("nes-lter-chl-transect")
+# KM updated this section to use here instead of setwd
 
 # define source for functions developed for the EDI packaging workflow
 source("edi-utilities.R")
