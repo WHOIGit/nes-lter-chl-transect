@@ -11,14 +11,14 @@ output: html_document
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
 # clear workspace for local development
-rm(list = ls())
+#rm(list = ls())
 
 # assign relative path to directory
 #dir <- "C:/Users/wanglab/Documents/GitHub/nes-lter-chl-transect"
 # set as working directory
 #setwd(dir)
-library(here)
-here("nes-lter-chl-transect")
+#library(here)
+# here("nes-lter-chl-transect")
 # KM updated this section to use here instead of setwd
 
 # define source for functions developed for the EDI packaging workflow
@@ -29,9 +29,24 @@ source("edi-utilities.R")
 # install_github("EDIorg/EMLassemblyline")
 
 # define R packages to require
-libs <- c("tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2", "geosphere")
+#libs <- c("tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2", "geosphere")
 # load libraries
-lapply(libs, require, character.only = TRUE)
+#lapply(libs, require, character.only = TRUE)
+
+#KM define R packages to require using require instead of libs and lapply
+require(here)
+require(tidyverse)
+require(readxl)
+require(lubridate)
+require(devtools)
+require(EMLassemblyline)
+require(EML)
+require(maps)
+require(xml2)
+require(geosphere)
+
+#set path to root of project
+here("nes-lter-chl-transect")
 ```
 
 ## Compile Chl Transect Data
