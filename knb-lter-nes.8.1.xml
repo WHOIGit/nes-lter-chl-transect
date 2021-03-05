@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.1" packageId="knb-lter-nes.8.1" xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.1  http://nis.lternet.edu/schemas/EML/eml-2.1.1/eml.xsd" system="edi">
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="knb-lter-nes.8.1" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0  https://nis.lternet.edu/schemas/EML/eml-2.2.0/xsd/eml.xsd" system="edi">
   <access authSystem="https://pasta.edirepository.org/authentication" order="allowFirst" scope="document">
     <allow>
       <principal>uid=NES,o=LTER,dc=ecoinformatics,dc=org</principal>
@@ -99,7 +99,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0001-9620-5382</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2020-01-28</pubDate>
+    <pubDate>2021-03-05</pubDate>
     <keywordSet>
       <keyword>Primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -111,27 +111,7 @@
       <keywordThesaurus>LTER Controlled Vocabulary</keywordThesaurus>
     </keywordSet>
     <intellectualRights>
-      <para>
-  This information is released under the Creative Commons license -
-  Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/).
-  The consumer of these data ("Data User" herein) is required
-  to cite it appropriately in any publication that results from its use.
-  The Data User should realize that these data may be actively used by
-  others for ongoing research and that coordination may be necessary to
-  prevent duplicate publication. The Data User is urged to contact the
-  authors of these data if any questions about methodology or results
-  occur. Where appropriate, the Data User is encouraged to consider
-  collaboration or co-authorship with the authors. The Data User should
-  realize that misinterpretation of data may occur if used out of
-  context of the original study. While substantial efforts are made to
-  ensure the accuracy of data and associated documentation, complete
-  accuracy of data sets cannot be guaranteed. All data are made
-  available "as is." The Data User should be aware, however,
-  that data are updated periodically and it is the responsibility of the
-  Data User to check for new versions of the data. The data authors and
-  the repository where these data were obtained shall not be liable for
-  damages resulting from any use or misinterpretation of the data. Thank
-  you.
+      <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data (\"Data User\" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available \"as is.\" The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.&#13;
 </para>
     </intellectualRights>
     <coverage>
@@ -164,7 +144,39 @@
       <electronicMailAddress>lter-nes-info@whoi.edu</electronicMailAddress>
     </contact>
     <methods>
-      <methodStep/>
+      <methodStep>
+        <description>
+          <para>  &#13;
+## CTD Rosette Bottle Sampling on NES-LTER cruises</para>
+          <para>#Sosik&#13;
+Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. For each size fraction, two to three duplicate sample bottles were filled from each Niskin sampled and were stored in a cooler until filtered on-ship. </para>
+          <para># Rynearson&#13;
+Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. Samples were collected from all LTER stations with a total of 12 samples per station comprised of 2 size fractions from each of 3 (sometimes 4) depths: surface, chl max, below max (or other). For each depth, two bottles were filled with seawater and returned to the ship's lab for filtering. &#13;
+EN608:</para>
+          <para># Menden-Deuer&#13;
+For each size fraction, two duplicate samples were collected.&#13;
+Sizes: &gt;20 um, &gt;10 um, &gt;5 um, and &gt;0 um</para>
+          <para>##  Chlorophyll Filtering Protocol</para>
+          <para>#Sosik&#13;
+For each sample, a known volume was poured through a GF/F filter under low vacuum suction (5-10 in. Hg). The &lt;10 micron size fraction was separated using a filter funnel containing a 10 micron Nitex mesh screen. Filters were transferred to tissue capsules and frozen in liquid nitrogen until being extracted. </para>
+          <para># Rynearson&#13;
+Size fractionation was accomplished by pouring one bottle from each depth through a 5 micron Sterlitech polycarbonate filter and one through a 20 micron Sterlitech polycarbonate filter under low vacuum suction. Filters were transferred to 5 mL cryogenic vials and flash-frozen in liquid nitrogen until being extracted. &#13;
+EN608:</para>
+          <para># Menden-Deuer</para>
+          <para>## Laboratory chlorophyll a measurement</para>
+          <para>#Sosik&#13;
+Filters were removed from liquid nitrogen storage and transferred to glass test tubes. They were then extracted in 5 mL of 90% acetone for 24 hours on ice in a dark refrigerator. They were then vortexed and centrifuged. The solution was measured on a Turner Designs Handheld Aquafluor fluorometer, acidified with 3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples, and the fluorometer was calibrated approximately annually using a serial dilution of a commercially available stock solution (Sigma-Aldrich). </para>
+          <para># Rynearson&#13;
+Filters were removed from liquid nitrogen storage and extracted in 5 mL of 90% acetone for 24 hours on ice in a dark refrigerator. They were then vortexed, and the solution was measured on a Turner Designs Handheld Aquafluor fluorometer, acidified with 3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples, and the fluorometer was calibrated approximately annually using a serial dilution of a commercially available stock solution (Sigma-Aldrich). &#13;
+EN608:</para>
+          <para>## Data Cleaning</para>
+          <para>The data table was made by concatenating cruises called from the REST API of the NES-LTER data system. Nearest station is based on a cruise-specific station list. NES-LTER standard stations L1 to L13 are the same for cruises starting with EN617 in August 2018. Prior to this: On AR22 and AR24 the NES-LTER transect was on longitude 70.83 W (to the east of present transect). AR22 Joint Program (JP) stations 1, 2, 3 correspond to AR24 LTER stations 1, 3, 5. On EN608 the NES-LTER transect was established on the present longitude 70.8833 W with standard stations L1 to L13; however, on EN608 and AR28 the position for standard station L5 was at a different latitude (1 naut. mile north of present station). Data assembly, data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-chl-transect.&#13;
+[use r markdown subsections to enumerate]</para>
+          <para>## Quality Assurance</para>
+          <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We checked differences between replicates, visually inspected plotted values, and performed a range check. </para>
+          <para/>
+        </description>
+      </methodStep>
     </methods>
     <project>
       <title>Northeast U.S. Shelf LTER</title>
@@ -266,16 +278,16 @@
       </funding>
     </project>
     <dataTable>
-      <entityName>Chlorophyll from CTD rosette data cleaned for EDI</entityName>
+      <entityName>nes-lter-chl-transect.csv</entityName>
       <entityDescription>Chlorophyll from CTD rosette data cleaned for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-chl-transect.csv</objectName>
-        <size unit="bytes">341226</size>
-        <authentication method="MD5">68141c876091d0c436ad840968540ade</authentication>
+        <size unit="bytes">342844</size>
+        <authentication method="MD5">4e9574f5bf23c3872c1c793d2000af52</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
-            <recordDelimiter>\n</recordDelimiter>
+            <recordDelimiter>\r\n</recordDelimiter>
             <attributeOrientation>column</attributeOrientation>
             <simpleDelimited>
               <fieldDelimiter>,</fieldDelimiter>
@@ -367,8 +379,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.76</minimum>
-                  <maximum exclusive="false">41.32</maximum>
+                  <minimum exclusive="false">39.7576066666667</minimum>
+                  <maximum exclusive="false">41.32464</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -386,8 +398,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.07</minimum>
-                  <maximum exclusive="false">-70.52</maximum>
+                  <minimum exclusive="false">-71.068</minimum>
+                  <maximum exclusive="false">-70.52266</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -405,8 +417,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">1.62</minimum>
-                  <maximum exclusive="false">1000.62</maximum>
+                  <minimum exclusive="false">1.619</minimum>
+                  <maximum exclusive="false">1000.616</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -496,8 +508,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">1.9</minimum>
-                  <maximum exclusive="false">2.15</maximum>
+                  <minimum exclusive="false">1.90201556461163</minimum>
+                  <maximum exclusive="false">2.154519162</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -519,8 +531,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">0.32</minimum>
-                  <maximum exclusive="false">1.39</maximum>
+                  <minimum exclusive="false">0.324655349</minimum>
+                  <maximum exclusive="false">1.393</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -542,7 +554,7 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">0.7</minimum>
+                  <minimum exclusive="false">0.702</minimum>
                   <maximum exclusive="false">819.2</maximum>
                 </bounds>
               </numericDomain>
@@ -565,7 +577,7 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">0.6</minimum>
+                  <minimum exclusive="false">0.598</minimum>
                   <maximum exclusive="false">532.8</maximum>
                 </bounds>
               </numericDomain>
@@ -588,7 +600,7 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">0.05</minimum>
+                  <minimum exclusive="false">0.0508</minimum>
                   <maximum exclusive="false">2.79</maximum>
                 </bounds>
               </numericDomain>
@@ -611,8 +623,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">0.19</minimum>
-                  <maximum exclusive="false">818.71</maximum>
+                  <minimum exclusive="false">0.1935</minimum>
+                  <maximum exclusive="false">818.707</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -634,8 +646,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">0.02</minimum>
-                  <maximum exclusive="false">532.31</maximum>
+                  <minimum exclusive="false">0.0186666666666666</minimum>
+                  <maximum exclusive="false">532.307</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -657,8 +669,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">0</minimum>
-                  <maximum exclusive="false">7.74</maximum>
+                  <minimum exclusive="false">-0.000816860499141415</minimum>
+                  <maximum exclusive="false">7.741595663</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -680,8 +692,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-0.16</minimum>
-                  <maximum exclusive="false">3.64</maximum>
+                  <minimum exclusive="false">-0.162700457</minimum>
+                  <maximum exclusive="false">3.64277993630083</maximum>
                 </bounds>
               </numericDomain>
             </ratio>

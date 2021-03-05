@@ -1,4 +1,4 @@
-attribute	code	definition
+attributeName	code	definition
 method_sample	ethanol	Samples processed with ethanol
 method_sample	acetone	Samples processed with acetone
 method_sample	TBD	TBD
