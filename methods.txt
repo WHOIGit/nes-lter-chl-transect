@@ -1,1 +1,45 @@
-These are the methods
+  
+## CTD Rosette Bottle Sampling on NES-LTER cruises
+
+#Sosik
+Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. For each size fraction, two to three duplicate sample bottles were filled from each Niskin sampled and were stored in a cooler until filtered on-ship. 
+
+# Rynearson
+Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. Samples were collected from all LTER stations with a total of 12 samples per station comprised of 2 size fractions from each of 3 (sometimes 4) depths: surface, chl max, below max (or other). For each depth, two bottles were filled with seawater and returned to the ship's lab for filtering. 
+EN608:
+
+# Menden-Deuer
+For each size fraction, two duplicate samples were collected.
+Sizes: >20 um, >10 um, >5 um, and >0 um
+
+##  Chlorophyll Filtering Protocol
+
+#Sosik
+For each sample, a known volume was poured through a GF/F filter under low vacuum suction (5-10 in. Hg). The <10 micron size fraction was separated using a filter funnel containing a 10 micron Nitex mesh screen. Filters were transferred to tissue capsules and frozen in liquid nitrogen until being extracted. 
+
+# Rynearson
+Size fractionation was accomplished by pouring one bottle from each depth through a 5 micron Sterlitech polycarbonate filter and one through a 20 micron Sterlitech polycarbonate filter under low vacuum suction. Filters were transferred to 5 mL cryogenic vials and flash-frozen in liquid nitrogen until being extracted. 
+EN608:
+
+# Menden-Deuer
+
+## Laboratory chlorophyll a measurement
+
+#Sosik
+Filters were removed from liquid nitrogen storage and transferred to glass test tubes. They were then extracted in 5 mL of 90% acetone for 24 hours on ice in a dark refrigerator. They were then vortexed and centrifuged. The solution was measured on a Turner Designs Handheld Aquafluor fluorometer, acidified with 3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples, and the fluorometer was calibrated approximately annually using a serial dilution of a commercially available stock solution (Sigma-Aldrich). 
+
+# Rynearson
+Filters were removed from liquid nitrogen storage and extracted in 5 mL of 90% acetone for 24 hours on ice in a dark refrigerator. They were then vortexed, and the solution was measured on a Turner Designs Handheld Aquafluor fluorometer, acidified with 3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples, and the fluorometer was calibrated approximately annually using a serial dilution of a commercially available stock solution (Sigma-Aldrich). 
+EN608:
+
+# Menden-Deuer
+
+## Data Cleaning
+
+The data table was made by concatenating cruises called from the REST API of the NES-LTER data system. Nearest station is based on a cruise-specific station list. NES-LTER standard stations L1 to L13 are the same for cruises starting with EN617 in August 2018. Prior to this: On AR22 and AR24 the NES-LTER transect was on longitude 70.83 W (to the east of present transect). AR22 Joint Program (JP) stations 1, 2, 3 correspond to AR24 LTER stations 1, 3, 5. On EN608 the NES-LTER transect was established on the present longitude 70.8833 W with standard stations L1 to L13; however, on EN608 and AR28 the position for standard station L5 was at a different latitude (1 naut. mile north of present station). Data assembly, data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-chl-transect.
+[use r markdown subsections to enumerate]
+
+## Quality Assurance
+
+We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We checked differences between replicates, visually inspected plotted values, and performed a range check. 
+
