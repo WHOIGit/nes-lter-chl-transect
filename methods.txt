@@ -1,16 +1,18 @@
   
 ## CTD Rosette Bottle Sampling on NES-LTER cruises
 
+Chlorophyll-a concentrations are measured as a proxy for phytoplankton biomass. 
+
 #Sosik
-Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. For each size fraction, two to three duplicate sample bottles were filled from each Niskin sampled and were stored in a cooler until filtered on-ship. 
+Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. At surface locations and at additional depths at high-priority stations, samples were collected for both <10 micron and whole seawater size fractions, with <10 micron sampling at depth targeted to the chl max and another depth with detectable CTD fluorescence. At the remaining locations, samples were not size-fractioned. For each sample, two to three duplicate bottles were filled from each Niskin and were stored in a cooler until filtered on-ship. 
 
 # Rynearson
 Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. Samples were collected from all LTER stations with a total of 12 samples per station comprised of 2 size fractions from each of 3 (sometimes 4) depths: surface, chl max, below max (or other). For each depth, two bottles were filled with seawater and returned to the ship's lab for filtering. 
-EN608:
+
+On cruise EN608 only: Samples were collected from 4-8 depths from each LTER station. Each Niskin sampled was used to fill duplicate sample bottles for whole seawater and for smaller size fractions, which varied by station, were focused on surface, subsurface chlorophyll max (SCM), and below SCM, and included  >= 5 microns, >= 20 microns, and =< 10 microns. Samples were kept in a cooler until filtered. 
 
 # Menden-Deuer
-For each size fraction, two duplicate samples were collected.
-Sizes: >20 um, >10 um, >5 um, and >0 um
+Chlorophyll was measured at the starting point of a series of incubation experiments. At each depth, 2-4 Niskins were filled and their seawater transferred to a 10-L polycarbonate carboy through a 200 micron mesh prefilter. Triplicate 120-150 mL subsamples were collected from the carboys for each of the size fractions, which included >20, >10, >5, and >0 microns. The suite of size fractions measured varied acrcoss cruises and stations. 
 
 ##  Chlorophyll Filtering Protocol
 
@@ -19,9 +21,13 @@ For each sample, a known volume was poured through a GF/F filter under low vacuu
 
 # Rynearson
 Size fractionation was accomplished by pouring one bottle from each depth through a 5 micron Sterlitech polycarbonate filter and one through a 20 micron Sterlitech polycarbonate filter under low vacuum suction. Filters were transferred to 5 mL cryogenic vials and flash-frozen in liquid nitrogen until being extracted. 
-EN608:
+
+On cruise EN608 only: Whole seawater was filtered by pouring the entire contents of each sample bottle through a 25 mm Whatman GF/F filter on a manifold with vacuum <20 kpa. Size-fractioned samples were filtered by homogenizing a 1-L bottle and pouring 200 mL through each of a 5 micron polycarbonate filter, a 20 micron polycarbonate, and a GF/F with a 10 micron mesh prefilter. Each filter was either transferred to a tube containing 6 mL of 90% acetone previously chilled to -20 C, returned to -20 C, and extracted 20-28 hours later; or transferred to a filter capsule and flash-frozen in liquid nitrogen for extraction on a later date. 
 
 # Menden-Deuer
+Size fractionation was accomplished by pouring each sample through a GF/F (nominal 0.7 micron pore size) or 5, 10, or 20 micron polyester filter on a manifold with vacuum not exceeding 200 mBar. Filters were transferred to glass tubes containing 6 mL 95% ethanol at room temperature, which were then stored in darkness at room temperature for 12 h +/-2 h. 
+[really polycarbonate not polyester?]
+
 
 ## Laboratory chlorophyll a measurement
 
@@ -30,9 +36,11 @@ Filters were removed from liquid nitrogen storage and transferred to glass test 
 
 # Rynearson
 Filters were removed from liquid nitrogen storage and extracted in 5 mL of 90% acetone for 24 hours on ice in a dark refrigerator. They were then vortexed, and the solution was measured on a Turner Designs Handheld Aquafluor fluorometer, acidified with 3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples, and the fluorometer was calibrated approximately annually using a serial dilution of a commercially available stock solution (Sigma-Aldrich). 
-EN608:
+
+On cruise EN608 only: Tubes were removed from freezer shortly before processing, vortexed for 10 seconds, and centrifuged for 3 minutes. The supernatant was measured on a Turner Designs 10-AU-005 Benchtop Fluorometer or Turner Aquafluor Fluorometer, acidified with 2-3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples.
 
 # Menden-Deuer
+In the presence of only red light, each tubes was vortexed for 10 seconds, and its solution was then poured into a new tube and measured on a Turner Designs 10-AU-005 Benchtop Fluorometer. Two drops of 10% hydrochloric acid were added to each tube and it was measured again. If the reading after acidification was the same as the reading before acidification, an additional drop of acid was added. Tubes were measured 30 seconds to one hour after acidification. Before and after each batch of samples, a blank, blank + acid, and a solid standard were measured. 
 
 ## Data Cleaning
 
