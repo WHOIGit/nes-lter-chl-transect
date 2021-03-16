@@ -44,6 +44,7 @@ require(EML)
 require(maps)
 require(xml2)
 require(geosphere)
+require(httr)
 
 #set path to root of project
 here("nes-lter-chl-transect")
@@ -326,7 +327,20 @@ api_chl_final <- smd_key %>% ungroup() %>%
             by = c("cruise", "cast" = "cast_expand", "niskin" = "bottle_other_method")) %>%
   rename_at("niskin.y", ~"bottle_other_method")
 # add method_sample col (placeholder data)
-api_chl_final$method_sample <- "ethanol"
+#api_chl_final$method_sample <- "ethanol"
+#apply to api_chl_final: if filter size is >0 or <10, then mutate method_Sosik into column method_contributor
+```
+```{r}
+api_chl_final  %>% 
+    mutate(method_contributor  = case_when(filter_size=="<10" ~ "method_Sosik",         
+                                           filter_size==">5" ~ "method_Rynearson", 
+                                           filter_size==">20" ~ "method_Rynearson", 
+                                           filter_size==">0" ~ "method_Sosik")) -> api_chl_final
+
+sum(is.na(api_chl_final$method_contributor))
+```
+
+```{r}
 # convert data types to enable cbind with smd data
 api_chl_final$cast <- as.character(api_chl_final$cast)
 api_chl_final$niskin <- as.character(api_chl_final$niskin)
@@ -343,7 +357,8 @@ smd_chl_final <- smd_key %>% ungroup() %>%
             longitude = mean(longitude)) %>%
   right_join(smd_chl, by = c("cruise", "cast", "niskin"))
 # add method_sample col (placeholder data)
-smd_chl_final$method_sample <- "acetone"
+smd_chl_final$method_sample <- "method_Menden-Deuer" #need to hard code the three records with a different method
+#apply to smd_chl_final: filter to cruise en627 cast 30 niskin 1-2-3-4 if ra (or rb) = integer values 1, 2, or 3 then replace method_contributor column with method_Menden-Deuer_no_200um
 # convert data types to enable cbind with smd data
 smd_chl_final$bottle_other_method <- as.character(smd_chl_final$bottle_other_method)
 
