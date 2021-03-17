@@ -53,8 +53,9 @@ here("nes-lter-chl-transect")
 ## Compile Chl Transect Data
 ```{r}
 
-# define the list of cruises to acquire data from
-cruiselist <- c("en608","en617", "en627", "en644", "ar22", "ar32")
+# define the list of cruises to acquire data from (cruises LTER and JP)
+# we will call OOI cruises separately
+cruiselist <- c("en608","en617", "en627", "en644", "en649", "ar22", "ar32")
   
 # pull from API if compiled cruise data file doesnt exist in directory
 if (!file.exists("chl-transect-api.csv")) {
