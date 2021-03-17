@@ -356,16 +356,22 @@ smd_chl_final <- smd_key %>% ungroup() %>%
             latitude = mean(latitude),
             longitude = mean(longitude)) %>%
   right_join(smd_chl, by = c("cruise", "cast", "niskin"))
-# add method_sample col (placeholder data)
-smd_chl_final$method_sample <- "method_Menden-Deuer" #need to hard code the three records with a different method
-#apply to smd_chl_final: filter to cruise en627 cast 30 niskin 1-2-3-4 if ra (or rb) = integer values 1, 2, or 3 then replace method_contributor column with method_Menden-Deuer_no_200um
+# add method_contributor col 
+#smd_chl_final$method_contributor <- "method_Menden-Deuer" #need to hard code the three records with a different method
+#apply to smd_chl_final: filter to cruise en627 cast 30 niskin 1-2-3-4 then replace last 3 with method_contributor column with method_Menden-Deuer_no_200um
+smd_chl_final  %>% 
+    mutate(method_contributor  = case_when(cruise == "EN627" & ra_blank == "139.66" ~ "method_Menden-Deuer_no_200um",         
+                                           cruise == "EN627" & ra_blank == "123.66" ~ "method_Menden-Deuer_no_200um", 
+                                           cruise == "EN627" & ra_blank == "119.66" ~ "method_Menden-Deuer_no_200um",
+                                           TRUE ~ "method_Menden-Deuer")) -> smd_chl_final
+#important to check for NAs after using case_when
+sum(is.na(smd_chl_final$method_contributor))
+
 # convert data types to enable cbind with smd data
 smd_chl_final$bottle_other_method <- as.character(smd_chl_final$bottle_other_method)
 
 # define headers for columns in desired order
-headers <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "method_sample", "replicate",
-                                  "vol_filtered", "filter_size", "tau_calibration", "fd_calibration", "rb", "ra", "blank",
-                                  "rb_blank", "ra_blank", "chl", "phaeo")
+headers <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "method_contributor", "replicate","vol_filtered", "filter_size", "tau_calibration", "fd_calibration", "rb", "ra", "blank", "rb_blank", "ra_blank", "chl", "phaeo")
 # reorder columns as necessary
 api_chl_final <- api_chl_final[, headers]
 smd_chl_final <- smd_chl_final[, headers]
