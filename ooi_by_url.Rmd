@@ -1,0 +1,82 @@
+---
+title: "OOI Join by URL"
+author: "Kate Morkeski"
+date: "3/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(httr)
+library(readxl)
+```
+Accessing OOI data from Alfresco
+```{r}
+
+url <- ('https://alfresco.oceanobservatories.org/alfresco/webdav/OOI/Coastal%20Pioneer%20Array/Cruise%20Data/Pioneer-09_AR24_2017-10-22/Ship%20Data/Water%20Sampling/Pioneer-09_AR24_Chlorophyll_Sample_Data_2020-03-27_ver_1-00.xlsx')
+```
+
+```{r}
+
+httr::GET(url, authenticate("guest", "guest"), write_disk(tf <- tempfile(fileext = ".xlsx")))
+tf
+```
+Reading in Excel file from Alfresco and formatting cruise ID and column headers
+```{r}
+
+ar24 <- read_excel(tf, 1L)
+
+ar24$Cruise <- gsub("-", "", ar24$Cruise)
+
+ar24 <- ar24 %>% 
+  rename (cruise = Cruise, 
+          cast = Cast, 
+          niskin = Niskin, 
+          replicate = Replicate,
+          depth_rep = "Water Depth Rep",
+          filter_sample = "Filter Sample",
+          chl_alfresco = "Chl ug_per_L"
+          )
+```
+Read in cruise data from API and join to Alfresco data in order to obtain OOI sample identifier for the subset of samples belonging to OOI
+```{r}
+AR24B <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24b.csv")
+
+AR24Ball <- full_join(ar24, AR24B, by = c('cruise','cast','niskin','replicate'))
+
+#view(AR24Ball)
+
+#write.csv(AR24Ball, 'AR24Ball.csv')
+
+AR24C <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24c.csv")
+
+AR24all <- full_join(AR24Ball, AR24C, by = c('cruise','cast','niskin','replicate'))
+
+#write.csv(AR24all, 'AR24all.csv')
+
+#removing unneeded columns and checking for match between chl values
+#when best to rename dataframe? 
+#better ways to do these things? 
+AR24all %>% select(-Date, -"Station Depth", -"Trip Depth", -"Brown Bottle", -"Vol Filt", -"Filter Size", -"Vol Extracted", -Sample, -"90% Acetone", -"Dilution During Reading", -"Chl_Cal_Filename", -"tau_Calibration", -"Fd_Calibration", -Rb, -Ra, -blank, -Rb_blank, -Ra_blank, chl_alfresco, -"Phaeo ug_per_L", -"Lab Notebook number and page", -Cal_Date, -Fluorometer, -blank.x, -vol_filtered.x, -filter_size.x, -tau_calibration.x, -fd_calibration.x, -rb.x, -ra.x, -blank.y, -rb_blank.x, -ra_blank.x, chl.x, -phaeo.x, -date.x, -latitude.x, -longitude.x, -depth.x, -vol_filtered.y, -filter_size.y, -tau_calibration.y, -fd_calibration.y, -rb.y, -ra.y, -rb_blank.y, -ra_blank.y, chl.y, -phaeo.y, -date.y, -latitude.y, -longitude.y, -depth.y) -> AR24all
+
+AR24all %>% mutate(chl_api = case_when(cruise == "AR24B" ~ chl.x,
+                                       cruise == "AR24C" ~ chl.y)) -> AR24all
+
+AR24all %>% select(-chl.x, -chl.y) -> AR24all
+
+AR24all %>% mutate(chl_diff = chl_api - chl_alfresco) -> AR24all
+
+#how to check for numbers that aren't zero? #colSums(AR24all$chl_diff!=0)
+sum(is.na(AR24all$chl_diff))
+
+write.csv(AR24all, 'AR24filter.csv')
+
+```
+Read in csv file of concatenated cruises (ie transect data)
+Will need to join with AR24 data
+
+```{r}
+api_chl <- read_csv("chl-transect-api.csv")
+```
