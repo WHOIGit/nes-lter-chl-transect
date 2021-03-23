@@ -1,14 +1,14 @@
 ---
 title: "OOI Join by URL"
 author: "Kate Morkeski"
-date: "3/12/2021"
+date: "2021-03-23"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-library(tidyverse) #need tidyverse for %>% apparently
+library(tidyverse) #need tidyverse for %>% and dplyr
 library(httr)
 library(readxl)
 ```
@@ -37,19 +37,19 @@ ar24ooi <- ar24ooi %>%
           niskin = Niskin, 
           replicate = Replicate,
           depth_rep = "Water Depth Rep",    #renamed variable without space
-          filter_id_ooi = "Filter Sample",   #renamed variable without space
-          chl = "Chl ug_per_L" ,     #renamed variable without space
-          phaeo = "Phaeo ug_per_L"  #renamed variable without space
+          filter_id_ooi = "Filter Sample",  #renamed variable without space
+          filter_size_ooi = "Filter Size",  #renamed variable without space
+          chl_ooi = "Chl ug_per_L" ,     #renamed variable without space
+          phaeo_ooi = "Phaeo ug_per_L"  #renamed variable without space
           ) %>%
   
-  mutate(chl_ooi = round(chl, 3)) %>%
-  mutate(phaeo_ooi = round(phaeo, 3)) %>%
+  mutate(chl_ooi_r = round(chl_ooi, 3)) %>%
+  mutate(phaeo_ooi_r = round(phaeo_ooi, 3)) %>%
 
   select(-"Station Depth", 
          -"Trip Depth", 
          -"Brown Bottle", 
          -"Vol Filt", 
-         -"Filter Size", 
          -"Vol Extracted", 
          -Sample, 
          -"90% Acetone", 
@@ -64,7 +64,9 @@ ar24ooi <- ar24ooi %>%
          -Ra_blank, 
          -"Lab Notebook number and page", 
          -Cal_Date, 
-         -Fluorometer
+         -Fluorometer,
+         -chl_ooi,
+         -phaeo_ooi
          )
 
 ```
@@ -79,15 +81,43 @@ ar24abc <- rbind(ar24a, ar24b, ar24c)
 ar24abc <- ar24abc %>% 
   mutate(chl_r = round(chl, 3)) %>% 
   mutate(phaeo_r = round(phaeo, 3)) %>% 
-  select(-filter_size, -tau_calibration, -fd_calibration, -rb, -ra, -blank, -rb_blank, -ra_blank, -chl, -phaeo)
+  select(-vol_filtered, -tau_calibration, -fd_calibration, -rb, -ra, -blank, -rb_blank, -ra_blank, -chl, -phaeo)
 
+# add method_contributor column
+ar24abc  %>% 
+    mutate(method_contributor  = case_when(filter_size=="<10" ~ "method_Sosik",         
+                                           filter_size==">5" ~ "method_Rynearson", 
+                                           filter_size==">20" ~ "method_Rynearson", 
+                                           filter_size==">0" ~ "method_Sosik")) -> ar24abc
+```
+
+
+```{r}
 ar24all <- full_join(ar24ooi, ar24abc, by = c('cruise','cast','niskin','replicate'))
 
-ar24all <- ar24all %>% mutate(chl_diff = chl_ooi - chl_r)
+ar24all <- ar24all %>% mutate(chl_diff = chl_ooi_r - chl_r)
+
+# first check for missing values from the API for which OOI provided data
+missingAPI <- filter(ar24all, is.na(chl_r))
+# from the respective OOI columns: populate the filter_size, chl_r, phaeo_r
+# note that OOI, like Menden-Deuer group, reports NA when data not good quality
+
+# populate method_contributor based on filter_size
+
+# better to populate date from bottle file to include time
+# from bottle file: populate date, latitude, longitude, depth
+
+# if the number of rows in table "all" exceeds the number of rows in "abc"
+# by more than the number of rows in "missingAPI"
+# then something is repeating and needs hard-coding
+nrow(ar24all)-nrow(ar24abc)-nrow(missingAPI)
+
+# then check for mismatches which will require hard coding
+mismatch <- filter(ar24all, chl_diff > 0 | chl_diff < 0)
+# hard coding will include when water was combined from more than 1 niskin
+
 
 write.csv(ar24all, 'ar24all.csv')
-
-filter(ar24all, chl_diff > 0 | chl_diff < 0)
 
 ```
 
