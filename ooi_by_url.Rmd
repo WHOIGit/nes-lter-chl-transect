@@ -17,9 +17,8 @@ Accessing OOI data from Alfresco
 
 url <- ('https://alfresco.oceanobservatories.org/alfresco/webdav/OOI/Coastal%20Pioneer%20Array/Cruise%20Data/Pioneer-09_AR24_2017-10-22/Ship%20Data/Water%20Sampling/Pioneer-09_AR24_Chlorophyll_Sample_Data_2020-03-27_ver_1-00.xlsx')
 ```
-
 ```{r}
-
+#problem: if this chunk and the one above are not run separately, get Error in (function (srcref) : unimplemented type (29) in 'eval'
 httr::GET(url, authenticate("guest", "guest"), write_disk(tf <- tempfile(fileext = ".xlsx")))
 tf
 ```
@@ -37,7 +36,7 @@ ar24ooi <- ar24ooi %>%
           niskin = Niskin, 
           replicate = Replicate,
           depth_rep = "Water Depth Rep",    #renamed variable without space
-          filter_id_ooi = "Filter Sample",  #renamed variable without space
+          filter_id_ooi = "Filter Sample",  #renamed variable without space #
           filter_size_ooi = "Filter Size",  #renamed variable without space
           chl_ooi = "Chl ug_per_L" ,     #renamed variable without space
           phaeo_ooi = "Phaeo ug_per_L"  #renamed variable without space
@@ -69,8 +68,12 @@ ar24ooi <- ar24ooi %>%
          -phaeo_ooi
          )
 
+filtercheck <- filter(ar24ooi, filter_size_ooi == 0)
+nrow(filtercheck)
+ar24ooi$filter_size_ooi <- ">0"
+#this works when all filter sizes are >0, but in case a different filter size is used, this needs to instead have: for the length of the data table, if NA in chl, replace the value.
 ```
-Read in cruise data from API and join to Alfresco data in order to obtain OOI sample identifier for the subset of samples belonging to OOI. Change this to read in three legs from API. Then join once with Alfresco. (One call to read from api, one call to full join)
+Read in cruise data from API and join to Alfresco data in order to obtain OOI sample identifier for the subset of samples belonging to OOI. 
 ```{r}
 ar24a <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24a.csv")
 ar24b <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24b.csv")
@@ -84,11 +87,11 @@ ar24abc <- ar24abc %>%
   select(-vol_filtered, -tau_calibration, -fd_calibration, -rb, -ra, -blank, -rb_blank, -ra_blank, -chl, -phaeo)
 
 # add method_contributor column
-ar24abc  %>% 
+ar24abc <- ar24abc  %>% 
     mutate(method_contributor  = case_when(filter_size=="<10" ~ "method_Sosik",         
                                            filter_size==">5" ~ "method_Rynearson", 
                                            filter_size==">20" ~ "method_Rynearson", 
-                                           filter_size==">0" ~ "method_Sosik")) -> ar24abc
+                                           filter_size==">0" ~ "method_Sosik")) 
 ```
 
 
@@ -99,10 +102,29 @@ ar24all <- ar24all %>% mutate(chl_diff = chl_ooi_r - chl_r)
 
 # first check for missing values from the API for which OOI provided data
 missingAPI <- filter(ar24all, is.na(chl_r))
+
 # from the respective OOI columns: populate the filter_size, chl_r, phaeo_r
+ar24all <- ar24all %>%
+    mutate(
+        filter_size = ifelse(is.na(filter_size), 
+        yes = ar24all$filter_size_ooi, 
+        no = ar24all$filter_size))  %>% 
+    mutate(
+        chl_r = ifelse(is.na(chl_r), 
+        yes = ar24all$chl_ooi_r, 
+        no = ar24all$chl_r))  %>% 
+    mutate(
+        phaeo_r = ifelse(is.na(phaeo_r), 
+        yes = ar24all$phaeo_ooi_r, 
+        no = ar24all$phaeo_r))  
 # note that OOI, like Menden-Deuer group, reports NA when data not good quality
 
 # populate method_contributor based on filter_size
+ar24all <- ar24all  %>% 
+    mutate(method_contributor  = case_when(filter_size=="<10" ~ "method_Sosik",         
+                                           filter_size==">5" ~ "method_Rynearson", 
+                                           filter_size==">20" ~ "method_Rynearson", 
+                                           filter_size==">0" ~ "method_Sosik")) 
 
 # better to populate date from bottle file to include time
 # from bottle file: populate date, latitude, longitude, depth
