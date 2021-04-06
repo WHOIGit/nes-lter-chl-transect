@@ -36,7 +36,7 @@ ar24ooi <- ar24ooi %>%
           niskin = Niskin, 
           replicate = Replicate,
           depth_rep = "Water Depth Rep",    #renamed variable without space
-          filter_id_ooi = "Filter Sample",  #renamed variable without space #
+          filter_id_ooi = "Filter Sample",  #renamed variable without space 
           filter_size_ooi = "Filter Size",  #renamed variable without space
           chl_ooi = "Chl ug_per_L" ,     #renamed variable without space
           phaeo_ooi = "Phaeo ug_per_L"  #renamed variable without space
@@ -66,12 +66,43 @@ ar24ooi <- ar24ooi %>%
          -Fluorometer,
          -chl_ooi,
          -phaeo_ooi
-         )
+         ) 
+ 
+ar24ooi <- ar24ooi %>% 
+ mutate(
+   niskin = ifelse(filter_id_ooi=="02/02", 
+                   yes = 4, 
+                   no = ar24ooi$niskin)) 
+ ar24ooi <- ar24ooi %>% 
+  mutate(
+    niskin = ifelse(filter_id_ooi=="02/03", 
+                   yes = 5, 
+                   no = ar24ooi$niskin)) 
+  ar24ooi <- ar24ooi %>% 
+    mutate(
+      niskin = ifelse(filter_id_ooi=="02/04", 
+                   yes = 6, 
+                   no = ar24ooi$niskin)) 
 
+ar24ooi <- ar24ooi %>% 
+   mutate(
+        niskin = ifelse(filter_id_ooi=="02/06", 
+                   yes = 8, 
+                   no = ar24ooi$niskin)) 
+
+ar24ooi <- ar24ooi %>% 
+   mutate(
+        niskin = ifelse(filter_id_ooi=="03/04", 
+                   yes = 8, 
+                   no = ar24ooi$niskin)) 
+   
+   
 filtercheck <- filter(ar24ooi, filter_size_ooi == 0)
 nrow(filtercheck)
 ar24ooi$filter_size_ooi <- ">0"
 #this works when all filter sizes are >0, but in case a different filter size is used, this needs to instead have: for the length of the data table, if NA in chl, replace the value.
+
+
 ```
 Read in cruise data from API and join to Alfresco data in order to obtain OOI sample identifier for the subset of samples belonging to OOI. 
 ```{r}
