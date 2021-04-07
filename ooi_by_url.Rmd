@@ -70,29 +70,29 @@ ar24ooi <- ar24ooi %>%
  
 ar24ooi <- ar24ooi %>% 
  mutate(
-   niskin = ifelse(filter_id_ooi=="02/02", 
+   niskin = ifelse(cruise == "AR24C" & filter_id_ooi=="02/02", 
                    yes = 4, 
                    no = ar24ooi$niskin)) 
  ar24ooi <- ar24ooi %>% 
   mutate(
-    niskin = ifelse(filter_id_ooi=="02/03", 
+    niskin = ifelse(cruise == "AR24C" & filter_id_ooi=="02/03", 
                    yes = 5, 
                    no = ar24ooi$niskin)) 
   ar24ooi <- ar24ooi %>% 
     mutate(
-      niskin = ifelse(filter_id_ooi=="02/04", 
+      niskin = ifelse(cruise == "AR24C" & filter_id_ooi=="02/04", 
                    yes = 6, 
                    no = ar24ooi$niskin)) 
 
 ar24ooi <- ar24ooi %>% 
    mutate(
-        niskin = ifelse(filter_id_ooi=="02/06", 
+        niskin = ifelse(cruise == "AR24C" & filter_id_ooi=="02/06", 
                    yes = 8, 
                    no = ar24ooi$niskin)) 
 
 ar24ooi <- ar24ooi %>% 
    mutate(
-        niskin = ifelse(filter_id_ooi=="03/04", 
+        niskin = ifelse(cruise == "AR24C" & filter_id_ooi=="03/04", 
                    yes = 8, 
                    no = ar24ooi$niskin)) 
    
@@ -109,6 +109,7 @@ Read in cruise data from API and join to Alfresco data in order to obtain OOI sa
 ar24a <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24a.csv")
 ar24b <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24b.csv")
 ar24c <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24c.csv")
+# API excludes bucket sample from AR24B
 
 ar24abc <- rbind(ar24a, ar24b, ar24c)
 
