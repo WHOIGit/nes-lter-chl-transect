@@ -44,6 +44,7 @@ ar24ooi <- ar24ooi %>%
   
   mutate(chl_ooi_r = round(chl_ooi, 3)) %>%
   mutate(phaeo_ooi_r = round(phaeo_ooi, 3)) %>%
+  mutate(niskin = as.character(niskin)) %>%
 
   select(-"Station Depth", 
          -"Trip Depth", 
@@ -110,6 +111,34 @@ ar24a <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24a.csv")
 ar24b <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24b.csv")
 ar24c <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24c.csv")
 # API excludes bucket sample from AR24B
+
+#AR24B cast 4 hard code output from API before join to accommodate combined bottles 4-6 and 9-10
+ar24b <- ar24b %>%
+  mutate(
+      niskin = ifelse(ra == 147.6, 
+                      yes = "4-6",
+                      no = ar24b$niskin)
+      ) 
+ar24b <- ar24b %>%
+    mutate(
+      niskin = ifelse(ra == 151.8, 
+                      yes = "4-6",
+                      no = ar24b$niskin)
+    
+      )
+ar24b <- ar24b %>%
+      mutate(
+      niskin = ifelse(ra == 108.7, 
+                      yes = "9-10",
+                      no = ar24b$niskin)
+      )
+ar24b <- ar24b %>%
+    mutate(
+      niskin = ifelse(ra == 102.5, 
+                      yes = "9-10",
+                      no = ar24b$niskin)
+      )
+
 
 ar24abc <- rbind(ar24a, ar24b, ar24c)
 
