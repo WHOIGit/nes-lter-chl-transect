@@ -1,7 +1,7 @@
 ---
 title: "NES-LTER Chlorophyll Transect"
-author: "Jaxine Wolfe"
-date: "Nov 18, 2019"
+author: "Jaxine Wolfe, Kate Morkeski"
+date: "Nov 2019 - Apr 2021"
 output: html_document
 ---
 
@@ -63,6 +63,16 @@ if (!file.exists("chl-transect-api.csv")) {
   # compile cruise data from api
   api_chl <- read_from_api(type = "chl", cruises = cruiselist)
 
+  # fix known issues with the data as available from the API
+  # EN627 there was no cast 4 per se, rather the btl file 4 for niskins 7-12
+  # should be appended to cast 3
+  api_chl <- api_chl %>% 
+   mutate(
+        cast = ifelse(cruise == "EN627" & cast=="4", 
+                   yes = 3, 
+                   no = api_chl$cast))
+  # Not provided by API due to missing value: EN627 cast 17 niskin 8 filter 20 rep b; EN627 cast 26 niskin 7 filter 20 rep b
+  
   # write csv file of concatenated cruises
   write.csv(api_chl, 'chl-transect-api.csv', row.names=FALSE)
 } else {
@@ -233,6 +243,7 @@ This chunk will:
 ```{r}
 
 # merge geospatial and temporal metadata from bottle summary
+
 smd_key <- left_join(smd_expanded, ctd_summary, 
                        by = c("cruise", 
                               "cast_expand" = "cast", 
