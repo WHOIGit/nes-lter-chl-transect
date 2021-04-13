@@ -155,7 +155,7 @@ ar24abc <- ar24abc  %>%
                                            filter_size==">0" ~ "method_Sosik")) 
 ```
 
-
+Join Alfresco and API data. 
 ```{r}
 ar24all <- full_join(ar24ooi, ar24abc, by = c('cruise','cast','niskin','replicate'))
 
@@ -200,13 +200,47 @@ mismatch <- filter(ar24all, chl_diff > 0 | chl_diff < 0)
 # hard coding will include when water was combined from more than 1 niskin
 
 
-write.csv(ar24all, 'ar24all.csv')
+write.csv(ar24all, 'ar24allqc.csv', row.names=FALSE)
 
 ```
 
-Read in csv file of concatenated cruises (ie transect data)
-Will need to join with AR24 data
+Join with all other transect data
 
 ```{r}
-#api_chl <- read_csv("chl-transect-api.csv")
+
+#remove rows without OOI data
+ar24 <- ar24all
+
+# add project_id based on filter_id_ooi. if it exists, project id is ooi. if not, project id is lter
+# make columns match nes-lter-chl-transect
+ar24 <- ar24 %>%
+  mutate(project_id = case_when(!is.na(filter_id_ooi) ~ "OOI",
+                                is.na(filter_id_ooi) ~ "LTER")) %>%
+  select(-date.x, 
+         -depth_rep, 
+         -filter_size_ooi, 
+         -chl_ooi_r, 
+         -phaeo_ooi_r,
+         -chl_diff,
+         -Comments) %>%
+  rename(date = date.y,
+         chl = chl_r,
+         phaeo = phaeo_r)
+#%>%
+ # mutate(cast = as.character(cast)) 
+
+# define headers for columns in desired order
+headers_ooi <- c("cruise", "cast", "niskin", "date", "latitude", "longitude", "depth", "method_contributor", "replicate","filter_id_ooi", "filter_size",  "chl", "phaeo", "project_id")
+# reorder columns as necessary
+ar24 <- ar24[, headers_ooi]
+
+# columns not matching: bottle_other_method, filter_id_ooi, comments
+# assemnbly rmd should read in this data set, then mutate bottle_other_method to NA
+# assembly script should alter filter_id_ooi to alternate_sample_id (mutate, populate with NA for the other data)
+# exclude comments
+
+# write csv file 
+write.csv(ar24, 'ar24.csv', row.names=FALSE)
+
 ```
+

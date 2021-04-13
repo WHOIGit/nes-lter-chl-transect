@@ -390,6 +390,11 @@ smd_chl_final <- smd_chl_final[, headers]
 # merge datasets by row
 chl_all <- bind_rows(api_chl_final, smd_chl_final)
 
+# eliminate extra columns 
+chl_all <- chl_all %>% 
+  select(-vol_filtered, -tau_calibration, -fd_calibration, -rb, -ra, -blank, -rb_blank, -ra_blank) %>% 
+  mutate(cast = as.numeric(cast)) 
+
 # column sorting
 # define order for filter size and cast columns
 size_sort <- c(">0",">5","<10",">10",">20")
@@ -402,9 +407,29 @@ chl_all <- chl_all[with(chl_all, order(cruise, match(cast, cast_sort),
 chl_all$project_id <- ifelse(chl_all$cruise == "AR22" | 
                                      chl_all$cruise == "AR32", 
                                    yes = "JP", no = "LTER")
+```
+
+## Read in and join OOI data
+
+```{r}
+
+# read in data
+chl_ar24 <- read_csv('ar24.csv')
+
+# bind rows
+chl_transect <- bind_rows(chl_all, chl_ar24)
+
+# sort by cruise, cast, niskin, filter size
+size_sort <- c(">0",">5","<10",">10",">20")
+cast_sort <- str_sort(unique(chl_transect$cast), numeric = TRUE)
+niskin_sort <- str_sort(unique(chl_transect$niskin), numeric = TRUE)
+
+chl_transect <- chl_transect[with(chl_all, order(cruise, match(cast, cast_sort), match(niskin, niskin_sort),
+                                    match(filter_size, size_sort))), ]
+
 
 # write csv file of concatenated cruises
-write.csv(chl_all, 'nes-lter-chl-transect.csv', row.names=FALSE)
+write.csv(chl_transect, 'nes-lter-chl-transect.csv', row.names=FALSE)
 ```
 
 ## Utility function: Nearest Station & Station Distance
@@ -420,6 +445,10 @@ chl <- read_csv('nes-lter-chl-transect.csv')
 
 # define the list of cruises to acquire data from
 cruiselist <- unique(chl$cruise)
+
+# to do: instead of being cruise-specific, use a standard list of stations L1-L13
+# stace will add csv of stations (name, lat, lon)
+# read csv into stations. declare ref_lon and ref_lat
 
 # Utility functions: Nearest Station & Station Distance
 find_distance <- function(df_lon, df_lat, ref_lon, ref_lat){
@@ -437,7 +466,7 @@ add_station_info <- function(df){
   
   # stations <- purrr::map(cruiselist, read_from_api, type = "stations") %>%
   #   reduce(rbind)
-
+# instead of this loop, apply loop over number of rows of full join table
   for (j in 1:length(cruises)) {
     # load in stations for each cruise
     stations <- read_from_api("stations", cruiselist[1])
