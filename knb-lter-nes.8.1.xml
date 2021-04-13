@@ -24,21 +24,21 @@
     </creator>
     <creator>
       <individualName>
-        <givenName>Susanne</givenName>
-        <surName>Menden-Deuer</surName>
-      </individualName>
-      <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <electronicMailAddress>smenden@uri.edu</electronicMailAddress>
-      <userId directory="https://orcid.org">https://orcid.org/0000-0002-8434-4251</userId>
-    </creator>
-    <creator>
-      <individualName>
         <givenName>Tatiana</givenName>
         <surName>Rynearson</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
       <electronicMailAddress>rynearson@uri.edu</electronicMailAddress>
       <userId directory="https://orcid.org">https://orcid.org/0000-0003-2951-0066</userId>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Susanne</givenName>
+        <surName>Menden-Deuer</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>smenden@uri.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-8434-4251</userId>
     </creator>
     <creator>
       <individualName>
@@ -95,23 +95,41 @@
         <surName>Wolfe</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <electronicMailAddress>jawolfe@whoi.edu</electronicMailAddress>
       <userId directory="https://orcid.org">https://orcid.org/0000-0001-9620-5382</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-04-08</pubDate>
+    <associatedParty>
+      <individualName>
+        <givenName>Kate</givenName>
+        <surName>Morkeski</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <role>Metadataprovider</role>
+    </associatedParty>
+    <pubDate>2021-04-13</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and pheophytin a are measured from water column bottle samples taken on NES-LTER Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Four size fractions are included in addition to whole seawater (&gt;0.7 micron): &gt;5 , &lt;10, &gt;10, and &gt;20 microns. All lab groups usually have 2 replicates indicated by a or b in the data table, and the Menden-Deuer group usually has a 3rd replicate c. These pigments are analyzed using a fluorometer in which fluorescence is measured versus a blank and a standard, and final concentrations are calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
     <keywordSet>
+      <keyword>Populations</keyword>
       <keyword>Primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
     </keywordSet>
     <keywordSet>
-      <keyword>chlorophyll</keyword>
+      <keyword>chlorophyll a</keyword>
+      <keyword>marine</keyword>
       <keyword>oceanography</keyword>
+      <keyword>phytoplankton</keyword>
       <keyword>seawater</keyword>
       <keywordThesaurus>LTER Controlled Vocabulary</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>CHLOROPHYLL</keyword>
+      <keywordThesaurus>NASA GCMD</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>CHLOROPHYLL</keyword>
+      <keywordThesaurus>NOAA NODC Data Types Thesaurus</keywordThesaurus>
     </keywordSet>
     <intellectualRights>
       <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data (\"Data User\" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available \"as is.\" The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.&#13;

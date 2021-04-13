@@ -18,6 +18,6 @@ ra	TBD	numeric	dimensionless		NaN	Missing value
 blank	TBD	numeric	dimensionless		NaN	Missing value
 rb_blank	TBD	numeric	dimensionless		NaN	Missing value
 ra_blank	TBD	numeric	dimensionless		NaN	Missing value
-chl	Chllorophyl a concentration corrected for phaeophytin	numeric	microgramsPerLiter		NaN	Missing value
+chl	Concentration of chlorophyll-a per unit volume of the water body corresponding to BCO-DMO chl_a SeaBASS Chl and CF mass_concentration_of_ chlorophyll_a_in_sea_water	numeric	microgramsPerLiter		NaN	Missing value
 phaeo	Phaeophytin concentration	numeric	microgramsPerLiter		NaN	Missing value
 project_id	Project associated with the sample collected	categorical				
