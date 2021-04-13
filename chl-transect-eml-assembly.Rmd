@@ -307,7 +307,7 @@ for (i in 1:nrow(smd_key)) {
 This step will populate the fields:
   • bottle_other_method for api_chl
   • date, lat, long, (avg) depth, and bottle_other_method for smd_chl
-  • add a method of sampling column  (ethanol or acetone)
+  • method_contributor to indicate which sample collection and processing methods were used 
   
 Additional steps:
   • reorganize the columns
@@ -315,7 +315,6 @@ Additional steps:
   • round numerical columns
   
 In Progress: 
-  • The method sample column still needs to be defined
   • add project_id column (smd = LTER, api = if cruise AR22/32, yes = "JP", no = "LTER")
       - This is to accomodate that the api doesnt yet provide project_id
   
@@ -327,16 +326,13 @@ api_chl_final <- smd_key %>% ungroup() %>%
   left_join(api_chl, .,
             by = c("cruise", "cast" = "cast_expand", "niskin" = "bottle_other_method")) %>%
   rename_at("niskin.y", ~"bottle_other_method")
-# add method_sample col (placeholder data)
-#api_chl_final$method_sample <- "ethanol"
-#apply to api_chl_final: if filter size is >0 or <10, then mutate method_Sosik into column method_contributor
-```
-```{r}
-api_chl_final  %>% 
+
+# add method_contributor column based on filter size
+api_chl_final <- api_chl_final  %>% 
     mutate(method_contributor  = case_when(filter_size=="<10" ~ "method_Sosik",         
                                            filter_size==">5" ~ "method_Rynearson", 
                                            filter_size==">20" ~ "method_Rynearson", 
-                                           filter_size==">0" ~ "method_Sosik")) -> api_chl_final
+                                           filter_size==">0" ~ "method_Sosik")) 
 
 sum(is.na(api_chl_final$method_contributor))
 ```
@@ -357,15 +353,18 @@ smd_chl_final <- smd_key %>% ungroup() %>%
             latitude = mean(latitude),
             longitude = mean(longitude)) %>%
   right_join(smd_chl, by = c("cruise", "cast", "niskin"))
+
 # add method_contributor col 
-#smd_chl_final$method_contributor <- "method_Menden-Deuer" #need to hard code the three records with a different method
-#apply to smd_chl_final: filter to cruise en627 cast 30 niskin 1-2-3-4 then replace last 3 with method_contributor column with method_Menden-Deuer_no_200um
-smd_chl_final  %>% 
+# smd_chl_final$method_contributor <- "method_Menden-Deuer" 
+# hard code the three records with no prefiltering
+# cruise en627 cast 30 niskin 1-2-3-4 last 3 samples have no 200um prefiltering 
+smd_chl_final <- smd_chl_final  %>% 
     mutate(method_contributor  = case_when(cruise == "EN627" & ra_blank == "139.66" ~ "method_Menden-Deuer_no_200um",         
                                            cruise == "EN627" & ra_blank == "123.66" ~ "method_Menden-Deuer_no_200um", 
                                            cruise == "EN627" & ra_blank == "119.66" ~ "method_Menden-Deuer_no_200um",
-                                           TRUE ~ "method_Menden-Deuer")) -> smd_chl_final
-#important to check for NAs after using case_when
+                                           TRUE ~ "method_Menden-Deuer")) 
+
+# important to check for NAs after using case_when
 sum(is.na(smd_chl_final$method_contributor))
 
 # convert data types to enable cbind with smd data
