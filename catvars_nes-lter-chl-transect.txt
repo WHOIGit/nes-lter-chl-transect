@@ -1,6 +1,7 @@
 attributeName	code	definition
-method_sample	ethanol	Samples processed with ethanol
-method_sample	acetone	Samples processed with acetone
-method_sample	TBD	TBD
+method_contributor	method_Menden-Deuer	methods used by Menden-Deuer lab group
+method_contributor	method_Rynearson	methods used by Rynearson lab group
+method_contributor	method_Sosik	methods used by Sosik lab group
 project_id	LTER	Long-Term Ecological Research
 project_id	JP	MIT-WHOI Joint Program
+project_id	OOI	Ocean Observatories Initiative

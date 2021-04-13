@@ -1,5 +1,10 @@
 keyword	keywordThesaurus
+Populations	LTER Core Research Areas
 Primary production	LTER Core Research Areas
-chlorophyll	LTER Controlled Vocabulary
+chlorophyll a	LTER Controlled Vocabulary
+marine	LTER Controlled Vocabulary
 oceanography	LTER Controlled Vocabulary
+phytoplankton	LTER Controlled Vocabulary
 seawater	LTER Controlled Vocabulary
+CHLOROPHYLL	NASA GCMD
+CHLOROPHYLL	NOAA NODC Data Types Thesaurus
