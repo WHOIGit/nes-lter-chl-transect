@@ -366,14 +366,17 @@ smd_chl_final <- smd_key %>% ungroup() %>%
   right_join(smd_chl, by = c("cruise", "cast", "niskin"))
 
 # add method_contributor col 
-# smd_chl_final$method_contributor <- "method_Menden-Deuer" 
+smd_chl_final$method_contributor <- "method_Menden-Deuer" 
+#smd_chl_final$filter_prefilter <- paste(smd_chl_final$filter_size, "<200", collapse = " ") 
 # hard code the three records with no prefiltering
 # cruise en627 cast 30 niskin 1-2-3-4 last 3 samples have no 200um prefiltering 
-smd_chl_final <- smd_chl_final  %>% 
-    mutate(method_contributor  = case_when(cruise == "EN627" & ra_blank == "139.66" ~ "method_Menden-Deuer_no_200um",         
-                                           cruise == "EN627" & ra_blank == "123.66" ~ "method_Menden-Deuer_no_200um", 
-                                           cruise == "EN627" & ra_blank == "119.66" ~ "method_Menden-Deuer_no_200um",
-                                           TRUE ~ "method_Menden-Deuer")) 
+smd_chl_final <- smd_chl_final   %>%
+        mutate(filter_size = paste(filter_size, "<200", sep = "&")) %>%
+        mutate(filter_size  = case_when(cruise == "EN627" & ra_blank == "139.66" ~ ">5",         
+                                           cruise == "EN627" & ra_blank == "123.66" ~ ">5", 
+                                           cruise == "EN627" & ra_blank == "119.66" ~ ">5",
+                                           TRUE ~ filter_size) )
+  
 
 # important to check for NAs after using case_when
 sum(is.na(smd_chl_final$method_contributor))
@@ -390,12 +393,22 @@ smd_chl_final <- smd_chl_final[, headers]
 # merge datasets by row
 chl_all <- bind_rows(api_chl_final, smd_chl_final)
 
-# eliminate extra columns 
+# eliminate extra columns, set cast type, round numeric columns
 chl_all <- chl_all %>% 
   select(-vol_filtered, -tau_calibration, -fd_calibration, -rb, -ra, -blank, -rb_blank, -ra_blank) %>% 
-  mutate(cast = as.numeric(cast)) 
+  mutate(cast = as.character(cast)) %>% 
+  mutate(latitude = round(latitude, 4)) %>% 
+  mutate(longitude = round(longitude, 4)) %>% 
+  mutate(depth = round(depth, 3))  %>%
+  mutate(chl = round(chl, 3)) %>% 
+  mutate(phaeo = round(phaeo, 3)) 
 
-# column sorting
+# round nutrient, distance, and depth columns    
+#all_cruises[, round_cols] <- round(all_cruises[, round_cols], 3)    
+# round lat and lon columns    
+#all_cruises[, c("latitude", "longitude")] <- round(all_cruises[, c("latitude", "longitude")], 4)
+
+# row sorting
 # define order for filter size and cast columns
 size_sort <- c(">0",">5","<10",">10",">20")
 cast_sort <- str_sort(unique(chl_all$cast), numeric = TRUE)
@@ -407,6 +420,8 @@ chl_all <- chl_all[with(chl_all, order(cruise, match(cast, cast_sort),
 chl_all$project_id <- ifelse(chl_all$cruise == "AR22" | 
                                      chl_all$cruise == "AR32", 
                                    yes = "JP", no = "LTER")
+chl_all$alternate_sample_id <- NA_character_
+
 ```
 
 ## Read in and join OOI data
@@ -416,17 +431,30 @@ chl_all$project_id <- ifelse(chl_all$cruise == "AR22" |
 # read in data
 chl_ar24 <- read_csv('ar24.csv')
 
+chl_ar24$bottle_other_method <- NA_character_
+chl_ar24 <- chl_ar24 %>%
+  mutate(cast = as.character(cast)) %>% 
+  rename(alternate_sample_id = filter_id_ooi)
+
+# define headers for columns in desired order
+headers_join <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "method_contributor", "replicate", "alternate_sample_id", "filter_size",  "chl", "phaeo", "project_id")
+# reorder columns as necessary
+chl_ar24 <- chl_ar24[, headers_join]
+chl_all <- chl_all[, headers_join]
+
 # bind rows
 chl_transect <- bind_rows(chl_all, chl_ar24)
 
 # sort by cruise, cast, niskin, filter size
-size_sort <- c(">0",">5","<10",">10",">20")
-cast_sort <- str_sort(unique(chl_transect$cast), numeric = TRUE)
-niskin_sort <- str_sort(unique(chl_transect$niskin), numeric = TRUE)
+#size_sort <- c(">0",">5","<10",">10",">20")
+#cruise_sort <- str_sort(unique(chl_transect$cruise))
+#cast_sort <- str_sort(unique(chl_transect$cast))
+#niskin_sort <- str_sort(unique(chl_transect$niskin), numeric = TRUE)
 
-chl_transect <- chl_transect[with(chl_all, order(cruise, match(cast, cast_sort), match(niskin, niskin_sort),
-                                    match(filter_size, size_sort))), ]
-
+#chl_transect <- chl_transect[with(chl_all, order(cruise, match(cast, cast_sort), match(niskin, niskin_sort),
+ #                                   match(filter_size, size_sort))), ]
+#chl_transect <- chl_transect[with(chl_all, order(cruise, cast)), ]
+# sorting results in AR24 excluded from chl_transect. why? 
 
 # write csv file of concatenated cruises
 write.csv(chl_transect, 'nes-lter-chl-transect.csv', row.names=FALSE)
@@ -449,6 +477,7 @@ cruiselist <- unique(chl$cruise)
 # to do: instead of being cruise-specific, use a standard list of stations L1-L13
 # stace will add csv of stations (name, lat, lon)
 # read csv into stations. declare ref_lon and ref_lat
+stations <- read_csv('NES-LTER_standard_stations_201808.csv')
 
 # Utility functions: Nearest Station & Station Distance
 find_distance <- function(df_lon, df_lat, ref_lon, ref_lat){
@@ -508,8 +537,7 @@ if (!file.exists("api_nearest_stations.csv")) {
 
   # column rounding
   # define numerical attributes
-  num_cols <- c("depth", "tau_calibration", "fd_calibration", "rb", "ra", "blank",
-                                  "rb_blank", "ra_blank", "chl", "phaeo")
+  num_cols <- c("depth", "chl", "phaeo")
   # round the numerical values
   chl_all[num_cols] <- round(chl_all[num_cols], 3)
   chl_all$latitude <- round(chl_all$latitude, 5)
