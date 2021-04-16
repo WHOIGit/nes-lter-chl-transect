@@ -372,9 +372,9 @@ smd_chl_final$method_contributor <- "method_Menden-Deuer"
 # cruise en627 cast 30 niskin 1-2-3-4 last 3 samples have no 200um prefiltering 
 smd_chl_final <- smd_chl_final   %>%
         mutate(filter_size = paste(filter_size, "<200", sep = "&")) %>%
-        mutate(filter_size  = case_when(cruise == "EN627" & ra_blank == "139.66" ~ ">5",         
-                                           cruise == "EN627" & ra_blank == "123.66" ~ ">5", 
-                                           cruise == "EN627" & ra_blank == "119.66" ~ ">5",
+        mutate(filter_size  = case_when(cruise == "EN627" & ra_blank == "139.66" ~ ">0",         
+                                           cruise == "EN627" & ra_blank == "123.66" ~ ">0", 
+                                           cruise == "EN627" & ra_blank == "119.66" ~ ">0",
                                            TRUE ~ filter_size) )
   
 
