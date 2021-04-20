@@ -11,18 +11,25 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse) #need tidyverse for %>% and dplyr
 library(httr)
 library(readxl)
+
 ```
+
 Accessing OOI data from Alfresco
+
 ```{r}
 
 url <- ('https://alfresco.oceanobservatories.org/alfresco/webdav/OOI/Coastal%20Pioneer%20Array/Cruise%20Data/Pioneer-09_AR24_2017-10-22/Ship%20Data/Water%20Sampling/Pioneer-09_AR24_Chlorophyll_Sample_Data_2020-03-27_ver_1-00.xlsx')
+
 ```
 
 
 ```{r}
+
 #problem: if this chunk and the one above are not run separately, get Error in (function (srcref) : unimplemented type (29) in 'eval'
 httr::GET(url, authenticate("guest", "guest"), write_disk(tf <- tempfile(fileext = ".xlsx")))
+
 tf
+
 ```
 Reading in Excel file from Alfresco and formatting cruise ID and column headers
 ```{r}

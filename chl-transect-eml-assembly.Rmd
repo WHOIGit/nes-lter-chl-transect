@@ -446,15 +446,14 @@ chl_all <- chl_all[, headers_join]
 chl_transect <- bind_rows(chl_all, chl_ar24)
 
 # sort by cruise, cast, niskin, filter size
-#size_sort <- c(">0",">5","<10",">10",">20")
-#cruise_sort <- str_sort(unique(chl_transect$cruise))
-#cast_sort <- str_sort(unique(chl_transect$cast))
-#niskin_sort <- str_sort(unique(chl_transect$niskin), numeric = TRUE)
+size_sort <- c(">0",">5","<10",">10",">20")
+cruise_sort <- str_sort(unique(chl_transect$cruise))
+cast_sort <- str_sort(unique(chl_transect$cast))
+niskin_sort <- str_sort(unique(chl_transect$niskin), numeric = TRUE)
 
-#chl_transect <- chl_transect[with(chl_all, order(cruise, match(cast, cast_sort), match(niskin, niskin_sort),
- #                                   match(filter_size, size_sort))), ]
-#chl_transect <- chl_transect[with(chl_all, order(cruise, cast)), ]
-# sorting results in AR24 excluded from chl_transect. why? 
+chl_transect <- chl_transect[with(chl_transect, order(cruise, match(cast, cast_sort), match(niskin, niskin_sort),
+                                    match(filter_size, size_sort))), ]
+chl_transect <- chl_transect[with(chl_transect, order(cruise, cast)), ]
 
 # write csv file of concatenated cruises
 write.csv(chl_transect, 'nes-lter-chl-transect.csv', row.names=FALSE)
@@ -556,6 +555,8 @@ Isolate samples that were taken at a distance greater than 2km from the nearest 
 st_dist_outliers <- chl_edi %>% filter(station_distance > 2)
 
 ```
+#add quality flag script here
+
 
 ## QA: Compare datasets
 
@@ -673,7 +674,7 @@ coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
 # Make EML
 make_eml(path = getwd(),
-         dataset.title = "Chlorophyll from CTD rosette data from NES-LTER transect cruises, ongoing since 2017.",
+         dataset.title = "Size-fractionated chlorophyll from water column bottle samples collected during NES-LTER Transect cruises, ongoing since 2017.",
          data.table = paste0(edi_filename, ".csv"),
          data.table.description = "Chlorophyll from CTD rosette data cleaned for EDI",
          temporal.coverage = c(coverage$startdate, coverage$enddate),

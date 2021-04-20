@@ -4,9 +4,9 @@ library(tidyverse)
 library(geosphere)
 
 # read in the data frame that has the lat/lons for which you want to determine nearest station distance
-chl <- read_csv('nes-lter-chl-transect.csv')
+#chl <- read_csv('nes-lter-chl-transect.csv')
 # reads in alternate_sample_id as logi as opposed to chr
-
+chl <- chl_transect
 
 # rename data frame and initialize nearest station and distance columns to NA
 chl_dis <- chl

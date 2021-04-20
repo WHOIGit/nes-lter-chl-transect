@@ -7,7 +7,8 @@ library(tidyverse)
 
 # read in the data frame
 # here I am using the data frame that includes nearest station distance
-chl_df <- read_csv('nes-lter-chl-transect_dis.csv')
+#chl_df <- read_csv('nes-lter-chl-transect_dis.csv')
+chl_df <- chl_dis
 
 # read in the csv file with quality_flag
 # note there are more cruises because ar31, ar34, and ar39
