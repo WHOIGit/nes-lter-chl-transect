@@ -213,16 +213,16 @@ mismatch <- filter(ar24all, chl_diff > 0 | chl_diff < 0)
 
 ```
 
-Join with all other transect data
+Prepare for join with all other transect data
 
 ```{r}
 
 #remove rows without OOI data
-ar24 <- ar24all
+#ar24 <- ar24all
 
 # add project_id based on filter_id_ooi. if it exists, project id is ooi. if not, project id is lter
 # make columns match nes-lter-chl-transect
-ar24 <- ar24 %>%
+ar24all <- ar24all %>%
   mutate(project_id = case_when(!is.na(filter_id_ooi) ~ "OOI",
                                 is.na(filter_id_ooi) ~ "LTER")) %>%
   select(-date.x, 
@@ -241,24 +241,29 @@ ar24 <- ar24 %>%
 # define headers for columns in desired order
 headers_ooi <- c("cruise", "cast", "niskin", "date", "latitude", "longitude", "depth", "method_contributor", "replicate","filter_id_ooi", "filter_size",  "chl", "phaeo", "project_id")
 # reorder columns as necessary
-ar24 <- ar24[, headers_ooi]
+ar24all <- ar24all[, headers_ooi]
 
 
 ```
 
+## Fill missing bottle metadata for those bottles sourced from Alfresco and not from API
+
 ```{r}
-# fill missing bottle metadata for those bottles joined from OOI Alfresco sheet
+
 # columns date, latitude, longitude, and depth for AR24B hard coded 4-6 from bottle 4 only, 9-10 from bottle 9 only
+
 # missingAPI 4 rows to populate columns date, latitude, longitude, and depth
 cruiselist <- unique(missingAPI$cruise) # to pull bottle summary from API.
 # define source for functions developed for the EDI packaging workflow
 source("edi-utilities.R") # Dependency edi_utilities.R in repo
 # compile the bottle summary
 ctd_bottle_summary <- read_from_api(type = "summary", cruises = cruiselist)
+
 # can only fill missingAPI AR24B cast 7 niskin 6 (2017-10-29 14:54:24 40.13567 -70.77450 38.443063)
 # missingAPI AR24B cast 9 will require hard coding from ar24b009b.btl 
 # see Sosik lab file 20171028_AR24B_bottle_summary_table.mat
 # in future this could be served through REST API with "corrected" ar24b_ctd_bottle_summary.csv
+
 cast7niskin6 <- filter(ctd_bottle_summary, cast == 7 & niskin == 6)
 cast7niskin6 <- cast7niskin6 %>% 
   rename (date76 = date,
@@ -266,7 +271,8 @@ cast7niskin6 <- cast7niskin6 %>%
           longitude76 = longitude, 
           depth76 = depth)
 cast7niskin6$niskin <- as.character(cast7niskin6$niskin)
-ar24temp <- full_join(ar24, cast7niskin6, by = c('cruise','cast','niskin'))
+ar24temp <- full_join(ar24all, cast7niskin6, by = c('cruise','cast','niskin'))
+
 # from the respective columns: populate date, latitude, longitude, and depth
 ar24temp <- ar24temp %>%
     mutate(
@@ -286,7 +292,7 @@ ar24temp <- ar24temp %>%
 #       date = as.Date(ifelse(is.na(date), origin = "1970-01-01"))
 #       yes = ar24temp$date76, 
 #       no = ar24temp$date))  %>%
-ar24 <- ar24temp %>%
+ar24all <- ar24temp %>%
   select(-date76, 
          -latitude76,
          -longitude76,
@@ -299,6 +305,6 @@ ar24 <- ar24temp %>%
 # exclude comments
 
 # write csv file 
-write.csv(ar24, 'ar24.csv', row.names=FALSE)
+write.csv(ar24all, 'ar24.csv', row.names=FALSE)
 ```
 

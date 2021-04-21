@@ -10,8 +10,8 @@
       <permission>read</permission>
     </allow>
   </access>
-  <dataset>
-    <title>Chlorophyll from CTD rosette data from NES-LTER transect cruises, ongoing since 2017.</title>
+  <dataset id="dataset">
+    <title>Size-fractionated chlorophyll from water column bottle samples collected during NES-LTER Transect cruises, ongoing since 2017.</title>
     <creator>
       <individualName>
         <givenName>Heidi</givenName>
@@ -106,9 +106,9 @@
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-04-20</pubDate>
+    <pubDate>2021-04-21</pubDate>
     <abstract>
-      <para>Size-fractionated chlorophyll a and pheophytin a are measured from water column bottle samples taken on NES-LTER Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Four size fractions are included in addition to whole seawater (&gt;0.7 micron): &gt;5 , &lt;10, &gt;10, and &gt;20 microns. All lab groups usually have 2 replicates indicated by a or b in the data table, and the Menden-Deuer group usually has a 3rd replicate c. These pigments are analyzed using a fluorometer in which fluorescence is measured versus a blank and a standard, and final concentrations are calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
+      <para>Size-fractionated chlorophyll a and phaeopigments are measured from water column bottle samples taken on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Four size fractions are included in addition to whole seawater (&gt;0.7 micron): &gt;5 , &lt;10, &gt;10, and &gt;20 microns. These pigments are analyzed using a fluorometer in which fluorescence is measured versus a blank and a standard, and final concentrations are calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
     <keywordSet>
       <keyword>Populations</keyword>
@@ -131,8 +131,11 @@
       <keyword>CHLOROPHYLL</keyword>
       <keywordThesaurus>NOAA NODC Data Types Thesaurus</keywordThesaurus>
     </keywordSet>
+    <additionalInfo>
+      <para>This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22) and Joel Llopiz (AR32).</para>
+    </additionalInfo>
     <intellectualRights>
-      <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data (\"Data User\" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available \"as is.\" The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.&#13;
+      <para>This data package is released to the "public domain" under Creative Commons CC0 1.0 "No Rights Reserved" (see: https://creativecommons.org/publicdomain/zero/1.0/). It is considered professional etiquette to provide attribution of the original work if this data package is shared in whole or by individual components. A generic citation is provided for this data package on the website https://portal.edirepository.org (herein "website") in the summary metadata page. Communication (and collaboration) with the creators of this data package is recommended to prevent duplicate research or publication. This data package (and its components) is made available "as is" and with no warranty of accuracy or fitness for use. The creators of this data package and the website shall not be liable for any damages resulting from misinterpretation or misuse of the data package or its components. Periodic updates of this data package may be available from the website. Thank you.
 </para>
     </intellectualRights>
     <coverage>
@@ -140,9 +143,9 @@
         <geographicDescription>NES-LTER Transect</geographicDescription>
         <boundingCoordinates>
           <westBoundingCoordinate>-71.068</westBoundingCoordinate>
-          <eastBoundingCoordinate>-70.52266</eastBoundingCoordinate>
-          <northBoundingCoordinate>41.32464</northBoundingCoordinate>
-          <southBoundingCoordinate>39.75761</southBoundingCoordinate>
+          <eastBoundingCoordinate>-70.5227</eastBoundingCoordinate>
+          <northBoundingCoordinate>41.3246</northBoundingCoordinate>
+          <southBoundingCoordinate>39.7576</southBoundingCoordinate>
         </boundingCoordinates>
       </geographicCoverage>
       <temporalCoverage>
@@ -151,11 +154,15 @@
             <calendarDate>2017-09-02</calendarDate>
           </beginDate>
           <endDate>
-            <calendarDate>2019-08-25</calendarDate>
+            <calendarDate>2020-02-05</calendarDate>
           </endDate>
         </rangeOfDates>
       </temporalCoverage>
     </coverage>
+    <annotation>
+      <propertyURI label="is about">http://purl.obolibrary.org/obo/IAO_0000136</propertyURI>
+      <valueURI label="Chlorophyll pigment concentrations in water bodies">http://vocab.nerc.ac.uk/collection/P02/current/CPWC/</valueURI>
+    </annotation>
     <maintenance>
       <description>ongoing</description>
     </maintenance>
@@ -175,26 +182,28 @@ The Sosik lab methods are used for the data that we are including from the Ocean
 On cruise EN608 only: Samples were collected from 4-8 depths from each LTER station. Each Niskin sampled was used to fill duplicate sample bottles for whole seawater and for smaller size fractions, which varied by station, were focused on surface, subsurface chlorophyll max (SCM), and below SCM, and included  &gt;= 5 microns, &gt;= 20 microns, and =&lt; 10 microns. Samples were kept in a cooler until filtered. </para>
           <para>Menden-Deuer: The Menden-Deuer group conducts incubation experiments; chlorophyll is provided here only for the starting point (time zero). At each depth, 2-4 Niskins were filled and their seawater transferred to a 10-L polycarbonate carboy through a 200 micron mesh prefilter. Triplicate 120-150 mL subsamples were collected from the carboys for each of the size fractions, which included &gt;20, &gt;10, &gt;5, and &gt;0 microns for cruises EN608, EN617, and EN627; since cruise EN644 only the &gt;10 and &gt;0 microns. The suite of size fractions measured varied acrcoss cruises and stations.</para>
           <para>#  Chlorophyll Filtering Protocol</para>
-          <para>Sosik: For each sample, a known volume was poured through a GF/F filter under low vacuum suction (5-10 in. Hg). The &lt;10 micron size fraction was separated using a filter funnel containing a 10 micron Nitex mesh screen. Filters were transferred to tissue capsules and frozen in liquid nitrogen until being extracted. </para>
-          <para>Rynearson: Size fractionation was accomplished by pouring one bottle from each depth through a 5 micron Sterlitech polycarbonate filter and one through a 20 micron Sterlitech polycarbonate filter under low vacuum suction. Filters were transferred to 5 mL cryogenic vials and flash-frozen in liquid nitrogen until being extracted. &#13;
+          <para>Sosik: For each sample, a known volume was poured through a GF/F filter under low vacuum suction (5-10 in. Hg). The &lt;10 micron size fraction was separated using a filter funnel containing a 10 micron Nitex mesh screen. Filters were transferred to tissue capsules and frozen in liquid nitrogen until being extracted. Sosik lab group usually has 2 replicates from the same niskin bottle, indicated by a or b in the data table.</para>
+          <para>Rynearson: Size fractionation was accomplished by pouring one bottle from each depth through a 5 micron Sterlitech polycarbonate filter and one through a 20 micron Sterlitech polycarbonate filter under low vacuum suction. Filters were transferred to 5 mL cryogenic vials and flash-frozen in liquid nitrogen until being extracted. Rynearson lab group usually has 2 replicates from the same niskin bottle, indicated by a or b in the data table.&#13;
 On cruise EN608 only: Whole seawater was filtered by pouring the entire contents of each sample bottle through a 25 mm Whatman GF/F filter on a manifold with vacuum &lt;20 kpa. Size-fractioned samples were filtered by homogenizing a 1-L bottle and pouring 200 mL through each of a 5 micron polycarbonate filter, a 20 micron polycarbonate, and a GF/F with a 10 micron mesh prefilter. Each filter was either transferred to a tube containing 6 mL of 90% acetone previously chilled to -20 C, returned to -20 C, and extracted 20-28 hours later; or transferred to a filter capsule and flash-frozen in liquid nitrogen for extraction on a later date. </para>
-          <para>Menden-Deuer: Size fractionation was accomplished by pouring each sample through a GF/F (nominal 0.7 micron pore size) or 25-mm 5um (Poretics Polyester GVS Life Sciences), 10um (Isopore PolyCarbonate Millipore), or 20um (Polycarbonate Maine Manufacturing) filter on a manifold with vacuum not exceeding 200 mBar.  Filters were transferred to glass tubes containing 6 mL 95% ethanol at room temperature, which were then stored in darkness at room temperature for 12 h +/-2 h prior to reading on board ship. </para>
+          <para>Menden-Deuer: Size fractionation was accomplished by pouring each sample through a GF/F (nominal 0.7 micron pore size) or 25-mm 5um (Poretics Polyester GVS Life Sciences), 10um (Isopore PolyCarbonate Millipore), or 20um (Polycarbonate Maine Manufacturing) filter on a manifold with vacuum not exceeding 200 mBar.  Filters were transferred to glass tubes containing 6 mL 95% ethanol at room temperature, which were then stored in darkness at room temperature for 12 h +/-2 h prior to reading on board ship. Menden-Deuer lab group usually has 3 replicates from multiple niskin bottles combined from same depth, indicated by a, b, or c in the data table.</para>
           <para># Laboratory chlorophyll a measurement</para>
           <para>Sosik: Filters were removed from liquid nitrogen storage and transferred to glass test tubes. They were then extracted in 5 mL of 90% acetone for 24 hours on ice in a dark refrigerator. They were then vortexed and centrifuged. The solution was measured on a Turner Designs Handheld Aquafluor fluorometer, acidified with 3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples, and the fluorometer was calibrated approximately annually using a serial dilution of a commercially available stock solution (Sigma-Aldrich). </para>
           <para>Rynearson: Filters were removed from liquid nitrogen storage and extracted in 5 mL of 90% acetone for 24 hours on ice in a dark refrigerator. They were then vortexed, and the solution was measured on a Turner Designs Handheld Aquafluor fluorometer, acidified with 3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples, and the fluorometer was calibrated approximately annually using a serial dilution of a commercially available stock solution (Sigma-Aldrich). &#13;
 On cruise EN608 only: Tubes were removed from freezer shortly before processing, vortexed for 10 seconds, and centrifuged for 3 minutes. The supernatant was measured on a Turner Designs 10-AU-005 Benchtop Fluorometer or Turner Aquafluor Fluorometer, acidified with 2-3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples.</para>
           <para>Menden-Deuer: In the presence of only red light, each tube was vortexed for 10 seconds, and its solution was then poured into a new tube and measured on a Turner Designs 10-AU-005 Benchtop Fluorometer. Two drops of 10% hydrochloric acid were added to each tube, and it was measured again. If the reading after acidification was the same as the reading before acidification, an additional drop of acid was added. Tubes were measured 30 seconds to one hour after acidification. Before and after each batch of samples, a blank, blank + acid, and a solid standard were measured. </para>
           <para># Data Assembly and Cleaning</para>
-          <para>The data table was made by concatenating cruises called from the REST API of the NES-LTER data system, aligning with data sheet(s) from the OOI data system for cruise(s) xx, and adding data sheets provided by the Menden-Deuer lab. &#13;
-Some hard-coding will be needed to correct records from the REST API: We'll need to add a second bottle for 4 records from AR24B cast 4 4/6  a,b and 9/10 a,b. The one bucket sample from AR24B appears to have 2 a's in addition to b replicate; may need to exclude 1 a or rename c.&#13;
-Nearest station is based on a cruise-specific station list. NES-LTER standard stations L1 to L13 are the same for cruises starting with EN617 in August 2018. Prior to this: On AR22 and AR24 the NES-LTER transect was on longitude 70.83 W (to the east of present transect). AR22 Joint Program (JP) stations 1, 2, 3 correspond to AR24 LTER stations 1, 3, 5. On EN608 the NES-LTER transect was established on the present longitude 70.8833 W with standard stations L1 to L13; however, on EN608 and AR28 the position for standard station L5 was at a different latitude (1 naut. mile north of present station).&#13;
-Data assembly, data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-chl-transect.&#13;
-[use r markdown subsections to enumerate]</para>
+          <para>The data table was assembled from three sources: the REST API of the NES-LTER data system, data sheets provided by the Menden-Deuer lab, and a data sheet from the OOI Alfresco document server. &#13;
+Assembly starts in the main R markdown by concatenating cruises called from the NES-LTER REST API for values measured for the Sosik and Rynearson labs, and separately concatenating cruises provided by the Menden-Deuer lab.&#13;
+We add CTD bottle metadata (time, latitude, longitude, depth) from the NES-LTER REST API, identify when there are corresponding samples with values measured for multiple lab groups for the same (or paired) cast at same depth, then merge the REST API and Menden-Deuer data.&#13;
+In a separate R markdown we join additional cruises from the REST API of the NES-LTER data system with the OOI data sheet to add the identifier for those samples for which OOI is the authoritative data source.&#13;
+Then in the main R markdown we add those cruises in collaboration with OOI to the compiled data table.&#13;
+For all records, we calculated the distance to the nearest NES-LTER standard station L1 to L13 (standard for cruises starting with EN617 in August 2018).&#13;
+The final step in data assembly is the addition of a quality code for the Sosik and Rynearson values that is not yet provided through the REST API.&#13;
+Data cleaning included rounding values. Some hard-coding was needed to correct specific records. &#13;
+Data assembly, data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-chl-transect.</para>
           <para># Quality Assurance</para>
-          <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We checked differences between replicates, visually inspected plotted values, and performed a range check.&#13;
-In general for the Sosik and Rynearson methods, there are 2 replicates. We'll need QA check for 2 c's, 1 d.</para>
-          <para># Consider for abstract&#13;
-Chlorophyll-a concentrations are measured as a proxy for phytoplankton biomass. </para>
+          <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We provide a column in the data table to indicate the quality of values measured for the Sosik and Rynearson labs. All values provided for the Menden-Deuer lab are considered good quality. We checked differences between replicates, visually inspected plotted values, and performed a range check.&#13;
+</para>
         </description>
       </methodStep>
     </methods>
@@ -298,4 +307,10 @@ Chlorophyll-a concentrations are measured as a proxy for phytoplankton biomass. 
       </funding>
     </project>
   </dataset>
+  <annotations>
+    <annotation references="dataset">
+      <propertyURI label="is about">http://purl.obolibrary.org/obo/IAO_0000136</propertyURI>
+      <valueURI label="Chlorophyll pigment concentrations in water bodies">http://vocab.nerc.ac.uk/collection/P02/current/CPWC/</valueURI>
+    </annotation>
+  </annotations>
 </eml:eml>

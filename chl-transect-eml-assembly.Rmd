@@ -1,6 +1,6 @@
 ---
 title: "NES-LTER Chlorophyll Transect"
-author: "Jaxine Wolfe, Kate Morkeski"
+author: "Jaxine Wolfe, Kate Morkeski, Stace Beaulieu"
 date: "Nov 2019 - Apr 2021"
 output: html_document
 ---
@@ -10,30 +10,10 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
-# clear workspace for local development
-#rm(list = ls())
-
-# assign relative path to directory
-#dir <- "C:/Users/wanglab/Documents/GitHub/nes-lter-chl-transect"
-# set as working directory
-#setwd(dir)
-#library(here)
-# here("nes-lter-chl-transect")
-# KM updated this section to use here instead of setwd
-
 # define source for functions developed for the EDI packaging workflow
 source("edi-utilities.R")
 
-# install necessary libraries
-# install.packages("devtools")
-# install_github("EDIorg/EMLassemblyline")
-
-# define R packages to require
-#libs <- c("tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2", "geosphere")
-# load libraries
-#lapply(libs, require, character.only = TRUE)
-
-#KM define R packages to require using require instead of libs and lapply
+# define R packages to require 
 require(here)
 require(tidyverse)
 require(readxl)
@@ -347,6 +327,7 @@ api_chl_final <- api_chl_final  %>%
 
 sum(is.na(api_chl_final$method_contributor))
 ```
+## Join API data and Menden-Deuer data
 
 ```{r}
 # convert data types to enable cbind with smd data
@@ -459,104 +440,98 @@ chl_transect <- chl_transect[with(chl_transect, order(cruise, cast)), ]
 write.csv(chl_transect, 'nes-lter-chl-transect.csv', row.names=FALSE)
 ```
 
-## Utility function: Nearest Station & Station Distance
-
-Make this function its own repo: nearest-station-generalized.Rmd in nes-lter-notbooks
+## Find Nearest Station and Station Distance
 
 ```{r}
+chl_dis <- chl_transect
 
-# library(geosphere)
+# rename data frame and initialize nearest station and distance columns to NA
+#chl_dis <- chl
+chl_dis$nearest_station <- NA_character_
+chl_dis$distance <- NA_integer_
 
-
-chl <- read_csv('nes-lter-chl-transect.csv')
-
-# define the list of cruises to acquire data from
-cruiselist <- unique(chl$cruise)
-
-# to do: instead of being cruise-specific, use a standard list of stations L1-L13
-# stace will add csv of stations (name, lat, lon)
-# read csv into stations. declare ref_lon and ref_lat
+# use a standard list of stations L1-L13
+# read list csv into stations
 stations <- read_csv('NES-LTER_standard_stations_201808.csv')
 
-# Utility functions: Nearest Station & Station Distance
-find_distance <- function(df_lon, df_lat, ref_lon, ref_lat){
-    station_distance <- distm(c(df_lon, df_lat, ref_lon, ref_lat), 
-                              fun = distHaversine)
-}
+station_matrix <- matrix(data = c(stations$longitude, stations$latitude), nrow = 14, ncol = 2, byrow = FALSE,
+             dimnames = NULL)
 
-nearest_station <- function(df){
-  distances <- map(station_locs, find_distance, )
-}
-
-add_station_info <- function(df){
-  df$nearest_station <- NA_character_
-  df$station_distance <- NA_integer_
-  
-  # stations <- purrr::map(cruiselist, read_from_api, type = "stations") %>%
-  #   reduce(rbind)
-# instead of this loop, apply loop over number of rows of full join table
-  for (j in 1:length(cruises)) {
-    # load in stations for each cruise
-    stations <- read_from_api("stations", cruiselist[1])
-    
-    # some apply function to find the nearest station and station distance
-    
-    # subset the chl data by cruise
-    df_cruise <- df %>% filter(cruise == (cruiselist[1]))
-    # find the station distances
-    # apply(df, 1, function(x){
-    #   
-    # })
-    
-    for (k in 1:nrow(df)){
-      
+# calculate distance per row of the data frame
+for (df_row in 1:nrow(chl_dis)) {
+  df_lon <- chl_dis$longitude[df_row]
+  df_lat <- chl_dis$latitude[df_row]
+  # add an if to skip the row if df lon and/or lat is NA
+  if (!is.na(df_lon) & !is.na(df_lat)) {
+    df_lon_lat <- c(df_lon,df_lat)
+    km_from_df <- distHaversine(station_matrix, df_lon_lat, r=6378.137)
+    # index the minimum distance
+    index <- which.min(km_from_df)
+    # use that index to pull the station name and its distance
+    nearest_station_list <- stations[index,'station']
+    # need to change this from a list to char
+    nearest_station <- unname(unlist(nearest_station_list))
+    distance <- km_from_df[index]
+    # If distance less than 1 km, use base R to add to respective columns in the full data table within the for loop
+    if (distance < 2) {
+      chl_dis$nearest_station[df_row] <- nearest_station
+      chl_dis$distance[df_row] <- distance
     }
   }
-
 }
 
+chl_dis$distance <- round(chl_dis$distance, 2)
 
-
-```
-
-
-## Read in chl-transect processed for nearest station
-
-ATTENTION: Run nearest_station_generalized.ipynb BEFORE executing this chunk!!
-
-Load in cruise data processed by nearest_station_generalized.ipynb, a python script run in a Jupyter Notebook which determinesnearest station, and station distance (developed by Joe Futrelle). This output was saved as a csv in the working directory which is read by this chunk.
-
-```{r}
-
-if (!file.exists("api_nearest_stations.csv")) {
-  print("Run nearest_station_generalized.ipynb to generate chl transect output with nearest station and station distance fields")
-} else {
-  # read in csv
-  chl_edi <- read_csv('api_nearest_stations.csv')
-
-  # column rounding
-  # define numerical attributes
-  num_cols <- c("depth", "chl", "phaeo")
-  # round the numerical values
-  chl_all[num_cols] <- round(chl_all[num_cols], 3)
-  chl_all$latitude <- round(chl_all$latitude, 5)
-  chl_all$longitude <- round(chl_all$longitude, 5)
-}
-
-# write the file
-# write.csv(chl_edi, 'nes-lter-chl-transect.csv', row.names=FALSE)
 ```
 
 ## QA: Station Distance Outliers
 
 Isolate samples that were taken at a distance greater than 2km from the nearest station
+# Should we keep this? Distance column does not include distance value when distance is >2 km
 ```{r}
 
-st_dist_outliers <- chl_edi %>% filter(station_distance > 2)
+st_dist_outliers <- chl_dis %>%
+  filter(is.na(distance))
 
 ```
-#add quality flag script here
+## Add the Quality Flag for Data from the Sosik Lab
 
+In the future the API will output the quality_flag column,
+but for now we put a csv file into the repo created from the Xls sheet in the RDS 'raw' to API
+
+```{r}
+
+#chl_df <- chl_dis
+
+# read in the csv file with quality_flag
+# note there are more cruises because ar31, ar34, and ar39
+qualities <- read_csv('NESLTERchl_20210409_RDS_quality_flag.csv')
+qualities$cast <- as.character(qualities$cast)
+
+# left join to retain the rows in the chl data frame
+chl_qual <- left_join(chl_dis, qualities, by = c('cruise','cast','niskin','filter_size','replicate'))
+
+# check that there are no NAs in quality_flag for method_contributor Sosik or Rynearson ie no missing joins
+missing_qual <- chl_qual %>%
+  filter(method_contributor == "method_Sosik" | method_contributor == "method_Rynearson") %>%
+  filter(is.na(quality_flag))
+# there is only one missing quality flag, and it actually is missing in the original sheet
+
+# check that there are no values in quality_flag for method_contributor Menden-Deuer ie incorrect join
+incorrect_qual <- chl_qual %>%
+  filter(method_contributor == "method_Menden-Deuer") %>%
+  filter(!is.na(quality_flag))
+
+# I think we can keep the quality flag in the final product but consider using IODE flag
+# if we keep quality flag in final product then insert a good quality flag for Menden-Deuer
+
+# maybe add quick check that station in csv qual matches calculated nearest station
+
+# exclude station from csv qual
+chl_qual <- select(chl_qual, -station)
+# write.csv(chl_qual, 'nes-lter-chl-transect.csv', row.names=FALSE)
+
+```
 
 ## QA: Compare datasets
 
@@ -571,8 +546,8 @@ qa_smd <- smd_key %>%
   summarise(avg_chl = mean(chl, na.rm = TRUE))
 
 # summarize transect data for comparison
-# KM changed api_chl_final from transect_chl_final because error message saying transect_chl_final doesn't exist
-qa_transect <- api_chl_final %>%
+# chl_qual was formerly api_chl_final and transect_chl_final 
+qa_transect <- chl_qual %>%
   group_by(cruise, cast, niskin, filter_size) %>%
   summarise(avg_chl = mean(chl, na.rm = TRUE))
 
@@ -662,13 +637,13 @@ pkg_id <- "knb-lter-nes.8.1"
 # Make EML Templates 
 xlsx_to_template(metadata.path = metadata, 
                  edi.filename = edi_filename, 
-                 rights = "CCBY")
+                 rights = "CC0")
 
 # Data Coverage
 # isolate date and geospatial columns for input
-date_col <- as.Date(chl_edi$date)
-lat_col <- chl_edi$latitude
-lon_col <- chl_edi$longitude
+date_col <- as.Date(chl_qual$date)
+lat_col <- chl_qual$latitude
+lon_col <- chl_qual$longitude
 # run function to determine geospatial and temporal coverage
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
