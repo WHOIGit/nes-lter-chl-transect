@@ -30,10 +30,10 @@ Menden-Deuer: In the presence of only red light, each tube was vortexed for 10 s
 
 # Data Assembly and Cleaning
 
-The data table was assembled from three sources: the REST API of the NES-LTER data system, data sheets provided by the Menden-Deuer lab, and a data sheet from the OOI Alfresco document server. 
+The data table was assembled from three sources: the REST Application Programming Interface (API) of the NES-LTER data system, data sheets provided by the Menden-Deuer lab, and a data sheet from the OOI Alfresco document server. 
 Assembly starts in the main R markdown by concatenating cruises called from the NES-LTER REST API for values measured for the Sosik and Rynearson labs, and separately concatenating cruises provided by the Menden-Deuer lab.
 We add CTD bottle metadata (time, latitude, longitude, depth) from the NES-LTER REST API, identify when there are corresponding samples with values measured for multiple lab groups for the same (or paired) cast at same depth, then merge the REST API and Menden-Deuer data.
-In a separate R markdown we join additional cruises from the REST API of the NES-LTER data system with the OOI data sheet to add the identifier for those samples for which OOI is the authoritative data source.
+In a separate R markdown we join additional cruises from the REST API of the NES-LTER data system with the OOI data sheet to add the identifier for those samples for which OOI is the authoritative data source. Please refer to the R markdown document for the exact version of the EXCEL file accessed via web services from the OOI Alfresco document server for Cruise Data from the Coastal Pioneer Array.
 Then in the main R markdown we add those cruises in collaboration with OOI to the compiled data table.
 For all records, we calculated the distance to the nearest NES-LTER standard station L1 to L13 (standard for cruises starting with EN617 in August 2018).
 The final step in data assembly is the addition of a quality code for the Sosik and Rynearson values that is not yet provided through the REST API.
@@ -42,4 +42,4 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
 
 # Quality Assurance
 
-We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We provide a column in the data table to indicate the quality of values measured for the Sosik and Rynearson labs. All values provided for the Menden-Deuer lab are considered good quality. We checked differences between replicates, visually inspected plotted values, and performed a range check.
+We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We provide a column in the data table to indicate the quality of values measured for the Sosik and Rynearson labs. All values provided for the Menden-Deuer lab are considered good quality. We confirm that all values provided for the OOI-funded replicates are equivalent to the data sheet as in the OOI Alfresco. We checked differences between replicates, visually inspected plotted values, and performed a range check.

@@ -1,0 +1,6 @@
+	<project>
+      <title>Ocean Observatories Initiative</title>
+      <funding>
+        <para>NSF Award OCE-1743430</para>
+      </funding>
+    </project>
