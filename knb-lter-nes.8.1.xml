@@ -12,6 +12,107 @@
   </access>
   <dataset id="dataset">
     <title>Size-fractionated chlorophyll from water column bottle samples collected during NES-LTER Transect cruises, ongoing since 2017.</title>
+    <creator>
+      <individualName>
+        <givenName>Heidi</givenName>
+        <givenName>M</givenName>
+        <surName>Sosik</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-4591-2842</userId>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Tatiana</givenName>
+        <surName>Rynearson</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>rynearson@uri.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0003-2951-0066</userId>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Susanne</givenName>
+        <surName>Menden-Deuer</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>smenden@uri.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-8434-4251</userId>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Ocean Observatories Initiative</givenName>
+      </individualName>
+      <organizationName>Ocean Observatories Initiative</organizationName>
+    </creator>
+    <associatedParty>
+      <individualName>
+        <givenName>Heidi</givenName>
+        <givenName>M</givenName>
+        <surName>Sosik</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-4591-2842</userId>
+      <role>Principal Investigator</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Tatiana</givenName>
+        <surName>Rynearson</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>rynearson@uri.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0003-2951-0066</userId>
+      <role>Principal Investigator</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Susanne</givenName>
+        <surName>Menden-Deuer</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>smenden@uri.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-8434-4251</userId>
+      <role>Principal Investigator</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Pierre</givenName>
+        <surName>Marrec</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>pmarrec@uri.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-7811-4150</userId>
+      <role>Postdoctoralresearcher</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>E. Taylor</givenName>
+        <surName>Crockford</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <role>Technician</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Jaxine</givenName>
+        <givenName>L</givenName>
+        <surName>Wolfe</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-9620-5382</userId>
+      <role>Metadataprovider</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Kate</givenName>
+        <surName>Morkeski</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <role>Metadataprovider</role>
+    </associatedParty>
     <pubDate>2021-04-22</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and phaeopigments are measured from water column bottle samples taken on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Four size fractions are included in addition to whole seawater (&gt;0.7 micron): &gt;5 , &lt;10, &gt;10, and &gt;20 microns. These pigments are analyzed using a fluorometer in which fluorescence is measured versus a blank and a standard, and final concentrations are calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
@@ -69,6 +170,11 @@
     <maintenance>
       <description>ongoing</description>
     </maintenance>
+    <contact>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <positionName>Nes-Lter Information Manager</positionName>
+      <electronicMailAddress>lter-nes-info@whoi.edu</electronicMailAddress>
+    </contact>
     <methods>
       <methodStep>
         <description>
@@ -203,6 +309,10 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
       <funding>
         <para>NSF Award OCE-1655686</para>
       </funding>
+      <relatedProject>
+        <title>Ocean Observatories Initiative</title>
+        <funding>NSF Award OCE-1743430</funding>
+      </relatedProject>
     </project>
   </dataset>
   <annotations>

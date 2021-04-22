@@ -6,7 +6,7 @@ Ocean Observatories Initiative			Ocean Observatories Initiative			creator	Ocean 
 Heidi	M	Sosik	Northeast U.S. Shelf LTER	hsosik@whoi.edu	0000-0002-4591-2842	Principal Investigator	Northeast U.S. Shelf LTER	NSF	OCE-1655686
 Tatiana		Rynearson	Northeast U.S. Shelf LTER	rynearson@uri.edu	0000-0003-2951-0066	Principal Investigator	Northeast U.S. Shelf LTER	NSF	OCE-1655686
 Susanne		Menden-Deuer	Northeast U.S. Shelf LTER	smenden@uri.edu	0000-0002-8434-4251	Principal Investigator	Northeast U.S. Shelf LTER	NSF	OCE-1655686
-Pierre		Marrec	Northeast U.S. Shelf LTER	pmarrec@uri.edu	0000-0002-7811-4150		Northeast U.S. Shelf LTER	NSF	OCE-1655686
+Pierre		Marrec	Northeast U.S. Shelf LTER	pmarrec@uri.edu	0000-0002-7811-4150	postdoctoralResearcher	Northeast U.S. Shelf LTER	NSF	OCE-1655686
 E. Taylor		Crockford	Northeast U.S. Shelf LTER			technician	Northeast U.S. Shelf LTER	NSF	OCE-1655686
 NES-LTER Information Manager			Northeast U.S. Shelf LTER	lter-nes-info@whoi.edu		contact	Northeast U.S. Shelf LTER	NSF	OCE-1655686
 Jaxine	L	Wolfe	Northeast U.S. Shelf LTER		0000-0001-9620-5382	metadataProvider	Northeast U.S. Shelf LTER	NSF	OCE-1655686

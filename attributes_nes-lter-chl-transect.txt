@@ -2,18 +2,18 @@ attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCo
 cruise	Identifier for research cruise generally including abbreviation for research vessel and voyage number	character				
 cast	CTD rosette cast number chronological order per cruise	character				
 niskin	Rosette bottle position number	character				
-bottle_other_method	Associated niskin from the other method	character				No associated bottle from the other method
+bottle_other_method	Associated niskin with samples analyzed by another method	character				No associated bottle from the other method
 date	Date and time in UTC when rosette bottle closed	Date		YYYY-MM-DD hh:mm:ss		
 latitude	Ships latitude when the rosette bottle closed	numeric	degree			
 longitude	Ships longitude when the rosette bottle closed	numeric	degree			
 depth	Depth of sample below sea surface	numeric	meter			
 method_contributor	Method by which the associated sample was processed	categorical				
 replicate	Lowercase letter indicating replicate subsample drawn from the same rosette bottle	character				
-alternate_sample_id		character				
-filter_size	Size fraction of the filtered sample	character				
-chl	Concentration of chlorophyll-a per unit volume of the water body corresponding to BCO-DMO chl_a SeaBASS Chl and CF mass_concentration_of_ chlorophyll_a_in_sea_water	numeric	microgramsPerLiter			Missing value
-phaeo	Phaeophytin concentration	numeric	microgramsPerLiter			Missing value
+alternate_sample_id	Alternate identifier for the same sample	character				
+filter_size	Size fraction with filter and when applicable prefilter in micrometers	character				
+chl	Concentration of chlorophyll-a per unit volume of the water body http://vocab.nerc.ac.uk/collection/P01/current/CPHLZZXX/ corresponding to BCO-DMO chl_a SeaBASS Chl and CF mass_concentration_of_ chlorophyll_a_in_sea_water	numeric	microgramsPerLiter			Missing value
+phaeo	Concentration of phaeopigments per unit volume of the water body	numeric	microgramsPerLiter			Missing value
 project_id	Project associated with the sample collected	categorical				
-nearest_station	Nearest NES-LTER standard station	character				Distance greater than 2 km from NES-LTER standard station
+nearest_station	NES-LTER standard station nearest to the sample location	character				Distance greater than 2 km from NES-LTER standard station
 distance	Distance from sample location to nearest NES-LTER standard station	numeric	kilometer			Distance greater than 2 km from NES-LTER standard station
-quality_flag		numeric	dimensionless			Missing value
+quality_flag	Quality flag provided for a subset of the data	numeric	dimensionless			Missing value

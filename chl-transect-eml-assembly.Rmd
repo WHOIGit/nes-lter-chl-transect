@@ -62,13 +62,13 @@ if (!file.exists("chl-transect-api.csv")) {
 
 ```
 
-## Compile SMD Chl Data
+## Compile Menden-Deuer Chl Data
 
 Cruises that use 12-bottle rosettes will have hyphenated casts (done in rapid succession, considered to be paired)
 
 ```{r}
 
-# store and read in the SMD files in the directory
+# store and read in the Menden-Deuer (SMD) files in the directory
 files <- Sys.glob("*SMD*.csv")
 cruises <- lapply(files, read_csv)
 # compile the data into on dataframe
@@ -216,9 +216,9 @@ if (!file.exists("ctd-metadata.csv")) {
 
 ## Determining bottle other method
 
-This chunk will:
-  • determine depth, lat & lon, and datetime for SMD data (merged from bottle summary)
-  • determine chl transect bottles associated SMD bottles based on depth window
+This section:
+  • determines depth, lat & lon, and datetime for Menden-Deuer data (merged from bottle summary)
+  • determines chl transect bottles associated with SMD bottles based on depth window
 
 ```{r}
 
@@ -295,7 +295,7 @@ for (i in 1:nrow(smd_key)) {
 
 ## Preparing Datasets for Merge
 
-This step will populate the fields:
+This step populates the fields:
   • bottle_other_method for api_chl
   • date, lat, long, (avg) depth, and bottle_other_method for smd_chl
   • method_contributor to indicate which sample collection and processing methods were used 
@@ -304,8 +304,6 @@ Additional steps:
   • reorganize the columns
   • merge the api_chl and smd_chl datasets
   • round numerical columns
-  
-In Progress: 
   • add project_id column (smd = LTER, api = if cruise AR22/32, yes = "JP", no = "LTER")
       - This is to accomodate that the api doesnt yet provide project_id
   
@@ -437,7 +435,7 @@ chl_transect <- chl_transect[with(chl_transect, order(cruise, match(cast, cast_s
 chl_transect <- chl_transect[with(chl_transect, order(cruise, cast)), ]
 
 # write csv file of concatenated cruises
-write.csv(chl_transect, 'nes-lter-chl-transect.csv', row.names=FALSE)
+#write.csv(chl_transect, 'nes-lter-chl-transect.csv', row.names=FALSE)
 ```
 
 ## Find Nearest Station and Station Distance
@@ -445,8 +443,8 @@ write.csv(chl_transect, 'nes-lter-chl-transect.csv', row.names=FALSE)
 ```{r}
 chl_dis <- chl_transect
 
-# rename data frame and initialize nearest station and distance columns to NA
-#chl_dis <- chl
+# initialize nearest station and distance columns to NA
+
 chl_dis$nearest_station <- NA_character_
 chl_dis$distance <- NA_integer_
 
@@ -487,7 +485,7 @@ chl_dis$distance <- round(chl_dis$distance, 2)
 ## QA: Station Distance Outliers
 
 Isolate samples that were taken at a distance greater than 2km from the nearest station
-# Should we keep this? Distance column does not include distance value when distance is >2 km
+
 ```{r}
 
 st_dist_outliers <- chl_dis %>%
@@ -500,8 +498,6 @@ In the future the API will output the quality_flag column,
 but for now we put a csv file into the repo created from the Xls sheet in the RDS 'raw' to API
 
 ```{r}
-
-#chl_df <- chl_dis
 
 # read in the csv file with quality_flag
 # note there are more cruises because ar31, ar34, and ar39
@@ -547,8 +543,8 @@ qa_smd <- smd_key %>%
   summarise(avg_chl = mean(chl, na.rm = TRUE))
 
 # summarize transect data for comparison
-# chl_qual was formerly api_chl_final and transect_chl_final 
-qa_transect <- chl_qual %>%
+# api_chl_final was formerly transect_chl_final 
+qa_transect <- api_chl_final %>%
   group_by(cruise, cast, niskin, filter_size) %>%
   summarise(avg_chl = mean(chl, na.rm = TRUE))
 
@@ -666,4 +662,12 @@ make_eml(path = getwd(),
 ```{r}
 # Insert Custom Project Node
 project_insert(edi_pkg = pkg_id)
+```
+## Add semantic annotations
+
+```{r}
+#have tried several variations on specifying path but Error: The file specified by the input argument 'eml.in' doesn't exist.
+
+annotate_eml(annotations = "annotations.txt", eml.in = ("/nes-lter-chl-transect/knb-lter-nes.8.1.xml"), eml.out = "knb-lter-nes.8.1.xml")
+
 ```
