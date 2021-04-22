@@ -529,7 +529,8 @@ incorrect_qual <- chl_qual %>%
 
 # exclude station from csv qual
 chl_qual <- select(chl_qual, -station)
-# write.csv(chl_qual, 'nes-lter-chl-transect.csv', row.names=FALSE)
+ 
+write.csv(chl_qual, 'nes-lter-chl-transect.csv', row.names=FALSE)
 
 ```
 
@@ -613,7 +614,7 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 ```{r}
 
 # Map Check
-map_locs(df = chl_all, xvar = "longitude", yvar = "latitude",
+map_locs(df = chl_qual, xvar = "longitude", yvar = "latitude",
          region = "transect", colorvar = "cruise")
 
 ```
