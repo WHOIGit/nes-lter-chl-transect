@@ -96,4 +96,8 @@
       <funding>
         <para>NSF Award OCE-1655686</para>
       </funding>
+      <relatedProject>
+        <title>Ocean Observatories Initiative</title>
+        <funding>NSF Award OCE-1743430</funding>
+      </relatedProject>
     </project>
