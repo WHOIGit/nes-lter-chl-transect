@@ -78,6 +78,8 @@ ar24ooi <- ar24ooi %>%
          -phaeo_ooi
          ) 
  
+
+# hard code to correct error in entered niskin
 ar24ooi <- ar24ooi %>% 
  mutate(
    niskin = ifelse(cruise == "AR24C" & filter_id_ooi=="02/02", 
@@ -114,40 +116,18 @@ ar24ooi$filter_size_ooi <- ">0"
 
 
 ```
-Read in cruise data from API and join to Alfresco data in order to obtain OOI sample identifier for the subset of samples belonging to OOI. 
+Read in cruise data from API and format to enable join. 
 ```{r}
 ar24a <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24a.csv")
 ar24b <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24b.csv")
 ar24c <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24c.csv")
+
 # API excludes bucket sample from AR24B
 
 #AR24B cast 4 hard code output from API before join to accommodate combined bottles 4-6 and 9-10
 ar24b <- ar24b %>%
-  mutate(
-      niskin = ifelse(ra == 147.6, 
-                      yes = "4-6",
-                      no = ar24b$niskin)
-      ) 
-ar24b <- ar24b %>%
-    mutate(
-      niskin = ifelse(ra == 151.8, 
-                      yes = "4-6",
-                      no = ar24b$niskin)
-    
-      )
-ar24b <- ar24b %>%
-      mutate(
-      niskin = ifelse(ra == 108.7, 
-                      yes = "9-10",
-                      no = ar24b$niskin)
-      )
-ar24b <- ar24b %>%
-    mutate(
-      niskin = ifelse(ra == 102.5, 
-                      yes = "9-10",
-                      no = ar24b$niskin)
-      )
-
+  mutate(niskin = ifelse(ra == 147.6 | ra == 151.8, "4-6", niskin), 
+         niskin = ifelse(ra == 108.7 | ra == 102.5, "10-12", niskin))
 
 ar24abc <- rbind(ar24a, ar24b, ar24c)
 
@@ -216,9 +196,6 @@ mismatch <- filter(ar24all, chl_diff > 0 | chl_diff < 0)
 Prepare for join with all other transect data
 
 ```{r}
-
-#remove rows without OOI data
-#ar24 <- ar24all
 
 # add project_id based on filter_id_ooi. if it exists, project id is ooi. if not, project id is lter
 # make columns match nes-lter-chl-transect
@@ -298,11 +275,6 @@ ar24all <- ar24temp %>%
          -longitude76,
          -depth76)
 
-
-# columns not matching: bottle_other_method, filter_id_ooi, comments
-# assemnbly rmd should read in this data set, then mutate bottle_other_method to NA
-# assembly script should alter filter_id_ooi to alternate_sample_id (mutate, populate with NA for the other data)
-# exclude comments
 
 # write csv file 
 write.csv(ar24all, 'ar24.csv', row.names=FALSE)
