@@ -323,6 +323,7 @@ api_chl_final <- api_chl_final  %>%
                                            filter_size==">20" ~ "method_Rynearson", 
                                            filter_size==">0" ~ "method_Sosik")) 
 
+
 sum(is.na(api_chl_final$method_contributor))
 ```
 ## Join API data and Menden-Deuer data
@@ -403,7 +404,7 @@ chl_all$alternate_sample_id <- NA_character_
 
 ```
 
-## Read in and join OOI data
+## Read in AR24 data from OOI's Alfresco and NES-LTER API joined in script "ooi_join_by_url.rmd". 
 
 ```{r}
 
@@ -413,6 +414,7 @@ chl_ar24 <- read_csv('ar24.csv')
 chl_ar24$bottle_other_method <- NA_character_
 chl_ar24 <- chl_ar24 %>%
   mutate(cast = as.character(cast)) %>% 
+  mutate(depth = round(depth, 3))  %>%
   rename(alternate_sample_id = filter_id_ooi)
 
 # define headers for columns in desired order
@@ -421,21 +423,18 @@ headers_join <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "la
 chl_ar24 <- chl_ar24[, headers_join]
 chl_all <- chl_all[, headers_join]
 
+```
+
+## Join AR24 data to the other cruises
+
+```{r}
+
 # bind rows
 chl_transect <- bind_rows(chl_all, chl_ar24)
 
-# sort by cruise, cast, niskin, filter size
-size_sort <- c(">0",">5","<10",">10",">20")
-cruise_sort <- str_sort(unique(chl_transect$cruise))
-cast_sort <- str_sort(unique(chl_transect$cast))
-niskin_sort <- str_sort(unique(chl_transect$niskin), numeric = TRUE)
-
-chl_transect <- chl_transect[with(chl_transect, order(cruise, match(cast, cast_sort), match(niskin, niskin_sort),
-                                    match(filter_size, size_sort))), ]
-chl_transect <- chl_transect[with(chl_transect, order(cruise, cast)), ]
-
 # write csv file of concatenated cruises
 #write.csv(chl_transect, 'nes-lter-chl-transect.csv', row.names=FALSE)
+
 ```
 
 ## Find Nearest Station and Station Distance
@@ -518,14 +517,74 @@ incorrect_qual <- chl_qual %>%
   filter(method_contributor == "method_Menden-Deuer") %>%
   filter(!is.na(quality_flag))
 
-# I think we can keep the quality flag in the final product but consider using IODE flag
-# if we keep quality flag in final product then insert a good quality flag for Menden-Deuer
-
 # maybe add quick check that station in csv qual matches calculated nearest station
 
 # exclude station from csv qual
 chl_qual <- select(chl_qual, -station)
  
+```
+## Read in Sosik AR24 data that are not out put from API because they lack Niskin metadata 
+
+```{r}
+
+# There were 27 samples that can not be output from API because there are no bottle metadata (20 samples from AR24A and 7 samples from AR24B).
+
+# We constructed a csv file manually with the following:
+# AR24A cast 1, 8 samples: No btl file. Bottle metadata may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
+# AR24A cast 2, 8 samples: The btl file only recorded the first niskin. Bottle metadata for additional niskins may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
+# AR24A cast 8, 4 samples: The btl file only recorded bottles 1-4. Bottle metadata for niskin 5 may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
+# AR24B cast 9, 4 samples: The btl file only recorded bottles 1-5. Bottle metadata for niskins 7, 9, 10, and 12 may be possible from btl file ‘009b’. Note Sosik lab may have matched to hand-written logsheets in file 20171028_AR24B_bottle_summary_table.mat.
+# AR24B bucket, 3 samples: we are unsure of sampling location; date and comments in XLS do not match event log entry message ID 113.
+
+#ar24missing <-read_csv('samples_lacking_bottle_metadata.csv', na = "")
+ar24missing <-read_csv('samples_lacking_bottle_metadata.csv')
+ar24missing <- ar24missing %>%
+  mutate(chl = round(chl, 3)) %>% 
+  mutate(phaeo = round(phaeo, 3)) %>%
+  mutate(cast = as.character(cast)) %>%
+  mutate(niskin = as.character(niskin))
+
+chl_qual <- bind_rows(chl_qual, ar24missing)
+
+missing_qual2 <- chl_qual %>%
+  filter(method_contributor == "method_Sosik" | method_contributor == "method_Rynearson") %>%
+  filter(is.na(quality_flag))
+
+```
+
+## Change Quality Flag to IODE codes, Finalize Column Names, Write Output File
+
+```{r}
+
+#change some column names
+chl_qual <- chl_qual %>%
+  rename(date_time_utc = date)  %>%
+  rename(niskin_other_method = bottle_other_method) %>%
+  mutate(quality_flag = as.character(quality_flag))  %>%
+  mutate(filter_size = case_when(filter_size=="<10" ~ ">0&<10",
+                                 TRUE ~ filter_size))
+
+# I think we can keep the quality flag in the final product but consider using IODE flag
+# if we keep quality flag in final product then insert a good quality flag for Menden-Deuer
+chl_qual <- chl_qual %>%
+  mutate(quality_flag = case_when(quality_flag==2 ~ "3",
+                                  quality_flag==3 ~ "4",
+                                  TRUE ~ quality_flag)) 
+#%>%
+  #mutate(quality_flag = case_when(method_contributor=="method_Menden-Deuer" & chl==!is.na
+# ADD MENDEN-DEUER QUALITY FLAG MANIPULATION
+
+# sort by cruise, cast, niskin, filter size
+size_sort <- c(">0",">5",">0&<10",">10",">20")  #Need M-D? >0&<200 >5&<200 >20&<200
+cruise_sort <- str_sort(unique(chl_transect$cruise))
+cast_sort <- str_sort(unique(chl_transect$cast))
+niskin_sort <- str_sort(unique(chl_transect$niskin), numeric = TRUE)
+
+chl_transect <- chl_transect[with(chl_transect, order(cruise, match(cast, cast_sort), match(niskin, niskin_sort),
+                                    match(filter_size, size_sort))), ]
+chl_transect <- chl_transect[with(chl_transect, order(cruise, cast)), ]
+
+
 write.csv(chl_qual, 'nes-lter-chl-transect.csv', row.names=FALSE)
 
 ```
