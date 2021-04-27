@@ -53,6 +53,9 @@ if (!file.exists("chl-transect-api.csv")) {
                    no = api_chl$cast))
   # Not provided by API due to missing value: EN627 cast 17 niskin 8 filter 20 rep b; EN627 cast 26 niskin 7 filter 20 rep b
   
+  # The following replicates are actually missing in the original XLS raw to API: 
+    #EN608: cast 12 niskin 8 >20 rep a; cast 12 bottle 11 >5 rep b; cast 14 bottle 9 >0 rep b.
+  
   # write csv file of concatenated cruises
   write.csv(api_chl, 'chl-transect-api.csv', row.names=FALSE)
 } else {
@@ -84,6 +87,8 @@ smd_expanded <- smd_chl %>%
   # expand niskin
   mutate(niskin_expand = strsplit(niskin, "-")) %>%
   unnest(niskin_expand)
+
+# The manipulations with regard to cast_expand are only valid if the same bottles in the niskin column apply to both casts. This is the case for EN627 cast 18-19 niskin 11-12, but not for cast 11-12 (cast 11 only used single niskin 11) nor for cast 23-24 (cast 23 used 10-11, luckily cast 23 niskins 10-12 were same depth).
 
 # assign expanded columns to numeric type
 smd_expanded$cast_expand <- as.numeric(smd_expanded$cast_expand)
@@ -383,11 +388,6 @@ chl_all <- chl_all %>%
   mutate(chl = round(chl, 3)) %>% 
   mutate(phaeo = round(phaeo, 3)) 
 
-# round nutrient, distance, and depth columns    
-#all_cruises[, round_cols] <- round(all_cruises[, round_cols], 3)    
-# round lat and lon columns    
-#all_cruises[, c("latitude", "longitude")] <- round(all_cruises[, c("latitude", "longitude")], 4)
-
 # row sorting
 # define order for filter size and cast columns
 size_sort <- c(">0",">5","<10",">10",">20")
@@ -517,6 +517,19 @@ incorrect_qual <- chl_qual %>%
   filter(method_contributor == "method_Menden-Deuer") %>%
   filter(!is.na(quality_flag))
 
+# chl_qual <- chl_qual %>%
+#  mutate(
+#    quality_flag = ifelse(method_contributor == "method_Menden-Deuer" & !is.na(chl), 
+#                    yes = 1, 
+#                    no = chl_qual$quality_flag)) 
+# 
+# chl_qual <- chl_qual %>%  
+#   mutate(
+#    quality_flag = ifelse(method_contributor == "method_Menden-Deuer" & is.na(chl), 
+#                    yes = 4, 
+#                    no = chl_qual$quality_flag))
+
+
 # maybe add quick check that station in csv qual matches calculated nearest station
 
 # exclude station from csv qual
@@ -535,6 +548,7 @@ chl_qual <- select(chl_qual, -station)
 # AR24A cast 8, 4 samples: The btl file only recorded bottles 1-4. Bottle metadata for niskin 5 may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
 # AR24B cast 9, 4 samples: The btl file only recorded bottles 1-5. Bottle metadata for niskins 7, 9, 10, and 12 may be possible from btl file ‘009b’. Note Sosik lab may have matched to hand-written logsheets in file 20171028_AR24B_bottle_summary_table.mat.
 # AR24B bucket, 3 samples: we are unsure of sampling location; date and comments in XLS do not match event log entry message ID 113.
+#quality_flag
 
 #ar24missing <-read_csv('samples_lacking_bottle_metadata.csv', na = "")
 ar24missing <-read_csv('samples_lacking_bottle_metadata.csv')
@@ -560,29 +574,36 @@ missing_qual2 <- chl_qual %>%
 chl_qual <- chl_qual %>%
   rename(date_time_utc = date)  %>%
   rename(niskin_other_method = bottle_other_method) %>%
-  mutate(quality_flag = as.character(quality_flag))  %>%
   mutate(filter_size = case_when(filter_size=="<10" ~ ">0&<10",
                                  TRUE ~ filter_size))
 
-# I think we can keep the quality flag in the final product but consider using IODE flag
-# if we keep quality flag in final product then insert a good quality flag for Menden-Deuer
+# convert lab quality flag to IODE quality flag
+
+chl_qual$iode_quality_flag <- NA_integer_
+
 chl_qual <- chl_qual %>%
-  mutate(quality_flag = case_when(quality_flag==2 ~ "3",
-                                  quality_flag==3 ~ "4",
-                                  TRUE ~ quality_flag)) 
-#%>%
-  #mutate(quality_flag = case_when(method_contributor=="method_Menden-Deuer" & chl==!is.na
-# ADD MENDEN-DEUER QUALITY FLAG MANIPULATION
-
+   mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer" & !is.na(chl) ~ 1,
+                                        method_contributor == "method_Menden-Deuer" & is.na(chl) ~ 4,
+                                        method_contributor != "method_Menden-Deuer" & is.na(chl) ~ 9,
+                                        method_contributor != "method_Menden-Deuer" & quality_flag == "1" ~ 1,
+                                        method_contributor != "method_Menden-Deuer" & is.na(quality_flag) ~ 2,
+                                        method_contributor != "method_Menden-Deuer" & quality_flag == "2" ~ 3,
+                                        method_contributor != "method_Menden-Deuer" & quality_flag == "3" ~ 4,
+                                        ))
+                                    
+ sum(is.na(chl_qual$iode_quality_flag))      
+ 
+ # chl_qual <- select(chl_qual, -quality_flag)
+                                    
 # sort by cruise, cast, niskin, filter size
-size_sort <- c(">0",">5",">0&<10",">10",">20")  #Need M-D? >0&<200 >5&<200 >20&<200
-cruise_sort <- str_sort(unique(chl_transect$cruise))
-cast_sort <- str_sort(unique(chl_transect$cast))
-niskin_sort <- str_sort(unique(chl_transect$niskin), numeric = TRUE)
+size_sort <- c(">0",">0&<10",">5", ">20",">0&<200", ">0&<200", ">5&<200", ">20&<200")
+cruise_sort <- str_sort(unique(chl_qual$cruise))
+cast_sort <- str_sort(unique(chl_qual$cast))
+niskin_sort <- str_sort(unique(chl_qual$niskin), numeric = TRUE)
 
-chl_transect <- chl_transect[with(chl_transect, order(cruise, match(cast, cast_sort), match(niskin, niskin_sort),
+chl_qual <- chl_qual[with(chl_qual, order(cruise, match(cast, cast_sort), match(niskin, niskin_sort),
                                     match(filter_size, size_sort))), ]
-chl_transect <- chl_transect[with(chl_transect, order(cruise, cast)), ]
+chl_qual <- chl_qual[with(chl_qual, order(cruise, cast)), ]
 
 
 write.csv(chl_qual, 'nes-lter-chl-transect.csv', row.names=FALSE)
