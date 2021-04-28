@@ -352,7 +352,7 @@ smd_chl_final <- smd_key %>% ungroup() %>%
 
 # add method_contributor col 
 smd_chl_final$method_contributor <- "method_Menden-Deuer" 
-#smd_chl_final$filter_prefilter <- paste(smd_chl_final$filter_size, "<200", collapse = " ") 
+
 # hard code the three records with no prefiltering
 # cruise en627 cast 30 niskin 1-2-3-4 last 3 samples have no 200um prefiltering 
 smd_chl_final <- smd_chl_final   %>%
@@ -517,19 +517,6 @@ incorrect_qual <- chl_qual %>%
   filter(method_contributor == "method_Menden-Deuer") %>%
   filter(!is.na(quality_flag))
 
-# chl_qual <- chl_qual %>%
-#  mutate(
-#    quality_flag = ifelse(method_contributor == "method_Menden-Deuer" & !is.na(chl), 
-#                    yes = 1, 
-#                    no = chl_qual$quality_flag)) 
-# 
-# chl_qual <- chl_qual %>%  
-#   mutate(
-#    quality_flag = ifelse(method_contributor == "method_Menden-Deuer" & is.na(chl), 
-#                    yes = 4, 
-#                    no = chl_qual$quality_flag))
-
-
 # maybe add quick check that station in csv qual matches calculated nearest station
 
 # exclude station from csv qual
@@ -570,13 +557,6 @@ missing_qual2 <- chl_qual %>%
 
 ```{r}
 
-#change some column names
-chl_qual <- chl_qual %>%
-  rename(date_time_utc = date)  %>%
-  rename(niskin_other_method = bottle_other_method) %>%
-  mutate(filter_size = case_when(filter_size=="<10" ~ ">0&<10",
-                                 TRUE ~ filter_size))
-
 # convert lab quality flag to IODE quality flag
 
 chl_qual$iode_quality_flag <- NA_integer_
@@ -594,6 +574,23 @@ chl_qual <- chl_qual %>%
  sum(is.na(chl_qual$iode_quality_flag))      
  
  # chl_qual <- select(chl_qual, -quality_flag)
+ 
+ 
+# having trouble making these separate chunks for some reason. 
+ 
+ 
+# change some column names and properly identify a filtering scheme
+chl_qual <- chl_qual %>%
+  rename(date_time_utc = date)  %>%
+  rename(niskin_other_method = bottle_other_method) %>%
+  mutate(filter_size = case_when(filter_size=="<10" ~ ">0&<10",
+                                 TRUE ~ filter_size))
+ 
+ # add zero to casts with one digit to enable proper sorting
+ chl_qual$cast <- ifelse((nchar(chl_qual$cast)) >2, 
+                        yes = chl_qual$cast,
+                        no = str_pad(chl_qual$cast, width=2, side="left", pad="0"))
+                       
                                     
 # sort by cruise, cast, niskin, filter size
 size_sort <- c(">0",">0&<10",">5", ">20",">0&<200", ">0&<200", ">5&<200", ">20&<200")
