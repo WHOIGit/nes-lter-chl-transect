@@ -65,6 +65,7 @@ if (!file.exists("chl-transect-api.csv")) {
 
 ```
 
+
 ## Compile Menden-Deuer Chl Data
 
 Cruises that use 12-bottle rosettes will have hyphenated casts (done in rapid succession, considered to be paired)
@@ -218,6 +219,27 @@ if (!file.exists("ctd-metadata.csv")) {
   ctd_metadata <- read_csv("ctd-metadata.csv")
 }
 ```
+
+## Add Rynearson EN608 data
+
+```{r}
+
+tar_en608 <- read_csv("https://raw.githubusercontent.com/WHOIGit/nes-lter-examples/1df61a4627a8f845f01cd6fb05332698be3344fe/data/neslter_rynearson_chl.csv")
+
+tar_en608 <- tar_en608 %>%
+  select(-lter_station, -time_in, -time_out, -filter_type, -vol_extracted_ml, -solvent, -dilution_during_reading, -chl_cal_filename, -cal_date, -personnel_filter, -personnel_read, -fluorometer, -comments) %>%
+  rename(filter_size = filter_mesh_size)
+
+tar_en608 <- left_join(tar_en608, ctd_summary, 
+                       by = c("cruise", "cast", "niskin"))
+
+tar_en608 <- tar_en608 %>%
+  select(-date.x) %>%
+  rename(date = date.y)
+
+api_chl <- bind_rows(api_chl, tar_en608)
+
+```                           
 
 ## Determining bottle other method
 
@@ -537,7 +559,6 @@ chl_qual <- select(chl_qual, -station)
 # AR24B bucket, 3 samples: we are unsure of sampling location; date and comments in XLS do not match event log entry message ID 113.
 #quality_flag
 
-#ar24missing <-read_csv('samples_lacking_bottle_metadata.csv', na = "")
 ar24missing <-read_csv('samples_lacking_bottle_metadata.csv')
 ar24missing <- ar24missing %>%
   mutate(chl = round(chl, 3)) %>% 
@@ -552,6 +573,7 @@ missing_qual2 <- chl_qual %>%
   filter(is.na(quality_flag))
 
 ```
+
 
 ## Change Quality Flag to IODE codes, Finalize Column Names, Write Output File
 
@@ -579,14 +601,14 @@ chl_qual <- chl_qual %>%
 # having trouble making these separate chunks for some reason. 
  
  
-# change some column names and properly identify a filtering scheme
+# change some column names and properly identify the filtering regime for Sosik prefiltered samples
 chl_qual <- chl_qual %>%
   rename(date_time_utc = date)  %>%
   rename(niskin_other_method = bottle_other_method) %>%
   mutate(filter_size = case_when(filter_size=="<10" ~ ">0&<10",
                                  TRUE ~ filter_size))
  
- # add zero to casts with one digit to enable proper sorting
+# add zero to casts with one digit to enable proper sorting
  chl_qual$cast <- ifelse((nchar(chl_qual$cast)) >2, 
                         yes = chl_qual$cast,
                         no = str_pad(chl_qual$cast, width=2, side="left", pad="0"))
