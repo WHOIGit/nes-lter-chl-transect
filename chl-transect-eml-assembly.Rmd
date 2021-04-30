@@ -63,6 +63,15 @@ if (!file.exists("chl-transect-api.csv")) {
   api_chl <- read_csv("chl-transect-api.csv")
 }
 
+api_chl <- api_chl  %>% 
+    mutate(method_contributor  = case_when(cruise == "EN608"  ~ "method_Sosik",
+                                           filter_size=="<10" ~ "method_Sosik",         
+                                           filter_size==">5" ~ "method_Rynearson", 
+                                           filter_size==">20" ~ "method_Rynearson", 
+                                           filter_size==">0" ~ "method_Sosik")) 
+
+
+
 ```
 
 
@@ -237,6 +246,8 @@ tar_en608 <- tar_en608 %>%
   select(-date.x) %>%
   rename(date = date.y)
 
+tar_en608$method_contributor <- as.character("method_Rynearson")
+
 api_chl <- bind_rows(api_chl, tar_en608)
 
 ```                           
@@ -344,11 +355,11 @@ api_chl_final <- smd_key %>% ungroup() %>%
   rename_at("niskin.y", ~"bottle_other_method")
 
 # add method_contributor column based on filter size
-api_chl_final <- api_chl_final  %>% 
-    mutate(method_contributor  = case_when(filter_size=="<10" ~ "method_Sosik",         
-                                           filter_size==">5" ~ "method_Rynearson", 
-                                           filter_size==">20" ~ "method_Rynearson", 
-                                           filter_size==">0" ~ "method_Sosik")) 
+# api_chl_final <- api_chl_final  %>% 
+#     mutate(method_contributor  = case_when(filter_size=="<10" ~ "method_Sosik",         
+#                                            filter_size==">5" ~ "method_Rynearson", 
+#                                            filter_size==">20" ~ "method_Rynearson", 
+#                                            filter_size==">0" ~ "method_Sosik")) 
 
 
 sum(is.na(api_chl_final$method_contributor))
@@ -586,6 +597,7 @@ chl_qual$iode_quality_flag <- NA_integer_
 chl_qual <- chl_qual %>%
    mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer" & !is.na(chl) ~ 1,
                                         method_contributor == "method_Menden-Deuer" & is.na(chl) ~ 4,
+                                        method_contributor == "method_Rynearson" & cruise == "EN608" ~ 2,
                                         method_contributor != "method_Menden-Deuer" & is.na(chl) ~ 9,
                                         method_contributor != "method_Menden-Deuer" & quality_flag == "1" ~ 1,
                                         method_contributor != "method_Menden-Deuer" & is.na(quality_flag) ~ 2,
