@@ -550,8 +550,11 @@ incorrect_qual <- chl_qual %>%
   filter(method_contributor == "method_Menden-Deuer") %>%
   filter(!is.na(quality_flag))
 
-# maybe add quick check that station in csv qual matches calculated nearest station
-
+# quick check of when station in csv qual doesn't match calculated nearest station
+station_mismatch <- chl_qual %>%
+    filter(method_contributor != "method_Menden-Deuer") %>%
+    filter( nearest_station != station | is.na(nearest_station) | is.na(station) )
+  
 # exclude station from csv qual
 chl_qual <- select(chl_qual, -station)
  
@@ -586,11 +589,12 @@ missing_qual2 <- chl_qual %>%
 ```
 
 
-## Change Quality Flag to IODE codes, Finalize Column Names, Write Output File
+## Change Quality Flag to IODE codes, Replace Bad Data With NA, Finalize Column Names, 
 
 ```{r}
 
 # convert lab quality flag to IODE quality flag
+# Rynearson EN608 flag is not reported, so change those flags to missing quality information
 
 chl_qual$iode_quality_flag <- NA_integer_
 
@@ -604,15 +608,17 @@ chl_qual <- chl_qual %>%
                                         method_contributor != "method_Menden-Deuer" & quality_flag == "2" ~ 3,
                                         method_contributor != "method_Menden-Deuer" & quality_flag == "3" ~ 4,
                                         ))
+
+
                                     
  sum(is.na(chl_qual$iode_quality_flag))      
  
- # chl_qual <- select(chl_qual, -quality_flag)
- 
- 
-# having trouble making these separate chunks for some reason. 
- 
- 
+# replace chlorophyll and phaeo with NA for any samples flagged bad data 
+chl_qual <- chl_qual %>%
+  mutate(chl=replace(chl, iode_quality_flag=="4", NA)) %>%
+  mutate(phaeo=replace(phaeo, iode_quality_flag=="4", NA))
+
+
 # change some column names and properly identify the filtering regime for Sosik prefiltered samples
 chl_qual <- chl_qual %>%
   rename(date_time_utc = date)  %>%
@@ -620,6 +626,13 @@ chl_qual <- chl_qual %>%
   mutate(filter_size = case_when(filter_size=="<10" ~ ">0&<10",
                                  TRUE ~ filter_size))
  
+
+```
+
+## Sort Columns and Write to CSV File
+
+```{r}
+
 # add zero to casts with one digit to enable proper sorting
  chl_qual$cast <- ifelse((nchar(chl_qual$cast)) >2, 
                         yes = chl_qual$cast,
@@ -638,7 +651,6 @@ chl_qual <- chl_qual[with(chl_qual, order(cruise, cast)), ]
 
 
 write.csv(chl_qual, 'nes-lter-chl-transect.csv', row.names=FALSE)
-
 ```
 
 ## QA: Compare datasets
@@ -711,6 +723,22 @@ for (k in 1:nrow(qa_smd)) {
     qa_smd$chl_compare[k] <- TRUE
   } 
 }
+
+```
+## Plot values
+
+```{r}
+
+ggplot(chl_qual, aes(x=chl, y=-depth, color=filter_size))+ geom_point()
+ggplot(chl_qual, aes(x=date_time_utc, y=chl, color=filter_size))+ geom_point()
+station <- c("MVCO", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "NA")
+ggplot(chl_qual, aes(x=factor(nearest_station, level = station), y=chl, color=filter_size))+ geom_point()
+ggplot(chl_qual, aes(x=longitude, y=latitude, color=chl)) + geom_point() + scale_color_gradient(low = "green2", high = "darkgreen")
+ggplot(chl_qual, aes(x=longitude, y=latitude, color=cruise))+ geom_point()
+
+#ggplot(subset(irmdata, YEAR == "2019"),aes(x=SALINITY_PSS78, y=DIC_UMOL_KG, color=tadate_TA_UMOL_L))+ geom_point()
+
+
 
 ```
 
