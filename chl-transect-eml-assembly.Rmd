@@ -725,6 +725,30 @@ for (k in 1:nrow(qa_smd)) {
 }
 
 ```
+## Summary stats 
+
+```{r}
+
+# overall summary stats
+qa_chl <- chl_qual %>%
+  group_by(cruise, cast, filter_size) %>%
+  summarise(avg_chl = mean(chl, na.rm = TRUE), 
+            sd_chl = sd(chl, na.rm = TRUE), 
+            min_chl = min(chl, na.rm = TRUE), 
+            max_chl = max(chl, na.rm = TRUE)) 
+  
+# n() is a function in summarise but isn't working with the rest
+# n_chl = n(chl)
+  
+# round columns 
+ qa_chl$avg_chl <- round(qa_chl$avg_chl, 3) 
+ qa_chl$sd_chl <- round(qa_chl$sd_chl, 3)
+ 
+ # in order to plot averages, need to retain or join geographic data with qa_chl
+
+```
+
+
 ## Plot values
 
 ```{r}
@@ -737,8 +761,6 @@ ggplot(chl_qual, aes(x=factor(nearest_station, level = station), y=chl, color=fi
 #ggplot(chl_qual, aes(x=longitude, y=latitude, color=cruise))+ geom_point()
 
 #ggplot(subset(irmdata, YEAR == "2019"),aes(x=SALINITY_PSS78, y=DIC_UMOL_KG, color=tadate_TA_UMOL_L))+ geom_point()
-
-
 
 ```
 
