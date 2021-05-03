@@ -733,8 +733,8 @@ ggplot(chl_qual, aes(x=chl, y=-depth, color=filter_size))+ geom_point()
 ggplot(chl_qual, aes(x=date_time_utc, y=chl, color=filter_size))+ geom_point()
 station <- c("MVCO", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "NA")
 ggplot(chl_qual, aes(x=factor(nearest_station, level = station), y=chl, color=filter_size))+ geom_point()
-ggplot(chl_qual, aes(x=longitude, y=latitude, color=chl)) + geom_point() + scale_color_gradient(low = "green2", high = "darkgreen")
-ggplot(chl_qual, aes(x=longitude, y=latitude, color=cruise))+ geom_point()
+#ggplot(chl_qual, aes(x=longitude, y=latitude, color=chl)) + geom_point() + scale_color_gradient(low = "green2", high = "darkgreen")
+#ggplot(chl_qual, aes(x=longitude, y=latitude, color=cruise))+ geom_point()
 
 #ggplot(subset(irmdata, YEAR == "2019"),aes(x=SALINITY_PSS78, y=DIC_UMOL_KG, color=tadate_TA_UMOL_L))+ geom_point()
 
