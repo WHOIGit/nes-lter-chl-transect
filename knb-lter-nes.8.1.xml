@@ -82,7 +82,7 @@
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-05-03</pubDate>
+    <pubDate>2021-05-04</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and phaeopigments are measured from water column bottle samples taken on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Four size fractions are included in addition to whole seawater (&gt;0.7 micron): &gt;5 , &lt;10, &gt;10, and &gt;20 microns. These pigments are analyzed using a fluorometer in which fluorescence is measured versus a blank and a standard, and final concentrations are calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
@@ -151,7 +151,7 @@ On cruise EN608 only: Samples were collected from 4-8 depths from each LTER stat
           <para>Sosik: For each sample, a known volume was poured through a GF/F filter under low vacuum suction (5-10 in. Hg). The &lt;10 micron size fraction was separated using a filter funnel containing a 10 micron Nitex mesh screen above the GF/F. Filters were transferred to tissue capsules and frozen in liquid nitrogen until being extracted. Sosik lab group usually has 2 replicates from the same niskin bottle, indicated by a or b in the data table.</para>
           <para>Rynearson: Size fractionation was accomplished by pouring one bottle from each depth through a 5 micron Sterlitech polycarbonate filter and one through a 20 micron Sterlitech polycarbonate filter under low vacuum suction. Filters were transferred to 5 mL cryogenic vials and flash-frozen in liquid nitrogen until being extracted. Rynearson lab group usually has 2 replicates from the same niskin bottle, indicated by a or b in the data table.&#13;
 On cruise EN608 only: Samples were filtered by homogenizing a 1-L bottle and pouring 200 mL through each of a 5 micron polycarbonate filter and a 20 micron polycarbonate filter with vacuum &lt;20 kpa. Each filter was transferred to a tube containing 6 mL of 90% acetone previously chilled to -20 C, returned to -20 C, and extracted 20-30 hours later.</para>
-          <para>Menden-Deuer: Size fractionation was accomplished by pouring each sample through a GF/F (nominal 0.7 micron pore size) or 25-mm 5um (Poretics Polyester GVS Life Sciences), 10um (Isopore PolyCarbonate Millipore), or 20um (Polycarbonate Maine Manufacturing) filter on a manifold with vacuum not exceeding 200 mBar.  Filters were transferred to glass tubes containing 6 mL 95% ethanol at room temperature, which were then stored in darkness at room temperature for 12 h +/-2 h prior to reading on board ship. Menden-Deuer lab group usually has 3 replicates from multiple niskin bottles combined from same depth, indicated by a, b, or c in the data table.</para>
+          <para>Menden-Deuer: Size fractionation was accomplished by pouring each sample through a GF/F (nominal 0.7 micron pore size) or 25 mm-diameter 5 micron (Poretics Polyester GVS Life Sciences), 10 micron (Isopore PolyCarbonate Millipore), or 20 micron (Polycarbonate Maine Manufacturing) filter on a manifold with vacuum not exceeding 200 mBar.  Filters were transferred to glass tubes containing 6 mL 95% ethanol at room temperature, which were then stored in darkness at room temperature for 12 h +/-2 h prior to reading on board ship. Menden-Deuer lab group usually has 3 replicates from multiple niskin bottles combined from same depth, indicated by a, b, or c in the data table.</para>
           <para># Laboratory chlorophyll a measurement</para>
           <para>Sosik: Filters were removed from liquid nitrogen storage and transferred to glass test tubes. They were then extracted in 5 mL of 90% acetone for 24 hours on ice in a dark refrigerator. They were then vortexed and centrifuged. The solution was measured on a Turner Designs Handheld Aquafluor fluorometer, acidified with 3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples, and the fluorometer was calibrated approximately annually using a serial dilution of a commercially available stock solution (Sigma-Aldrich). </para>
           <para>Rynearson: Filters were removed from liquid nitrogen storage and extracted in 5 mL of 90% acetone for 24 hours on ice in a dark refrigerator. They were then vortexed, and the solution was measured on a Turner Designs Handheld Aquafluor fluorometer, acidified with 3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples, and the fluorometer was calibrated approximately annually using a serial dilution of a commercially available stock solution (Sigma-Aldrich). &#13;
@@ -276,6 +276,409 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
         <funding>NSF Award OCE-1743430</funding>
       </relatedProject>
     </project>
+    <dataTable>
+      <entityName>nes-lter-chl-transect.csv</entityName>
+      <entityDescription>Chlorophyll from CTD rosette data cleaned for EDI</entityDescription>
+      <physical>
+        <objectName>nes-lter-chl-transect.csv</objectName>
+        <size unit="bytes">314442</size>
+        <authentication method="MD5">5e3bf05f17ff5baeac424a64a7b61998</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>cruise</attributeName>
+          <attributeDefinition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>cast</attributeName>
+          <attributeDefinition>CTD rosette cast number chronological order per cruise</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>CTD rosette cast number chronological order per cruise</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>niskin</attributeName>
+          <attributeDefinition>Rosette bottle position number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Rosette bottle position number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>niskin_other_method</attributeName>
+          <attributeDefinition>Associated niskin with samples analyzed by another method</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Associated niskin with samples analyzed by another method</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>No associated niskin from the other method</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>date_time_utc</attributeName>
+          <attributeDefinition>Date and time in UTC when rosette bottle closed</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>latitude</attributeName>
+          <attributeDefinition>Ships latitude when the rosette bottle closed</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">39.7576</minimum>
+                  <maximum exclusive="false">41.3246</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>longitude</attributeName>
+          <attributeDefinition>Ships longitude when the rosette bottle closed</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-71.068</minimum>
+                  <maximum exclusive="false">-70.5227</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>depth</attributeName>
+          <attributeDefinition>Depth of sample below sea surface as recorded by CTD</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.619</minimum>
+                  <maximum exclusive="false">1000.616</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>method_contributor</attributeName>
+          <attributeDefinition>Method by which the associated sample was processed</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>method_Menden-Deuer</code>
+                    <definition>methods used by Menden-Deuer lab group</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>method_Rynearson</code>
+                    <definition>methods used by Rynearson lab group</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>method_Sosik</code>
+                    <definition>methods used by Sosik lab group</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>replicate</attributeName>
+          <attributeDefinition>Lowercase letter indicating replicate subsample drawn from the same rosette bottle</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Lowercase letter indicating replicate subsample drawn from the same rosette bottle</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>alternate_sample_id</attributeName>
+          <attributeDefinition>OOI filter identifier</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>OOI filter identifier</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Not applicable</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>filter_size</attributeName>
+          <attributeDefinition>Size fraction with filter and when applicable prefilter in micrometers</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>&gt;0</code>
+                    <definition>Filtered on 0.7 micron filter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;0&amp;&lt;10</code>
+                    <definition>Filtered on 0.7 micron filter with 10 micron prefilter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;5</code>
+                    <definition>Filtered on 5 micron filter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;20</code>
+                    <definition>Filtered on 20 micron filter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;0&amp;&lt;200</code>
+                    <definition>Filtered on 0.7 micron filter with 200 micron prefilter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;10&amp;&lt;200</code>
+                    <definition>Filtered on 10 micron filter with 200 micron prefilter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;5&amp;&lt;200</code>
+                    <definition>Filtered on 5 micron filter with 200 micron prefilter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;20&lt;200</code>
+                    <definition>Filtered on 20 micron filter with 200 micron prefilter</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>chl</attributeName>
+          <attributeDefinition>Concentration of chlorophyll-a per unit volume of the water body http://vocab.nerc.ac.uk/collection/P01/current/CPHLZZXX/ corresponding to BCO-DMO chl_a SeaBASS Chl and CF mass_concentration_of_ chlorophyll_a_in_sea_water</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>microgramsPerLiter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">7.742</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>phaeo</attributeName>
+          <attributeDefinition>Concentration of phaeopigments per unit volume of the water body</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>microgramsPerLiter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-0.284</minimum>
+                  <maximum exclusive="false">3.976</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>project_id</attributeName>
+          <attributeDefinition>Project associated with the sample collected</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>LTER</code>
+                    <definition>Long-Term Ecological Research</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>JP</code>
+                    <definition>MIT-WHOI Joint Program</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>OOI</code>
+                    <definition>Ocean Observatories Initiative</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>nearest_station</attributeName>
+          <attributeDefinition>NES-LTER standard station nearest to the sample location</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>NES-LTER standard station nearest to the sample location</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Distance greater than 2 km from NES-LTER standard station</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>distance</attributeName>
+          <attributeDefinition>Distance from sample location to nearest NES-LTER standard station</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>kilometer</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.02</minimum>
+                  <maximum exclusive="false">2</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Distance greater than 2 km from NES-LTER standard station</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>iode_quality_flag</attributeName>
+          <attributeDefinition>IODE Quality Flag primary level</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>natural</numberType>
+                <bounds>
+                  <minimum exclusive="false">1</minimum>
+                  <maximum exclusive="false">9</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>2465</numberOfRecords>
+    </dataTable>
   </dataset>
   <annotations>
     <annotation references="dataset">

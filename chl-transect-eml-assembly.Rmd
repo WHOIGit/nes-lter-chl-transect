@@ -69,7 +69,8 @@ api_chl <- api_chl  %>%
                                            filter_size==">5" ~ "method_Rynearson", 
                                            filter_size==">20" ~ "method_Rynearson", 
                                            filter_size==">0" ~ "method_Sosik")) 
-
+# this works because of the order of the case_when statements 
+# but more appropriate would be to apply conditional to both cruise and filter size
 
 
 ```
@@ -232,7 +233,7 @@ if (!file.exists("ctd-metadata.csv")) {
 ## Add Rynearson EN608 data
 
 ```{r}
-
+# Rynearson data was cleaned for examples notebook and is sourced from there
 tar_en608 <- read_csv("https://raw.githubusercontent.com/WHOIGit/nes-lter-examples/1df61a4627a8f845f01cd6fb05332698be3344fe/data/neslter_rynearson_chl.csv")
 
 tar_en608 <- tar_en608 %>%
@@ -248,6 +249,7 @@ tar_en608 <- tar_en608 %>%
 
 tar_en608$method_contributor <- as.character("method_Rynearson")
 
+# retaining df name api_chl but now includes data from API and Rynearson EN608 data not from API
 api_chl <- bind_rows(api_chl, tar_en608)
 
 ```                           
@@ -354,13 +356,7 @@ api_chl_final <- smd_key %>% ungroup() %>%
             by = c("cruise", "cast" = "cast_expand", "niskin" = "bottle_other_method")) %>%
   rename_at("niskin.y", ~"bottle_other_method")
 
-# add method_contributor column based on filter size
-# api_chl_final <- api_chl_final  %>% 
-#     mutate(method_contributor  = case_when(filter_size=="<10" ~ "method_Sosik",         
-#                                            filter_size==">5" ~ "method_Rynearson", 
-#                                            filter_size==">20" ~ "method_Rynearson", 
-#                                            filter_size==">0" ~ "method_Sosik")) 
-
+# added method_contributor for Rynearson and Sosik when assembling api_chl
 
 sum(is.na(api_chl_final$method_contributor))
 ```
@@ -409,7 +405,8 @@ api_chl_final <- api_chl_final[, headers]
 smd_chl_final <- smd_chl_final[, headers]
 
 # merge datasets by row
-chl_all <- bind_rows(api_chl_final, smd_chl_final)
+chl_all <- bind_rows(api_chl_final, smd_chl_final) 
+# not really all data until joined with OOI cruises in next section
 
 # eliminate extra columns, set cast type, round numeric columns
 chl_all <- chl_all %>% 
@@ -421,13 +418,13 @@ chl_all <- chl_all %>%
   mutate(chl = round(chl, 3)) %>% 
   mutate(phaeo = round(phaeo, 3)) 
 
-# row sorting
-# define order for filter size and cast columns
-size_sort <- c(">0",">5","<10",">10",">20")
-cast_sort <- str_sort(unique(chl_all$cast), numeric = TRUE)
-# sort by cruise-cast-size
-chl_all <- chl_all[with(chl_all, order(cruise, match(cast, cast_sort),
-                                    match(filter_size, size_sort))), ]
+# # row sorting -- now done later
+# # define order for filter size and cast columns
+# size_sort <- c(">0",">5","<10",">10",">20")
+# cast_sort <- str_sort(unique(chl_all$cast), numeric = TRUE)
+# # sort by cruise-cast-size
+# chl_all <- chl_all[with(chl_all, order(cruise, match(cast, cast_sort),
+#                                     match(filter_size, size_sort))), ]
 
 # add project_id
 chl_all$project_id <- ifelse(chl_all$cruise == "AR22" | 
@@ -465,9 +462,6 @@ chl_all <- chl_all[, headers_join]
 # bind rows
 chl_transect <- bind_rows(chl_all, chl_ar24)
 
-# write csv file of concatenated cruises
-#write.csv(chl_transect, 'nes-lter-chl-transect.csv', row.names=FALSE)
-
 ```
 
 ## Find Nearest Station and Station Distance
@@ -502,7 +496,7 @@ for (df_row in 1:nrow(chl_dis)) {
     # need to change this from a list to char
     nearest_station <- unname(unlist(nearest_station_list))
     distance <- km_from_df[index]
-    # If distance less than 1 km, use base R to add to respective columns in the full data table within the for loop
+    # If distance less than 2 km, use base R to add to respective columns in the full data table within the for loop
     if (distance < 2) {
       chl_dis$nearest_station[df_row] <- nearest_station
       chl_dis$distance[df_row] <- distance
@@ -522,6 +516,7 @@ Isolate samples that were taken at a distance greater than 2km from the nearest 
 
 st_dist_outliers <- chl_dis %>%
   filter(is.na(distance))
+# St_dist_outliers expect AR22, AR24A,B, EN627 cast 29, and just greater than 2km EN608 c14 L7, c15 L8, c22 L9, EN617 c21 L11,  EN644 c9 L8, EN649 c8 L8, c11 L9
 
 ```
 ## Add the Quality Flag for Data from the Sosik Lab
@@ -609,8 +604,6 @@ chl_qual <- chl_qual %>%
                                         method_contributor != "method_Menden-Deuer" & quality_flag == "3" ~ 4,
                                         ))
 
-
-                                    
  sum(is.na(chl_qual$iode_quality_flag))      
  
 # replace chlorophyll and phaeo with NA for any samples flagged bad data 
@@ -633,6 +626,9 @@ chl_qual <- chl_qual %>%
 
 ```{r}
 
+#remove original quality flag
+ chl_qual <- select(chl_qual, -quality_flag)
+ 
 # add zero to casts with one digit to enable proper sorting
  chl_qual$cast <- ifelse((nchar(chl_qual$cast)) >2, 
                         yes = chl_qual$cast,
@@ -640,7 +636,7 @@ chl_qual <- chl_qual %>%
                        
                                     
 # sort by cruise, cast, niskin, filter size
-size_sort <- c(">0",">0&<10",">5", ">20",">0&<200", ">0&<200", ">5&<200", ">20&<200")
+size_sort <- c(">0",">0&<10",">5", ">20",">0&<200", ">10&<200", ">5&<200", ">20&<200")
 cruise_sort <- str_sort(unique(chl_qual$cruise))
 cast_sort <- str_sort(unique(chl_qual$cast))
 niskin_sort <- str_sort(unique(chl_qual$niskin), numeric = TRUE)
@@ -731,7 +727,7 @@ for (k in 1:nrow(qa_smd)) {
 
 # overall summary stats
 qa_chl <- chl_qual %>%
-  group_by(cruise, cast, filter_size) %>%
+  group_by(cruise, filter_size) %>%
   summarise(avg_chl = mean(chl, na.rm = TRUE), 
             sd_chl = sd(chl, na.rm = TRUE), 
             min_chl = min(chl, na.rm = TRUE), 

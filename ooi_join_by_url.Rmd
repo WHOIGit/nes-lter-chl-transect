@@ -14,7 +14,7 @@ library(readxl)
 
 ```
 
-Accessing OOI data from Alfresco
+## Access OOI data from Alfresco
 
 ```{r}
 
@@ -31,7 +31,9 @@ httr::GET(url, authenticate("guest", "guest"), write_disk(tf <- tempfile(fileext
 tf
 
 ```
-Reading in Excel file from Alfresco and formatting cruise ID and column headers
+
+## Read in Excel file from Alfresco and format cruise ID and column headers
+
 ```{r}
 
 ar24ooi <- read_excel(tf, 1L) 
@@ -116,7 +118,9 @@ ar24ooi$filter_size_ooi <- ">0"
 
 
 ```
-Read in cruise data from API and format to enable join. 
+
+## Read in cruise data from API and format to enable join. 
+
 ```{r}
 ar24a <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24a.csv")
 ar24b <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24b.csv")
@@ -124,10 +128,10 @@ ar24c <- read_csv("https://nes-lter-data.whoi.edu/api/chl/ar24c.csv")
 
 # API excludes bucket sample from AR24B
 
-#AR24B cast 4 hard code output from API before join to accommodate combined bottles 4-6 and 9-10
+# AR24B cast 4 hard code output from API before join to accommodate combined bottles 4-6 and 9-10
 ar24b <- ar24b %>%
   mutate(niskin = ifelse(ra == 147.6 | ra == 151.8, "4-6", niskin), 
-         niskin = ifelse(ra == 108.7 | ra == 102.5, "10-12", niskin))
+         niskin = ifelse(ra == 108.7 | ra == 102.5, "9-10", niskin))
 
 ar24abc <- rbind(ar24a, ar24b, ar24c)
 
@@ -136,16 +140,15 @@ ar24abc <- ar24abc %>%
   mutate(phaeo_r = round(phaeo, 3)) %>% 
   select(-vol_filtered, -tau_calibration, -fd_calibration, -rb, -ra, -blank, -rb_blank, -ra_blank, -chl, -phaeo)
 
-# add method_contributor column
-ar24abc <- ar24abc  %>% 
-    mutate(method_contributor  = case_when(filter_size=="<10" ~ "method_Sosik",         
-                                           filter_size==">5" ~ "method_Rynearson", 
-                                           filter_size==">20" ~ "method_Rynearson", 
-                                           filter_size==">0" ~ "method_Sosik")) 
+# check filter sizes
+unique(ar24abc$filter_size)
+
 ```
 
-Join Alfresco and API data. 
+## Join Alfresco and API data. 
+
 ```{r}
+
 ar24all <- full_join(ar24ooi, ar24abc, by = c('cruise','cast','niskin','replicate'))
 
 ar24all <- ar24all %>% mutate(chl_diff = chl_ooi_r - chl_r)
@@ -169,12 +172,8 @@ ar24all <- ar24all %>%
         no = ar24all$phaeo_r))  
 # note that OOI, like Menden-Deuer group, reports NA when data not good quality
 
-# populate method_contributor based on filter_size
-ar24all <- ar24all  %>% 
-    mutate(method_contributor  = case_when(filter_size=="<10" ~ "method_Sosik",         
-                                           filter_size==">5" ~ "method_Rynearson", 
-                                           filter_size==">20" ~ "method_Rynearson", 
-                                           filter_size==">0" ~ "method_Sosik")) 
+# check filter sizes
+unique(ar24all$filter_size)
 
 # better to populate date from bottle file to include time
 # from bottle file: populate date, latitude, longitude, depth
@@ -188,15 +187,15 @@ nrow(ar24all)-nrow(ar24abc)-nrow(missingAPI)
 mismatch <- filter(ar24all, chl_diff > 0 | chl_diff < 0)
 # hard coding will include when water was combined from more than 1 niskin
 
-
-# write.csv(ar24all, 'ar24allqc.csv', row.names=FALSE)
-
 ```
 
-Prepare for join with all other transect data
+## Prepare for join with all other transect data
 
 ```{r}
 
+# populate method_contributor based on filter_size
+ar24all$method_contributor <- "method_Sosik"
+                            
 # add project_id based on filter_id_ooi. if it exists, project id is ooi. if not, project id is lter
 # make columns match nes-lter-chl-transect
 ar24all <- ar24all %>%
@@ -217,9 +216,9 @@ ar24all <- ar24all %>%
 
 # define headers for columns in desired order
 headers_ooi <- c("cruise", "cast", "niskin", "date", "latitude", "longitude", "depth", "method_contributor", "replicate","filter_id_ooi", "filter_size",  "chl", "phaeo", "project_id")
+
 # reorder columns as necessary
 ar24all <- ar24all[, headers_ooi]
-
 
 ```
 
@@ -278,5 +277,6 @@ ar24all <- ar24temp %>%
 
 # write csv file 
 write.csv(ar24all, 'ar24.csv', row.names=FALSE)
+
 ```
 
