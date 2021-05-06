@@ -798,7 +798,7 @@ xlsx_to_template(metadata.path = metadata,
 
 # Data Coverage
 # isolate date and geospatial columns for input
-date_col <- as.Date(chl_qual$date)
+date_col <- as.Date(chl_qual$date_time_utc)
 lat_col <- chl_qual$latitude
 lon_col <- chl_qual$longitude
 # run function to determine geospatial and temporal coverage

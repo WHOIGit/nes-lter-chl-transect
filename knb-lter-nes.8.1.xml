@@ -122,7 +122,14 @@
         </boundingCoordinates>
       </geographicCoverage>
       <temporalCoverage>
-        <rangeOfDates/>
+        <rangeOfDates>
+          <beginDate>
+            <calendarDate>2017-09-02</calendarDate>
+          </beginDate>
+          <endDate>
+            <calendarDate>2020-02-05</calendarDate>
+          </endDate>
+        </rangeOfDates>
       </temporalCoverage>
     </coverage>
     <annotation>
