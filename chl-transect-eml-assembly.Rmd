@@ -516,7 +516,7 @@ Isolate samples that were taken at a distance greater than 2km from the nearest 
 
 st_dist_outliers <- chl_dis %>%
   filter(is.na(distance))
-# St_dist_outliers expect AR22, AR24A,B, EN627 cast 29, and just greater than 2km EN608 c14 L7, c15 L8, c22 L9, EN617 c21 L11,  EN644 c9 L8, EN649 c8 L8, c11 L9
+# St_dist_outliers expect AR22, AR24A,B, EN627 cast 29, and just greater than 2km EN608 c14 L7, c15 L8, c22 L9, EN617 c21 L11, EN644 c9 L8, EN649 c8 L8, c11 L9
 
 ```
 ## Add the Quality Flag for Data from the Sosik Lab
@@ -649,7 +649,7 @@ chl_qual <- chl_qual[with(chl_qual, order(cruise, cast)), ]
 write.csv(chl_qual, 'nes-lter-chl-transect.csv', row.names=FALSE)
 ```
 
-## QA: Compare datasets
+## Compare Paired Menden-Deuer and Transect Samples
 
 Compare the average chl for groupings of cruise, cast, bottle, and filter_size.
 
@@ -745,18 +745,21 @@ qa_chl <- chl_qual %>%
 ```
 
 
-## Plot values
+## Plot chl values for visual inspection colored by filter_size
 
 ```{r}
 
+# plot values vs depth
 ggplot(chl_qual, aes(x=chl, y=-depth, color=filter_size))+ geom_point()
+
+# plot values vs cruise date
 ggplot(chl_qual, aes(x=date_time_utc, y=chl, color=filter_size))+ geom_point()
+
+# plot values vs LTER Standard Station
 station <- c("MVCO", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "NA")
 ggplot(chl_qual, aes(x=factor(nearest_station, level = station), y=chl, color=filter_size))+ geom_point()
-#ggplot(chl_qual, aes(x=longitude, y=latitude, color=chl)) + geom_point() + scale_color_gradient(low = "green2", high = "darkgreen")
-#ggplot(chl_qual, aes(x=longitude, y=latitude, color=cruise))+ geom_point()
 
-#ggplot(subset(irmdata, YEAR == "2019"),aes(x=SALINITY_PSS78, y=DIC_UMOL_KG, color=tadate_TA_UMOL_L))+ geom_point()
+# maximum value of the entire data set is EN608 >0&<200 at L1 (chl = 7.742 ug/L) and is notably higher than other replicates from this Niskin (chl = 6.041 and 6.385 ug/L) and the next highest value in the data set (6.824 ug/L)
 
 ```
 
