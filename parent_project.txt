@@ -98,6 +98,14 @@
       </funding>
       <relatedProject>
         <title>Ocean Observatories Initiative</title>
+        <personnel>
+          <individualName>
+            <givenName>John</givenName>
+            <surName>Trowbridge</surName>
+          </individualName>
+          <electronicMailAddress>jtrowbridge@whoi.edu</electronicMailAddress>
+          <role>Principal Investigator</role>
+        </personnel>
         <funding>NSF Award OCE-1743430</funding>
       </relatedProject>
     </project>
