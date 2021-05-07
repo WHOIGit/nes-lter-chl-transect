@@ -295,7 +295,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
     </project>
     <dataTable>
       <entityName>nes-lter-chl-transect.csv</entityName>
-      <entityDescription>Chlorophyll from CTD rosette data cleaned for EDI</entityDescription>
+      <entityDescription>Chlorophyll from discrete water column bottles cleaned for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-chl-transect.csv</objectName>
         <size unit="bytes">314442</size>

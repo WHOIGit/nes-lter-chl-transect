@@ -15,7 +15,7 @@ source("edi-utilities.R")
 
 # define R packages to require 
 require(here)
-require(tidyverse)
+library(tidyverse)
 require(readxl)
 require(lubridate)
 require(devtools)
@@ -808,7 +808,7 @@ coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 make_eml(path = getwd(),
          dataset.title = "Size-fractionated chlorophyll from water column bottle samples collected during NES-LTER Transect cruises, ongoing since 2017.",
          data.table = paste0(edi_filename, ".csv"),
-         data.table.description = "Chlorophyll from CTD rosette data cleaned for EDI",
+         data.table.description = "Chlorophyll from discrete water column bottles cleaned for EDI",
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
