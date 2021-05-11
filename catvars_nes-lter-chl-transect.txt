@@ -13,3 +13,8 @@ filter_size	>0&<200	Filtered on 0.7 micron filter with 200 micron prefilter
 filter_size	>10&<200	Filtered on 10 micron filter with 200 micron prefilter
 filter_size	>5&<200	Filtered on 5 micron filter with 200 micron prefilter
 filter_size	>20<200	Filtered on 20 micron filter with 200 micron prefilter
+iode_quality_flag	1	good
+iode_quality_flag	2	quality not evaluated, not available or unknown
+iode_quality_flag	3	questionable/suspect
+iode_quality_flag	4	bad
+iode_quality_flag	9	missing data

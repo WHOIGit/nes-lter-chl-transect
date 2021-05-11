@@ -16,4 +16,4 @@ phaeo	Concentration of phaeopigments per unit volume of the water body	numeric	m
 project_id	Project associated with the sample collected	categorical				
 nearest_station	NES-LTER standard station nearest to the sample location	character			NaN	Distance greater than 2 km from NES-LTER standard station
 distance	Distance from sample location to nearest NES-LTER standard station	numeric	kilometer		NaN	Distance greater than 2 km from NES-LTER standard station
-iode_quality_flag	IODE Quality Flag primary level	numeric	dimensionless		NaN	Missing value
+iode_quality_flag	IODE Quality Flag primary level	categorical				

@@ -818,16 +818,13 @@ make_eml(path = getwd(),
          package.id = pkg_id)
 
 ```
-
+## Insert Custom Project Node and Account for additional_info 
+ 
 ```{r}
 # Insert Custom Project Node
 project_insert(edi_pkg = pkg_id)
-```
-## Add semantic annotations
 
-```{r}
-#have tried several variations on specifying path but Error: The file specified by the input argument 'eml.in' doesn't exist.
-
-annotate_eml(annotations = "annotations.txt", eml.in = ("/nes-lter-chl-transect/knb-lter-nes.8.1.xml"), eml.out = "knb-lter-nes.8.1.xml")
+# Manually inserting additionalInfo node into EML XML because additional_info.txt is deleted when running script
 
 ```
+

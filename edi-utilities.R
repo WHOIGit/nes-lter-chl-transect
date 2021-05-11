@@ -45,9 +45,9 @@ xlsx_to_template <- function(metadata.path, edi.filename, rights, bbox = FALSE, 
   # this will not overwrite existing files
 
   # if theres is no additional information (default), eliminate the template
-  if(isFALSE(other.info)) {
-    unlink("additional_info.txt")
-  }
+#  if(isFALSE(other.info)) {
+#    unlink("additional_info.txt")
+#  }
 }
 
 ## Example use:
