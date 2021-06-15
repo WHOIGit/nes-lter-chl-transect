@@ -382,14 +382,14 @@ smd_chl_final <- smd_key %>% ungroup() %>%
 # add method_contributor col 
 smd_chl_final$method_contributor <- "method_Menden-Deuer" 
 
-# hard code the three records with no prefiltering
+# hard code the three records with no prefiltering  # no longer required because of the way SMD lab provides updated data
 # cruise en627 cast 30 niskin 1-2-3-4 last 3 samples have no 200um prefiltering 
-smd_chl_final <- smd_chl_final   %>%
-        mutate(filter_size = paste(filter_size, "<200", sep = "&")) %>%
-        mutate(filter_size  = case_when(cruise == "EN627" & ra_blank == "139.66" ~ ">0",         
-                                           cruise == "EN627" & ra_blank == "123.66" ~ ">0", 
-                                           cruise == "EN627" & ra_blank == "119.66" ~ ">0",
-                                           TRUE ~ filter_size) )
+#smd_chl_final <- smd_chl_final   %>%
+ #       mutate(filter_size = paste(filter_size, "<200", sep = "&")) %>%
+#        mutate(filter_size  = case_when(cruise == "EN627" & ra_blank == "139.66" ~ ">0",         
+ #                                          cruise == "EN627" & ra_blank == "123.66" ~ ">0", 
+  #                                         cruise == "EN627" & ra_blank == "119.66" ~ ">0",
+   #                                        TRUE ~ filter_size) )
   
 
 # important to check for NAs after using case_when
@@ -824,7 +824,12 @@ make_eml(path = getwd(),
 # Insert Custom Project Node
 project_insert(edi_pkg = pkg_id)
 
-# Manually inserting additionalInfo node into EML XML because additional_info.txt is deleted when running script
+# Manually insert additionalInfo node into EML XML after keywords because additional_info.txt is deleted when running script
+
+  #<additionalInfo>
+  #     <para>This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22) and Joel Llopiz (AR32).
+  #     </para>
+  #    </additionalInfo>
 
 ```
 
