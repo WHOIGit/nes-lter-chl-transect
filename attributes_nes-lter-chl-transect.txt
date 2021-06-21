@@ -13,7 +13,7 @@ alternate_sample_id	OOI filter identifier	character			NaN	Not applicable
 filter_size	Size fraction with filter and when applicable prefilter in micrometers	categorical				
 chl	Concentration of chlorophyll-a per unit volume of the water body http://vocab.nerc.ac.uk/collection/P01/current/CPHLZZXX/ corresponding to BCO-DMO chl_a SeaBASS Chl and CF mass_concentration_of_ chlorophyll_a_in_sea_water	numeric	microgramsPerLiter		NaN	Missing value
 phaeo	Concentration of phaeopigments per unit volume of the water body	numeric	microgramsPerLiter		NaN	Missing value
+iode_quality_flag	IODE Quality Flag primary level	categorical				
 project_id	Project associated with the sample collected	categorical				
 nearest_station	NES-LTER standard station nearest to the sample location	character			NaN	Distance greater than 2 km from NES-LTER standard station
 distance	Distance from sample location to nearest NES-LTER standard station	numeric	kilometer		NaN	Distance greater than 2 km from NES-LTER standard station
-iode_quality_flag	IODE Quality Flag primary level	categorical				

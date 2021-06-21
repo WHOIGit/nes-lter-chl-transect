@@ -367,6 +367,9 @@ sum(is.na(api_chl_final$method_contributor))
 api_chl_final$cast <- as.character(api_chl_final$cast)
 api_chl_final$niskin <- as.character(api_chl_final$niskin)
 
+# add quality flag column 
+api_chl_final$iode_quality_flag <- NA_integer_
+
 ## SMD chl
 smd_chl_final <- smd_key %>% ungroup() %>% 
   select(cruise, cast, niskin, depth, date, 
@@ -399,7 +402,7 @@ sum(is.na(smd_chl_final$method_contributor))
 smd_chl_final$bottle_other_method <- as.character(smd_chl_final$bottle_other_method)
 
 # define headers for columns in desired order
-headers <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "method_contributor", "replicate","vol_filtered", "filter_size", "tau_calibration", "fd_calibration", "rb", "ra", "blank", "rb_blank", "ra_blank", "chl", "phaeo")
+headers <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "method_contributor", "replicate","vol_filtered", "filter_size", "tau_calibration", "fd_calibration", "rb", "ra", "blank", "rb_blank", "ra_blank", "chl", "phaeo", "iode_quality_flag")
 # reorder columns as necessary
 api_chl_final <- api_chl_final[, headers]
 smd_chl_final <- smd_chl_final[, headers]
@@ -442,13 +445,15 @@ chl_all$alternate_sample_id <- NA_character_
 chl_ar24 <- read_csv('ar24.csv')
 
 chl_ar24$bottle_other_method <- NA_character_
+chl_ar24$iode_quality_flag <- NA_integer_
+
 chl_ar24 <- chl_ar24 %>%
   mutate(cast = as.character(cast)) %>% 
   mutate(depth = round(depth, 3))  %>%
   rename(alternate_sample_id = filter_id_ooi)
 
 # define headers for columns in desired order
-headers_join <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "method_contributor", "replicate", "alternate_sample_id", "filter_size",  "chl", "phaeo", "project_id")
+headers_join <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "method_contributor", "replicate", "alternate_sample_id", "filter_size",  "chl", "phaeo","iode_quality_flag", "project_id")
 # reorder columns as necessary
 chl_ar24 <- chl_ar24[, headers_join]
 chl_all <- chl_all[, headers_join]
@@ -591,11 +596,23 @@ missing_qual2 <- chl_qual %>%
 # convert lab quality flag to IODE quality flag
 # Rynearson EN608 flag is not reported, so change those flags to missing quality information
 
-chl_qual$iode_quality_flag <- NA_integer_
+#chl_qual$iode_quality_flag <- NA_integer_
 
+# original population of iode_quality_flag
+#chl_qual <- chl_qual %>%
+#    mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer" & !is.na(chl) ~ 1,
+#                                         method_contributor == "method_Menden-Deuer" & is.na(chl) ~ 4,
+#                                         method_contributor == "method_Rynearson" & cruise == "EN608" ~ 2,
+#                                         method_contributor != "method_Menden-Deuer" & is.na(chl) ~ 9,
+#                                         method_contributor != "method_Menden-Deuer" & quality_flag == "1" ~ 1,
+#                                         method_contributor != "method_Menden-Deuer" & is.na(quality_flag) ~ 2,
+#                                         method_contributor != "method_Menden-Deuer" & quality_flag == "2" ~ 3,
+#                                         method_contributor != "method_Menden-Deuer" & quality_flag == "3" ~ 4,
+#                                         ))
+
+# with iode_quality_flag provided in SMD files 
 chl_qual <- chl_qual %>%
-   mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer" & !is.na(chl) ~ 1,
-                                        method_contributor == "method_Menden-Deuer" & is.na(chl) ~ 4,
+   mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer"  ~ iode_quality_flag,
                                         method_contributor == "method_Rynearson" & cruise == "EN608" ~ 2,
                                         method_contributor != "method_Menden-Deuer" & is.na(chl) ~ 9,
                                         method_contributor != "method_Menden-Deuer" & quality_flag == "1" ~ 1,
@@ -603,6 +620,14 @@ chl_qual <- chl_qual %>%
                                         method_contributor != "method_Menden-Deuer" & quality_flag == "2" ~ 3,
                                         method_contributor != "method_Menden-Deuer" & quality_flag == "3" ~ 4,
                                         ))
+
+# use this when Sosik/Rynearson quality flags are updated, if provided as iode flags
+# chl_qual <- chl_qual %>%
+#    mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer"  ~ iode_quality_flag,
+#                                         method_contributor == "method_Rynearson" & cruise == "EN608" ~ 2,  # assuming Rynearson EN608 source remains the same
+#                                         method_contributor != "method_Menden-Deuer"  ~ quality_flag,
+#                                         ))
+
 
  sum(is.na(chl_qual$iode_quality_flag))      
  
@@ -759,7 +784,7 @@ ggplot(chl_qual, aes(x=date_time_utc, y=chl, color=filter_size))+ geom_point()
 station <- c("MVCO", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "NA")
 ggplot(chl_qual, aes(x=factor(nearest_station, level = station), y=chl, color=filter_size))+ geom_point()
 
-# maximum value of the entire data set is EN608 >0&<200 at L1 (chl = 7.742 ug/L) and is notably higher than other replicates from this Niskin (chl = 6.041 and 6.385 ug/L) and the next highest value in the data set (6.824 ug/L)
+# maximum value of the entire data set is EN608 >0&<200 at L1 (chl = 7.742 ug/L) and is notably higher than other replicates from this Niskin (chl = 6.041 and 6.386 ug/L) and the next highest value in the data set (6.824 ug/L)
 
 ```
 
