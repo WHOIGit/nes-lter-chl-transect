@@ -634,7 +634,8 @@ chl_qual <- chl_qual %>%
 # replace chlorophyll and phaeo with NA for any samples flagged bad data 
 chl_qual <- chl_qual %>%
   mutate(chl=replace(chl, iode_quality_flag=="4", NA)) %>%
-  mutate(phaeo=replace(phaeo, iode_quality_flag=="4", NA))
+  mutate(phaeo=replace(phaeo, iode_quality_flag=="4", NA)) %>%
+  mutate(iode_quality_flag=replace(iode_quality_flag, phaeo<0, 3))
 
 
 # change some column names and properly identify the filtering regime for Sosik prefiltered samples
