@@ -42,9 +42,10 @@
     </creator>
     <creator>
       <individualName>
-        <surName>Ocean Observatories Initiative</surName>
+        <givenName>OOI CGSN Data Team</givenName>
       </individualName>
       <organizationName>Ocean Observatories Initiative</organizationName>
+      <electronicMailAddress>help@oceanobservatories.org</electronicMailAddress>
     </creator>
     <associatedParty>
       <individualName>
