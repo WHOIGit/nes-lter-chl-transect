@@ -113,7 +113,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-06-22</pubDate>
+    <pubDate>2021-06-25</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and phaeopigments are measured from discrete bottle samples collected during CTD-rosette casts on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Size fractions in addition to whole seawater (&gt;0.7 micron) include &gt;5 , &lt;10, &gt;10, and &gt;20 microns with some samples pre-filtered &lt;200 microns. Pigments were analyzed using fluorometers in which fluorescence was measured versus a blank and a standard, and final concentrations were calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
@@ -139,7 +139,8 @@
       <keywordThesaurus>NOAA NODC Data Types Thesaurus</keywordThesaurus>
     </keywordSet>
     <additionalInfo>
-      <para>This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22) and Joel Llopiz (AR32).</para>
+      <para>This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22) and Joel Llopiz (AR32).&#13;
+We'd like to thank additional team members for sample collection and processing on cruises, including Erin Jones and Patricia Thibodeau.</para>
     </additionalInfo>
     <intellectualRights>
       <para>This data package is released to the "public domain" under Creative Commons CC0 1.0 "No Rights Reserved" (see: https://creativecommons.org/publicdomain/zero/1.0/). It is considered professional etiquette to provide attribution of the original work if this data package is shared in whole or by individual components. A generic citation is provided for this data package on the website https://portal.edirepository.org (herein "website") in the summary metadata page. Communication (and collaboration) with the creators of this data package is recommended to prevent duplicate research or publication. This data package (and its components) is made available "as is" and with no warranty of accuracy or fitness for use. The creators of this data package and the website shall not be liable for any damages resulting from misinterpretation or misuse of the data package or its components. For those data identified in the data table from the Ocean Observatories Initiative (OOI), see the Limitation of Liability and Disclaimer in the OOI User Terms and Conditions (https://oceanobservatories.org/how-to-use-and-cite-data/). Periodic updates of this data package may be available from the website. Thank you.&#13;
@@ -223,42 +224,110 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
       <personnel>
         <individualName>
           <givenName>Heidi</givenName>
-          <givenName>M</givenName>
           <surName>Sosik</surName>
         </individualName>
-        <organizationName>Northeast U.S. Shelf LTER</organizationName>
         <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
         <userId directory="https://orcid.org">https://orcid.org/0000-0002-4591-2842</userId>
         <role>Principal Investigator</role>
       </personnel>
-      <funding>NSF OCE-1655686</funding>
+      <personnel>
+        <individualName>
+          <givenName>Stace</givenName>
+          <surName>Beaulieu</surName>
+        </individualName>
+        <electronicMailAddress>sbeaulieu@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-2609-5453</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Changsheng</givenName>
+          <surName>Chen</surName>
+        </individualName>
+        <electronicMailAddress>c1chen@umassd.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0001-8715-6101</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Rubao</givenName>
+          <surName>Ji</surName>
+        </individualName>
+        <electronicMailAddress>rji@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-8839-5427</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Steven</givenName>
+          <surName>Lentz</surName>
+        </individualName>
+        <electronicMailAddress>slentz@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0001-7498-0281</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Joel</givenName>
+          <surName>Llopiz</surName>
+        </individualName>
+        <electronicMailAddress>jllopiz@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-7584-7471</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Susanne</givenName>
+          <surName>Menden-Deuer</surName>
+        </individualName>
+        <electronicMailAddress>smenden@uri.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-8434-4251</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Michael</givenName>
+          <surName>Neubert</surName>
+        </individualName>
+        <electronicMailAddress>mneubert@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0001-8820-5008</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Tatiana</givenName>
+          <surName>Rynearson</surName>
+        </individualName>
+        <electronicMailAddress>rynearson@uri.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0003-2951-0066</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Rachel</givenName>
+          <surName>Stanley</surName>
+        </individualName>
+        <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <abstract>
+        <para>The Northeast U.S. Shelf (NES) Long-Term Ecological Research (LTER) project integrates observations, experiments, and models to understand and predict how planktonic food webs are changing, and how those changes impact the productivity of higher trophic levels. The NES-LTER is co-located with the Northeast U.S. Continental Shelf Large Marine Ecosystem, spanning the Middle Atlantic Bight and Gulf of Maine. Our focal cross-shelf transect extends about 150 km southward from Martha’s Vineyard, MA, to just beyond the shelf break. Our overarching question is: How is climate change impacting the pelagic NES ecosystem and, in particular, affecting the relationship between compositional (e.g., species diversity and size structure) and aggregate (e.g., rates of primary production, and transfer of energy to important forage fish species) variability?</para>
+      </abstract>
+      <funding>
+        <para>NSF Award OCE-1655686</para>
+      </funding>
       <relatedProject>
-        <title>Northeast U.S. Shelf LTER</title>
+        <title>Ocean Observatories Initiative</title>
         <personnel>
           <individualName>
-            <givenName>Tatiana</givenName>
-            <surName>Rynearson</surName>
+            <givenName>John</givenName>
+            <surName>Trowbridge</surName>
           </individualName>
-          <organizationName>Northeast U.S. Shelf LTER</organizationName>
-          <electronicMailAddress>rynearson@uri.edu</electronicMailAddress>
-          <userId directory="https://orcid.org">https://orcid.org/0000-0003-2951-0066</userId>
+          <electronicMailAddress>jtrowbridge@whoi.edu</electronicMailAddress>
           <role>Principal Investigator</role>
         </personnel>
-        <funding>NSF OCE-1655686</funding>
-      </relatedProject>
-      <relatedProject>
-        <title>Northeast U.S. Shelf LTER</title>
-        <personnel>
-          <individualName>
-            <givenName>Susanne</givenName>
-            <surName>Menden-Deuer</surName>
-          </individualName>
-          <organizationName>Northeast U.S. Shelf LTER</organizationName>
-          <electronicMailAddress>smenden@uri.edu</electronicMailAddress>
-          <userId directory="https://orcid.org">https://orcid.org/0000-0002-8434-4251</userId>
-          <role>Principal Investigator</role>
-        </personnel>
-        <funding>NSF OCE-1655686</funding>
+        <funding>NSF Award OCE-1743430</funding>
       </relatedProject>
     </project>
     <dataTable>
@@ -266,8 +335,8 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
       <entityDescription>Chlorophyll from discrete water column bottles cleaned for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-chl-transect.csv</objectName>
-        <size unit="bytes">314179</size>
-        <authentication method="MD5">5f3da9449c4b1e730d6dd064260a2f55</authentication>
+        <size unit="bytes">314154</size>
+        <authentication method="MD5">3e57f925d22e7bf99101c48bb40cc32b</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>

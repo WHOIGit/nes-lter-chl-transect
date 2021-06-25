@@ -527,13 +527,13 @@ st_dist_outliers <- chl_dis %>%
 ## Add the Quality Flag for Data from the Sosik Lab
 
 In the future the API will output the quality_flag column,
-but for now we put a csv file into the repo created from the Xls sheet in the RDS 'raw' to API
+but for now we put a csv file into the repo created from the Xls sheet in the RDS 'raw' to API (or in the Sosik NAS)
 
 ```{r}
 
 # read in the csv file with quality_flag
 # note there are more cruises because ar31, ar34, and ar39
-qualities <- read_csv('NESLTERchl_20210409_RDS_quality_flag.csv')
+qualities <- read_csv('NESLTERchl_20210623_NAS_quality_flag.csv')
 qualities$cast <- as.character(qualities$cast)
 
 # left join to retain the rows in the chl data frame
@@ -637,7 +637,17 @@ chl_qual <- chl_qual %>%
   mutate(phaeo=replace(phaeo, iode_quality_flag=="4", NA)) %>%
   mutate(iode_quality_flag=replace(iode_quality_flag, phaeo<0, 3))
 
-
+# hard code the two records updated in Sosik NAS
+# EN627 MVCO cast 45, Niskin 1, >5 a (chl = 2.610 and phaeo = 0.846) and >20 a (chl = 1.725 and phaeo = 1.110)
+chl_qual <- chl_qual %>%
+  mutate(chl=replace(chl, cruise == "EN627" & cast == "45" & niskin == "1" & filter_size == ">5" & replicate == "a", "2.610"))  %>%       
+  mutate(chl=replace(chl, cruise == "EN627" & cast == "45" & niskin == "1" & filter_size == ">20" & replicate == "a", "1.725")) %>%
+  mutate(phaeo=replace(phaeo, cruise == "EN627" & cast == "45" & niskin == "1" & filter_size == ">5" & replicate == "a", "0.846")) %>%       
+  mutate(phaeo=replace(phaeo, cruise == "EN627" & cast == "45" & niskin == "1" & filter_size == ">20" & replicate == "a", "1.110"))
+# force chl and phaeo columns back to numeric
+chl_qual$chl <- as.numeric(chl_qual$chl)
+chl_qual$phaeo <- as.numeric(chl_qual$phaeo)
+                              
 # change some column names and properly identify the filtering regime for Sosik prefiltered samples
 chl_qual <- chl_qual %>%
   rename(date_time_utc = date)  %>%
