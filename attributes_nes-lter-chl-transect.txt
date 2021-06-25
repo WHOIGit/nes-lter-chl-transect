@@ -7,11 +7,11 @@ date_time_utc	Date and time in UTC when rosette bottle closed	Date		YYYY-MM-DD h
 latitude	Ships latitude when the rosette bottle closed	numeric	degree		NaN	Missing value
 longitude	Ships longitude when the rosette bottle closed	numeric	degree		NaN	Missing value
 depth	Depth of sample below sea surface as recorded by CTD	numeric	meter		NaN	Missing value
-method_contributor	Method by which the associated sample was processed	categorical				
+method_contributor	Method by which the sample was processed	categorical				
 replicate	Lowercase letter indicating replicate subsample drawn from the same rosette bottle	character				
 alternate_sample_id	OOI filter identifier	character			NaN	Not applicable
 filter_size	Size fraction with filter and when applicable prefilter in micrometers	categorical				
-chl	Concentration of chlorophyll-a per unit volume of the water body http://vocab.nerc.ac.uk/collection/P01/current/CPHLZZXX/ corresponding to BCO-DMO chl_a SeaBASS Chl and CF mass_concentration_of_ chlorophyll_a_in_sea_water	numeric	microgramsPerLiter		NaN	Missing value
+chl	Concentration of chlorophyll a per unit volume of the water body http://vocab.nerc.ac.uk/collection/P01/current/CPHLZZXX/ corresponding to BCO-DMO chl_a SeaBASS Chl and CF mass_concentration_of_ chlorophyll_a_in_sea_water	numeric	microgramsPerLiter		NaN	Missing value
 phaeo	Concentration of phaeopigments per unit volume of the water body	numeric	microgramsPerLiter		NaN	Missing value
 iode_quality_flag	IODE Quality Flag primary level	categorical				
 project_id	Project associated with the sample collected	categorical				

@@ -596,20 +596,6 @@ missing_qual2 <- chl_qual %>%
 # convert lab quality flag to IODE quality flag
 # Rynearson EN608 flag is not reported, so change those flags to missing quality information
 
-#chl_qual$iode_quality_flag <- NA_integer_
-
-# original population of iode_quality_flag
-#chl_qual <- chl_qual %>%
-#    mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer" & !is.na(chl) ~ 1,
-#                                         method_contributor == "method_Menden-Deuer" & is.na(chl) ~ 4,
-#                                         method_contributor == "method_Rynearson" & cruise == "EN608" ~ 2,
-#                                         method_contributor != "method_Menden-Deuer" & is.na(chl) ~ 9,
-#                                         method_contributor != "method_Menden-Deuer" & quality_flag == "1" ~ 1,
-#                                         method_contributor != "method_Menden-Deuer" & is.na(quality_flag) ~ 2,
-#                                         method_contributor != "method_Menden-Deuer" & quality_flag == "2" ~ 3,
-#                                         method_contributor != "method_Menden-Deuer" & quality_flag == "3" ~ 4,
-#                                         ))
-
 # with iode_quality_flag provided in SMD files 
 chl_qual <- chl_qual %>%
    mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer"  ~ iode_quality_flag,
@@ -621,14 +607,7 @@ chl_qual <- chl_qual %>%
                                         method_contributor != "method_Menden-Deuer" & quality_flag == "3" ~ 4,
                                         ))
 
-# use this when Sosik/Rynearson quality flags are updated, if provided as iode flags
-# chl_qual <- chl_qual %>%
-#    mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer"  ~ iode_quality_flag,
-#                                         method_contributor == "method_Rynearson" & cruise == "EN608" ~ 2,  # assuming Rynearson EN608 source remains the same
-#                                         method_contributor != "method_Menden-Deuer"  ~ quality_flag,
-#                                         ))
-
-
+# check for any missing flags
  sum(is.na(chl_qual$iode_quality_flag))      
  
 # replace chlorophyll and phaeo with NA for any samples flagged bad data 
@@ -653,6 +632,12 @@ chl_qual <- chl_qual %>%
   rename(date_time_utc = date)  %>%
   rename(niskin_other_method = bottle_other_method) %>%
   mutate(filter_size = case_when(filter_size=="<10" ~ ">0&<10",
+                                 TRUE ~ filter_size))
+
+# add prefilter for SMD EN649
+chl_qual <- chl_qual %>%
+  mutate(filter_size = case_when(cruise == "EN649" & method_contributor == "method_Menden-Deuer" & filter_size== ">0" ~ ">0&<200",
+                                 cruise == "EN649" & method_contributor == "method_Menden-Deuer" & filter_size== ">10" ~ ">10&<200",
                                  TRUE ~ filter_size))
  
 
@@ -844,7 +829,7 @@ coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 make_eml(path = getwd(),
          dataset.title = "Size-fractionated chlorophyll from water column bottle samples collected during NES-LTER Transect cruises, ongoing since 2017.",
          data.table = paste0(edi_filename, ".csv"),
-         data.table.description = "Chlorophyll from discrete water column bottles cleaned for EDI",
+         data.table.description = "Chlorophyll from discrete water column bottles compiled for EDI",
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
