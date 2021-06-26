@@ -114,7 +114,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadata Provider</role>
     </associatedParty>
-    <pubDate>2021-06-25</pubDate>
+    <pubDate>2021-06-26</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and phaeopigments are measured from discrete bottle samples collected during CTD-rosette casts on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Size fractions in addition to whole seawater (&gt;0.7 micron) include &gt;5 , &lt;10, &gt;10, and &gt;20 microns with some samples pre-filtered &lt;200 microns. Pigments were analyzed using fluorometers in which fluorescence was measured versus a blank and a standard, and final concentrations were calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
@@ -337,7 +337,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
       <physical>
         <objectName>nes-lter-chl-transect.csv</objectName>
         <size unit="bytes">314424</size>
-        <authentication method="MD5">3b08c3c65093f5d47ce006976014c1c8</authentication>
+        <authentication method="MD5">160688f08d00ea1eb450400fc1bd1412</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
