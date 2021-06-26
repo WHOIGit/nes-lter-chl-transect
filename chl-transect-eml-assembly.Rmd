@@ -600,6 +600,7 @@ missing_qual2 <- chl_qual %>%
 chl_qual <- chl_qual %>%
    mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer"  ~ iode_quality_flag,
                                         method_contributor == "method_Rynearson" & cruise == "EN608" ~ 2,
+                                        method_contributor == "method_Sosik" & cruise == "EN649" & quality_flag == "1" ~ 2, 
                                         method_contributor != "method_Menden-Deuer" & is.na(chl) ~ 9,
                                         method_contributor != "method_Menden-Deuer" & quality_flag == "1" ~ 1,
                                         method_contributor != "method_Menden-Deuer" & is.na(quality_flag) ~ 2,
