@@ -6,5 +6,6 @@ marine	LTER Controlled Vocabulary
 oceanography	LTER Controlled Vocabulary
 phytoplankton	LTER Controlled Vocabulary
 seawater	LTER Controlled Vocabulary
+organic matter	LTER Controlled Vocabulary
 CHLOROPHYLL	NASA GCMD
 CHLOROPHYLL	NOAA NODC Data Types Thesaurus
