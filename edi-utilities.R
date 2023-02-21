@@ -6,7 +6,9 @@
 # read in metadata info and import additional templates
 # write info data frames to text files for EML assembly
 
-xlsx_to_template <- function(metadata.path, edi.filename, rights, bbox = FALSE, other.info = FALSE) {
+xlsx_to_template <- function(metadata.path, edi.filename, rights, bbox = FALSE ) { 
+                            # other.info = FALSE
+                            
   # define the file type for the metadata
   metadata_xlsx <- paste0(metadata.path, ".xlsx")
   
@@ -98,35 +100,37 @@ data_coverage <- function(dates, lat, lon) {
 # requires the existance of a parent_project.txt
 # input path to xml file
 
-project_insert <- function(edi_pkg) {
-  if (!file.exists("parent_project.txt")) {
-    stop("parent_project.txt does not exist")
+# project_insert function copied from ediutilities package in February 2023 to accomodate filename
+project_insert <- function(edi_pkg, filename='parent_project.txt') {
+  if (!file.exists(filename)) {
+    rlog::log_fatal('parent project file does not exist')
+    stop("parent project file does not exist")
   }
   # read in parent project and xml file to be modified
-  newnode <- read_xml("parent_project.txt", from = "xml")
-  xml_file <- read_xml(paste0(getwd(), "/", edi_pkg, ".xml"), from = "xml")
-
+  newnode <- xml2::read_xml(filename, from = "xml")
+  xml_file <- xml2::read_xml(paste0(here::here(), "/", edi_pkg, ".xml"), from = "xml")
+  
   # replace existant project node
-  if (is.na(xml_find_first(xml_file, ".//project")) == FALSE) {
-      # find old project node
-      oldnode <- xml_find_first(xml_file, ".//project") # find project node
-      # replace with new project node
-      xml_replace(oldnode, newnode)
-    warning("<project> node already existed but was overwritten")
+  if (is.na(xml2::xml_find_first(xml_file, ".//project")) == FALSE) {
+    # find old project node
+    oldnode <- xml2::xml_find_first(xml_file, ".//project") # find project node
+    # replace with new project node
+    xml2::xml_replace(oldnode, newnode)
+    rlog::log_warn("<project> node already existed but was overwritten")
   }
   # insert new project node
-  if (is.na(xml_find_first(xml_file, ".//project")) == TRUE) {
+  if (is.na(xml2::xml_find_first(xml_file, ".//project")) == TRUE) {
     # find methods node
-    methodsnode <- xml_find_first(xml_file, ".//methods")
+    methodsnode <- xml2::xml_find_first(xml_file, ".//methods")
     # add project node after methods and before dataTable
-    xml_add_sibling(methodsnode, newnode, where = "after")
+    xml2::xml_add_sibling(methodsnode, newnode, where = "after")
   }
   # validate script
-  if (eml_validate(xml_file) == FALSE) {
-    warning("XML document not valid")
+  if (EML::eml_validate(xml_file) == FALSE) {
+    rlog::log_warn("EML document is not schema-valid XML")
   }
   # return(xml_file)
-  write_xml(xml_file, paste0(getwd(), "/", edi_pkg, ".xml"))
+  xml2::write_xml(xml_file, paste0(here::here(), "/", edi_pkg, ".xml"))
 }
 
 ## Example use: 

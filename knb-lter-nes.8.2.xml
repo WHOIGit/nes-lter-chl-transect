@@ -1,0 +1,764 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="knb-lter-nes.8.2" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd" system="edi">
+  <access authSystem="https://pasta.edirepository.org/authentication" order="allowFirst" scope="document">
+    <allow>
+      <principal>uid=NES,o=LTER,dc=ecoinformatics,dc=org</principal>
+      <permission>all</permission>
+    </allow>
+    <allow>
+      <principal>public</principal>
+      <permission>read</permission>
+    </allow>
+  </access>
+  <dataset id="dataset">
+    <title>Size-fractionated chlorophyll from water column bottle samples collected during NES-LTER Transect cruises, ongoing since 2017.</title>
+    <creator>
+      <individualName>
+        <givenName>Heidi</givenName>
+        <givenName>M</givenName>
+        <surName>Sosik</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-4591-2842</userId>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Tatiana</givenName>
+        <surName>Rynearson</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>rynearson@uri.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0003-2951-0066</userId>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Susanne</givenName>
+        <surName>Menden-Deuer</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>smenden@uri.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-8434-4251</userId>
+    </creator>
+    <creator>
+      <individualName>
+        <surName>OOI CGSN Data Team</surName>
+      </individualName>
+      <organizationName>Ocean Observatories Initiative</organizationName>
+      <electronicMailAddress>help@oceanobservatories.org</electronicMailAddress>
+    </creator>
+    <associatedParty>
+      <individualName>
+        <givenName>E. Taylor</givenName>
+        <surName>Crockford</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>ecrockford@whoi.edu</electronicMailAddress>
+      <role>technician</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Emily</givenName>
+        <surName>Peacock</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>epeacock@whoi.edu</electronicMailAddress>
+      <role>technician</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Diana</givenName>
+        <surName>Fontaine</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>fontained@uri.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-9172-6904</userId>
+      <role>graduate Student</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Mary</givenName>
+        <surName>McKenzie</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>mary_mckenzie@uri.edu</electronicMailAddress>
+      <role>technician</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Pierre</givenName>
+        <surName>Marrec</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>pmarrec@uri.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-7811-4150</userId>
+      <role>postdoctoral Researcher</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Jaxine</givenName>
+        <givenName>L</givenName>
+        <surName>Wolfe</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-9620-5382</userId>
+      <role>metadata Provider</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Kate</givenName>
+        <surName>Morkeski</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>kmorkeski@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
+      <role>metadata Provider</role>
+    </associatedParty>
+    <pubDate>2023-02-21</pubDate>
+    <abstract>
+      <para>Size-fractionated chlorophyll a and phaeopigments are measured from discrete bottle samples collected during CTD-rosette casts on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Size fractions in addition to whole seawater (&gt;0.7 micron) include &gt;5 , &lt;10, &gt;10, and &gt;20 microns with some samples pre-filtered &lt;200 microns. Pigments were analyzed using fluorometers in which fluorescence was measured versus a blank and a standard, and final concentrations were calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
+    </abstract>
+    <keywordSet>
+      <keyword>Populations</keyword>
+      <keyword>Primary production</keyword>
+      <keyword>Organic matter</keyword>
+      <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>chlorophyll a</keyword>
+      <keyword>marine</keyword>
+      <keyword>oceanography</keyword>
+      <keyword>phytoplankton</keyword>
+      <keyword>seawater</keyword>
+      <keywordThesaurus>LTER Controlled Vocabulary</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>CHLOROPHYLL</keyword>
+      <keywordThesaurus>NASA GCMD</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>CHLOROPHYLL</keyword>
+      <keywordThesaurus>NOAA NODC Data Types Thesaurus</keywordThesaurus>
+    </keywordSet>
+    <additionalInfo>
+      <para>Acknowledgements to Diana Fontaine and Taylor Crockford, who processed large numbers of samples for this data set. </para>
+      <para>This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22) and Joel Llopiz (AR32).&#13;
+We'd like to thank additional team members for sample collection and processing on cruises, including Erin Jones and Patricia Thibodeau.</para>
+    </additionalInfo>
+    <intellectualRights>
+      <para>This data package is released to the "public domain" under Creative Commons CC0 1.0 "No Rights Reserved" (see: https://creativecommons.org/publicdomain/zero/1.0/). It is considered professional etiquette to provide attribution of the original work if this data package is shared in whole or by individual components. A generic citation is provided for this data package on the website https://portal.edirepository.org (herein "website") in the summary metadata page. Communication (and collaboration) with the creators of this data package is recommended to prevent duplicate research or publication. This data package (and its components) is made available "as is" and with no warranty of accuracy or fitness for use. The creators of this data package and the website shall not be liable for any damages resulting from misinterpretation or misuse of the data package or its components. For those data identified in the data table from the Ocean Observatories Initiative (OOI), see the Limitation of Liability and Disclaimer in the OOI User Terms and Conditions (https://oceanobservatories.org/how-to-use-and-cite-data/). Periodic updates of this data package may be available from the website. Thank you.&#13;
+</para>
+    </intellectualRights>
+    <coverage>
+      <geographicCoverage>
+        <geographicDescription>NES-LTER Transect</geographicDescription>
+        <boundingCoordinates>
+          <westBoundingCoordinate>-71.068</westBoundingCoordinate>
+          <eastBoundingCoordinate>-70.2182</eastBoundingCoordinate>
+          <northBoundingCoordinate>41.3246</northBoundingCoordinate>
+          <southBoundingCoordinate>39.7576</southBoundingCoordinate>
+        </boundingCoordinates>
+      </geographicCoverage>
+      <temporalCoverage>
+        <rangeOfDates>
+          <beginDate>
+            <calendarDate>2017-09-02</calendarDate>
+          </beginDate>
+          <endDate>
+            <calendarDate>2020-02-05</calendarDate>
+          </endDate>
+        </rangeOfDates>
+      </temporalCoverage>
+    </coverage>
+    <annotation>
+      <propertyURI label="is about">http://purl.obolibrary.org/obo/IAO_0000136</propertyURI>
+      <valueURI label="Chlorophyll pigment concentrations in water bodies">http://vocab.nerc.ac.uk/collection/P02/current/CPWC/</valueURI>
+    </annotation>
+    <maintenance>
+      <description>ongoing</description>
+    </maintenance>
+    <contact>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <positionName>Nes-Lter Information Manager</positionName>
+      <electronicMailAddress>lter-nes-info@whoi.edu</electronicMailAddress>
+    </contact>
+    <methods>
+      <methodStep>
+        <description>
+          <para>Three lab groups led by PIs Sosik, Rynearson, and Menden-Deuer provide size-fractionated chlorophyll data from CTD rosette bottle and bucket sampling on NES-LTER Transect cruises. Methods specific to each lab group are distinguished in each section of methods below.</para>
+          <para>The Sosik lab methods are used for the data from the Ocean Observatories Initiative (OOI) included in this package (as indicated in the column "method_contributor").</para>
+          <para>In some instances, multiple lab groups collected samples at the same site/depth at nearly the same time but from different Niskins. When this is the case, the near-simultaneous sample is indicated in the column "niskin_other_method."</para>
+          <para># CTD Rosette Bottle and Bucket Sampling on NES-LTER Transect cruises</para>
+          <para>Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. Some samples were collected at the surface with a bucket, and they are identified with cast and Niskin of 0. </para>
+          <para>Sosik: At surface locations and at additional depths at high-priority stations, samples were collected for both &lt;10 micron and whole seawater size fractions, with &lt;10 micron sampling at depth targeted to the subsurface chlorophyll max (SCM) and another depth with detectable CTD fluorescence. At the remaining locations, samples were not size-fractioned. For each sample, two to three replicate bottles were filled from each Niskin and were stored in a cooler until filtered on-ship. </para>
+          <para>Rynearson: Samples were collected from LTER stations, aiming for 12 samples per station comprised of 2 size fractions (&gt;5 and &gt;20 micron) from each of 3 (sometimes 4) depths: surface, SCM, and below SCM (or other). For each depth, duplicate bottles were filled with seawater and returned to the ship's lab for filtering. &#13;
+On cruise EN608 only: Samples were collected from each of 6 stations and consisted of 2 size fractions (&gt;5 and &gt;20 micron) from 2-3 depths. For each depth, a 1-L sample bottle was filled with seawater and returned to the ship's lab for filtering. </para>
+          <para>Menden-Deuer: The Menden-Deuer group conducts incubation experiments at some LTER stations; chlorophyll is provided here only for the starting point (time zero). Seawater from 2-4 Niskins collected near the surface (and sometimes at depth) is transferred to a 10-L polycarbonate carboy through a 200 micron mesh prefilter. Pooled Niskins are identified in the "niskin" field as, for example, "11-12-13-14". Occasionally multiple casts in one location were used for these pooled samples, and these are indicated with cast identifiers such as "18-19". Triplicate 120-150 mL subsamples were collected from the carboys for each of the size fractions, which included &gt;20, &gt;10, &gt;5, and &gt;0 microns for cruises EN608, EN617, and EN627; since cruise EN644 only the &gt;10 and &gt;0 microns.</para>
+          <para>#  Chlorophyll Filtering Protocol</para>
+          <para>Sosik: For each sample, a known volume was filtered through a GF/F filter under low vacuum suction (5-10 in. Hg). The &lt;10 micron size fraction was separated using a filter funnel containing a 10 micron Nitex mesh screen above the GF/F. Filters were transferred to tissue capsules and flash frozen in liquid nitrogen until being extracted. Typically 2 replicates were filtered from a given Niskin bottle, and these are indicated by a or b in the data table.</para>
+          <para>Rynearson: Size fractionation was accomplished by filtering the water from one bottle from each depth through a 5 micron Sterlitech polycarbonate filter and one through a 20 micron Sterlitech polycarbonate filter under low vacuum suction (5-10 in. Hg). Filters were transferred to 5 mL cryogenic vials and flash-frozen in liquid nitrogen until being extracted. Rynearson lab group usually has 2 replicates from the same niskin bottle, indicated by a or b in the data table.&#13;
+On cruise EN608 only: Samples were filtered by homogenizing a 1-L bottle and pouring 200 mL through each of a 5 micron polycarbonate filter and a 20 micron polycarbonate filter with vacuum &lt;20 kpa. Each filter was transferred to a tube containing 6 mL of 90% acetone previously chilled to -20 C, returned to -20 C, and extracted 20-30 hours later.</para>
+          <para>Menden-Deuer: Size fractionation was accomplished by filtering each sample through a GF/F (nominal 0.7 micron pore size) or 25 mm-diameter 5 micron (Poretics Polyester GVS Life Sciences), 10 micron (Isopore PolyCarbonate Millipore), or 20 micron (Polycarbonate Maine Manufacturing) filter on a manifold with vacuum not exceeding 200 mBar.  Filters were transferred to glass tubes containing 6 mL 95% ethanol at room temperature for extraction on board ship. Menden-Deuer lab group usually has 3 replicates from multiple Niskin bottles combined from same depth, indicated by a, b, or c in the data table.</para>
+          <para># Chlorophyll a measurement</para>
+          <para>Sosik: Back at the shore lab, filters were removed from liquid nitrogen storage and transferred to glass test tubes. They were then extracted in 5 mL of 90% acetone for 24 hours in a dark refrigerator. They were then vortexed and centrifuged. The solution was measured on a Turner Designs Handheld Aquafluor fluorometer, acidified with 3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples, and the fluorometer was calibrated approximately annually using a serial dilution of a commercially available stock solution (Sigma-Aldrich). &#13;
+On cruise EN608, the majority of samples were measured at sea. Eight of the extracted samples on cruise EN608 were measured by both the Sosik and Rynearson labs.</para>
+          <para>Rynearson: Filters for the Rynearson group were extracted in the tubes in which they were frozen, following the protocol described above for the Sosik group, then vortexed (without being centrifuged), and read on the same Turner Designs Handheld Aquafluor fluorometer as the Sosik group.&#13;
+On cruise EN608 only: Processing occurred on board ship. Tubes were removed from freezer shortly before processing, vortexed for 10 seconds, and (begining with cast 15) centrifuged for 3 minutes. The supernatant was measured on a Turner Designs 10-AU-005 Benchtop Fluorometer, acidified with 2-3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples. Eight of the EN608 extracted samples were measured by both the Sosik and Rynearson labs.</para>
+          <para>Menden-Deuer: On board ship, filters were extracted for 12 h +/-2 h in darkness at room temperature. Then, in the presence of only red light, each tube was vortexed for 10 seconds, and its solution was poured into a new tube and measured on a Turner Designs 10-AU-005 Benchtop Fluorometer. Two drops of 10% hydrochloric acid were added to each tube, and it was measured again. If the reading after acidification was the same as the reading before acidification, an additional drop of acid was added and the sample was read again. Tubes were measured 30 seconds to one hour after acidification. Before and after each batch of samples, a blank, blank + acid, and a solid standard were measured. </para>
+          <para># Data Assembly and Cleaning</para>
+          <para>The data table was assembled from four sources: 1) the source data for the REST Application Programming Interface (API) of the NES-LTER data system, 2) data sheets provided by the Menden-Deuer lab, 3) a data sheet provided by the Rynearson lab for cruise EN608, and 4) a data sheet from the OOI Alfresco document server. &#13;
+Assembly starts in the main R markdown by concatenating LTER and JP cruises called from the NES-LTER REST API for values measured for the Sosik and Rynearson labs, and separately concatenating cruises provided by the Menden-Deuer lab.</para>
+          <para>We add CTD bottle metadata (time, latitude, longitude, depth) from the NES-LTER REST API, identify when there are corresponding samples with values measured for multiple lab groups for the same (or paired) cast at same depth, then merge the REST API and Menden-Deuer data.&#13;
+In a separate R markdown we join additional cruises from the REST API of the NES-LTER data system with the OOI data sheet to add the identifier (here called alternate_sample_id) for those samples for which OOI is the authoritative data source. Please refer to the R markdown for the exact version of the EXCEL file accessed via web services from the OOI Alfresco document server for Cruise Data from the Coastal Pioneer Array.Then in the main R markdown we add those cruises in collaboration with OOI to the compiled data table.</para>
+          <para>For all records, we calculated the distance to the nearest NES-LTER standard station L1 to L13 (standard for cruises starting with EN617 in August 2018).&#13;
+The final step in data assembly is the addition of a quality code for the Sosik and Rynearson values that is not yet provided through the REST API.&#13;
+Data cleaning included rounding values. Some hard-coding was needed to match some records to CTD bottle metadata. Note there were 27 samples lacking CTD bottle metadata.&#13;
+Data assembly, data cleaning and metadata template assembly were performed in R markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-chl-transect.</para>
+          <para># Quality Assurance</para>
+          <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We checked differences between replicates, visually inspected plots of chl values colored by filter size, and performed range checks. We confirm that all values provided for the OOI-funded replicates are equivalent to the data sheet as in the OOI Alfresco. </para>
+          <para>We provide a column in the data table to indicate quality using IODE Primary Level flags 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. The Menden-Deuer lab provides IODE flags directly, within their data sheets. The Sosik and Rynearson labs provide internal quality flags that are converted to IODE flags. Any sample with a negative phaeopigment value is provided with a flag of 3 (questionable). Samples with a flag of 4 (bad) are provided with chlorophyll/phaeopigment value of NA. A flag of 2 (not evaulated) is applied to Sosik samples from cruise EN649 as processing is not yet complete. &#13;
+[See IODE Ocean Data Standards recommendation here: https://www.iode.org/index.php?option=com_oe&amp;task=viewDocumentRecord&amp;docID=10762]&#13;
+</para>
+        </description>
+      </methodStep>
+    </methods>
+    <project>
+      <title>Northeast U.S. Shelf LTER</title>
+      <personnel>
+        <individualName>
+          <givenName>Heidi</givenName>
+          <surName>Sosik</surName>
+        </individualName>
+        <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-4591-2842</userId>
+        <role>Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Stace</givenName>
+          <surName>Beaulieu</surName>
+        </individualName>
+        <electronicMailAddress>sbeaulieu@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-2609-5453</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Changsheng</givenName>
+          <surName>Chen</surName>
+        </individualName>
+        <electronicMailAddress>c1chen@umassd.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0001-8715-6101</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Rubao</givenName>
+          <surName>Ji</surName>
+        </individualName>
+        <electronicMailAddress>rji@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-8839-5427</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Steven</givenName>
+          <surName>Lentz</surName>
+        </individualName>
+        <electronicMailAddress>slentz@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0001-7498-0281</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Joel</givenName>
+          <surName>Llopiz</surName>
+        </individualName>
+        <electronicMailAddress>jllopiz@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-7584-7471</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Susanne</givenName>
+          <surName>Menden-Deuer</surName>
+        </individualName>
+        <electronicMailAddress>smenden@uri.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-8434-4251</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Michael</givenName>
+          <surName>Neubert</surName>
+        </individualName>
+        <electronicMailAddress>mneubert@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0001-8820-5008</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Tatiana</givenName>
+          <surName>Rynearson</surName>
+        </individualName>
+        <electronicMailAddress>rynearson@uri.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0003-2951-0066</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Rachel</givenName>
+          <surName>Stanley</surName>
+        </individualName>
+        <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <abstract>
+        <para>The Northeast U.S. Shelf (NES) Long-Term Ecological Research (LTER) project integrates observations, experiments, and models to understand and predict how planktonic food webs are changing, and how those changes impact the productivity of higher trophic levels. The NES-LTER is co-located with the Northeast U.S. Continental Shelf Large Marine Ecosystem, spanning the Middle Atlantic Bight and Gulf of Maine. Our focal cross-shelf transect extends about 150 km southward from Martha’s Vineyard, MA, to just beyond the shelf break. Our overarching question is: How is climate change impacting the pelagic NES ecosystem and, in particular, affecting the relationship between compositional (e.g., species diversity and size structure) and aggregate (e.g., rates of primary production, and transfer of energy to important forage fish species) variability?</para>
+      </abstract>
+      <funding>
+        <para>NSF Award OCE-1655686</para>
+      </funding>
+      <relatedProject>
+        <title>RAPID: Collaborative Research: Autumn transition in plankton ecology during an ocean heatwave on the Northeast U.S. Shelf</title>
+        <personnel>
+          <individualName>
+            <givenName>Heidi</givenName>
+            <surName>Sosik</surName>
+          </individualName>
+          <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
+          <role>Principal Investigator</role>
+        </personnel>
+        <funding>NSF Award OCE-2102434</funding>
+      </relatedProject>
+    </project>
+    <dataTable>
+      <entityName>nes-lter-chl-transect</entityName>
+      <entityDescription>Chlorophyll from discrete water column bottles compiled for EDI</entityDescription>
+      <physical>
+        <objectName>nes-lter-chl-transect.csv</objectName>
+        <size unit="bytes">408479</size>
+        <authentication method="MD5">a9ebb7fda5d4451b5ba436ef2112a8f2</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>cruise</attributeName>
+          <attributeDefinition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>cast</attributeName>
+          <attributeDefinition>CTD rosette cast number chronological order per cruise</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>CTD rosette cast number chronological order per cruise</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>niskin</attributeName>
+          <attributeDefinition>Rosette bottle position number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Rosette bottle position number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>niskin_other_method</attributeName>
+          <attributeDefinition>Associated niskin with samples analyzed by another method</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Associated niskin with samples analyzed by another method</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>No associated niskin from the other method</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>date_time_utc</attributeName>
+          <attributeDefinition>Date and time in UTC when rosette bottle closed</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>latitude</attributeName>
+          <attributeDefinition>Ships latitude when the rosette bottle closed</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">39.7576</minimum>
+                  <maximum exclusive="false">41.3246</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>longitude</attributeName>
+          <attributeDefinition>Ships longitude when the rosette bottle closed</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-71.068</minimum>
+                  <maximum exclusive="false">-70.2182</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>depth</attributeName>
+          <attributeDefinition>Depth of sample below sea surface as recorded by CTD</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.619</minimum>
+                  <maximum exclusive="false">1000.616</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>method_contributor</attributeName>
+          <attributeDefinition>Method by which the sample was processed</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>method_Menden-Deuer</code>
+                    <definition>methods used by Menden-Deuer lab group</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>method_Rynearson</code>
+                    <definition>methods used by Rynearson lab group</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>method_Sosik</code>
+                    <definition>methods used by Sosik lab group</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>replicate</attributeName>
+          <attributeDefinition>Lowercase letter indicating replicate subsample drawn from the same rosette bottle</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Lowercase letter indicating replicate subsample drawn from the same rosette bottle</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>alternate_sample_id</attributeName>
+          <attributeDefinition>OOI filter identifier</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>OOI filter identifier</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Not applicable</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>filter_size</attributeName>
+          <attributeDefinition>Size fraction with filter and when applicable prefilter in micrometers</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>&gt;0</code>
+                    <definition>Filtered on 0.7 micron filter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;0&amp;&lt;10</code>
+                    <definition>Filtered on 0.7 micron filter with 10 micron prefilter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;5</code>
+                    <definition>Filtered on 5 micron filter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;20</code>
+                    <definition>Filtered on 20 micron filter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;0&amp;&lt;200</code>
+                    <definition>Filtered on 0.7 micron filter with 200 micron prefilter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;10&amp;&lt;200</code>
+                    <definition>Filtered on 10 micron filter with 200 micron prefilter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;5&amp;&lt;200</code>
+                    <definition>Filtered on 5 micron filter with 200 micron prefilter</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>&gt;20&lt;200</code>
+                    <definition>Filtered on 20 micron filter with 200 micron prefilter</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>chl</attributeName>
+          <attributeDefinition>Concentration of chlorophyll a per unit volume of the water body http://vocab.nerc.ac.uk/collection/P01/current/CPHLZZXX/ corresponding to BCO-DMO chl_a SeaBASS Chl and CF mass_concentration_of_ chlorophyll_a_in_sea_water</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>microgramsPerLiter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">14.631</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>phaeo</attributeName>
+          <attributeDefinition>Concentration of phaeopigments per unit volume of the water body</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>microgramsPerLiter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-0.369</minimum>
+                  <maximum exclusive="false">5.209</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>iode_quality_flag</attributeName>
+          <attributeDefinition>IODE Quality Flag primary level</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>1</code>
+                    <definition>good</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>2</code>
+                    <definition>quality not evaluated, not available or unknown</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>3</code>
+                    <definition>questionable/suspect</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>4</code>
+                    <definition>bad</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>9</code>
+                    <definition>missing data</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>project_id</attributeName>
+          <attributeDefinition>Project associated with the sample collected</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>LTER</code>
+                    <definition>Long-Term Ecological Research</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>JP</code>
+                    <definition>MIT-WHOI Joint Program</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>OOI</code>
+                    <definition>Ocean Observatories Initiative</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>nearest_station</attributeName>
+          <attributeDefinition>NES-LTER standard station nearest to the sample location</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>NES-LTER standard station nearest to the sample location</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Distance greater than 2 km from NES-LTER standard station</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>distance</attributeName>
+          <attributeDefinition>Distance from sample location to nearest NES-LTER standard station</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>kilometer</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">2</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Distance greater than 2 km from NES-LTER standard station</codeExplanation>
+          </missingValueCode>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>3231</numberOfRecords>
+    </dataTable>
+  </dataset>
+  <annotations>
+    <annotation references="dataset">
+      <propertyURI label="is about">http://purl.obolibrary.org/obo/IAO_0000136</propertyURI>
+      <valueURI label="Chlorophyll pigment concentrations in water bodies">http://vocab.nerc.ac.uk/collection/P02/current/CPWC/</valueURI>
+    </annotation>
+  </annotations>
+  <additionalMetadata>
+    <metadata>
+      <emlEditor>
+        <app>EMLassemblyline</app>
+        <release>3.5.5</release>
+      </emlEditor>
+    </metadata>
+  </additionalMetadata>
+</eml:eml>

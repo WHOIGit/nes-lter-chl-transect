@@ -35,7 +35,7 @@ here("nes-lter-chl-transect")
 
 # define the list of cruises to acquire data from (cruises LTER and JP)
 # we will call OOI cruises separately
-cruiselist <- c("en608","en617", "en627", "en644", "en649", "ar22", "ar32")
+cruiselist <- c("en608","en617", "en627", "en644", "en649", "ar22", "ar32", "ar31a", "ar28a", "ar28b", "ar31b", "ar31c", "ar34a", "ar34b", "ar39a", "ar39b")
   
 # pull from API if compiled cruise data file doesnt exist in directory
 if (!file.exists("chl-transect-api.csv")) {
@@ -533,8 +533,17 @@ but for now we put a csv file into the repo created from the Xls sheet in the RD
 
 # read in the csv file with quality_flag
 # note there are more cruises because ar31, ar34, and ar39
-qualities <- read_csv('NESLTERchl_20210623_NAS_quality_flag.csv')
+#qualities <- read_csv('NESLTERchl_20210623_NAS_quality_flag.csv')
+qualities <- read_csv('NESLTERchl20221228_flags.csv')
 qualities$cast <- as.character(qualities$cast)
+
+
+qualities <- qualities %>%
+   mutate(filter_size = case_when(filter_size == "10"  ~ "<10",
+                                  filter_size == "0"  ~ ">0",
+                                  filter_size == "5"  ~ ">5",
+                                  filter_size == "20"  ~ ">20",
+                                  ))
 
 # left join to retain the rows in the chl data frame
 chl_qual <- left_join(chl_dis, qualities, by = c('cruise','cast','niskin','filter_size','replicate'))
@@ -811,7 +820,7 @@ Step 4: Inserting a custom NES-LTER parent project node
 # define input files
 metadata <- "chl-transect-info"
 edi_filename <- "nes-lter-chl-transect"
-pkg_id <- "knb-lter-nes.8.1"
+pkg_id <- "knb-lter-nes.8.2"
 
 # Make EML Templates 
 xlsx_to_template(metadata.path = metadata, 
@@ -830,6 +839,7 @@ coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 make_eml(path = getwd(),
          dataset.title = "Size-fractionated chlorophyll from water column bottle samples collected during NES-LTER Transect cruises, ongoing since 2017.",
          data.table = paste0(edi_filename, ".csv"),
+         data.table.name = edi_filename,
          data.table.description = "Chlorophyll from discrete water column bottles compiled for EDI",
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
@@ -840,18 +850,12 @@ make_eml(path = getwd(),
          package.id = pkg_id)
 
 ```
-## Insert Custom Project Node and Account for additional_info 
+## Insert Custom Project Node 
  
 ```{r}
+
 # Insert Custom Project Node
-project_insert(edi_pkg = pkg_id)
-
-# Manually insert additionalInfo node into EML XML after keywords because additional_info.txt is deleted when running script
-
-  #<additionalInfo>
-  #     <para>This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22) and Joel Llopiz (AR32).
-  #     </para>
-  #    </additionalInfo>
+project_insert(edi_pkg = pkg_id, "parent_project_RAPID.txt")
 
 ```
 
