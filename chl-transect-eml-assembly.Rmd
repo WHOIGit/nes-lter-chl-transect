@@ -1,7 +1,7 @@
 ---
 title: "NES-LTER Chlorophyll Transect"
 author: "Jaxine Wolfe, Kate Morkeski, Stace Beaulieu"
-date: "Nov 2019 - Apr 2021"
+date: "February 2023"
 output: html_document
 ---
 
@@ -35,7 +35,11 @@ here("nes-lter-chl-transect")
 
 # define the list of cruises to acquire data from (cruises LTER and JP)
 # we will call OOI cruises separately
-cruiselist <- c("en608","en617", "en627", "en644", "en649", "ar22", "ar32", "ar31a", "ar28a", "ar28b", "ar31b", "ar31c", "ar34a", "ar34b", "ar39a", "ar39b")
+#cruiselist <- c("en608","en617", "en627", "en644", "en649", "ar22", "ar32")
+
+#cruiselist <- c("en608","en617", "en627", "en644", "en649", "ar22", "ar32", "ar31a", "ar28a", "ar28b", "ar31b", "ar31c", "ar34a", "ar34b", "ar39a", "ar39b")
+
+cruiselist <- c("en608","en617", "en627", "en644", "en649", "ar22", "ar32", "ar31a", "ar28a", "ar28b", "ar31b", "ar31c", "ar34a", "ar34b", "ar39a", "ar39b", "ar61b", "en655", "en657", "en661", "en668", "en687", "at46")
   
 # pull from API if compiled cruise data file doesnt exist in directory
 if (!file.exists("chl-transect-api.csv")) {
@@ -534,7 +538,7 @@ but for now we put a csv file into the repo created from the Xls sheet in the RD
 # read in the csv file with quality_flag
 # note there are more cruises because ar31, ar34, and ar39
 #qualities <- read_csv('NESLTERchl_20210623_NAS_quality_flag.csv')
-qualities <- read_csv('NESLTERchl20221228_flags.csv')
+qualities <- read_csv('NESLTERchl20230222_flags.csv')
 qualities$cast <- as.character(qualities$cast)
 
 

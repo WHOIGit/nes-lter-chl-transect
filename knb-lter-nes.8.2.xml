@@ -24,6 +24,32 @@
     </creator>
     <creator>
       <individualName>
+        <givenName>E.</givenName>
+        <givenName>Taylor</givenName>
+        <surName>Crockford</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>ecrockford@whoi.edu</electronicMailAddress>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Emily</givenName>
+        <surName>Peacock</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>epeacock@whoi.edu</electronicMailAddress>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Diana</givenName>
+        <surName>Fontaine</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>fontained@uri.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-9172-6904</userId>
+    </creator>
+    <creator>
+      <individualName>
         <givenName>Tatiana</givenName>
         <surName>Rynearson</surName>
       </individualName>
@@ -49,34 +75,6 @@
     </creator>
     <associatedParty>
       <individualName>
-        <givenName>E. Taylor</givenName>
-        <surName>Crockford</surName>
-      </individualName>
-      <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <electronicMailAddress>ecrockford@whoi.edu</electronicMailAddress>
-      <role>technician</role>
-    </associatedParty>
-    <associatedParty>
-      <individualName>
-        <givenName>Emily</givenName>
-        <surName>Peacock</surName>
-      </individualName>
-      <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <electronicMailAddress>epeacock@whoi.edu</electronicMailAddress>
-      <role>technician</role>
-    </associatedParty>
-    <associatedParty>
-      <individualName>
-        <givenName>Diana</givenName>
-        <surName>Fontaine</surName>
-      </individualName>
-      <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <electronicMailAddress>fontained@uri.edu</electronicMailAddress>
-      <userId directory="https://orcid.org">https://orcid.org/0000-0001-9172-6904</userId>
-      <role>graduate Student</role>
-    </associatedParty>
-    <associatedParty>
-      <individualName>
         <givenName>Mary</givenName>
         <surName>McKenzie</surName>
       </individualName>
@@ -96,16 +94,6 @@
     </associatedParty>
     <associatedParty>
       <individualName>
-        <givenName>Jaxine</givenName>
-        <givenName>L</givenName>
-        <surName>Wolfe</surName>
-      </individualName>
-      <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <userId directory="https://orcid.org">https://orcid.org/0000-0001-9620-5382</userId>
-      <role>metadata Provider</role>
-    </associatedParty>
-    <associatedParty>
-      <individualName>
         <givenName>Kate</givenName>
         <surName>Morkeski</surName>
       </individualName>
@@ -114,7 +102,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>metadata Provider</role>
     </associatedParty>
-    <pubDate>2023-02-21</pubDate>
+    <pubDate>2023-02-22</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and phaeopigments are measured from discrete bottle samples collected during CTD-rosette casts on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Size fractions in addition to whole seawater (&gt;0.7 micron) include &gt;5 , &lt;10, &gt;10, and &gt;20 microns with some samples pre-filtered &lt;200 microns. Pigments were analyzed using fluorometers in which fluorescence was measured versus a blank and a standard, and final concentrations were calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
@@ -165,7 +153,7 @@ We'd like to thank additional team members for sample collection and processing 
             <calendarDate>2017-09-02</calendarDate>
           </beginDate>
           <endDate>
-            <calendarDate>2020-02-05</calendarDate>
+            <calendarDate>2022-08-03</calendarDate>
           </endDate>
         </rangeOfDates>
       </temporalCoverage>
@@ -338,8 +326,8 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
       <entityDescription>Chlorophyll from discrete water column bottles compiled for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-chl-transect.csv</objectName>
-        <size unit="bytes">408479</size>
-        <authentication method="MD5">a9ebb7fda5d4451b5ba436ef2112a8f2</authentication>
+        <size unit="bytes">659303</size>
+        <authentication method="MD5">727d2c74f1888fc38b637e9db21a21fa</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -485,7 +473,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">1.619</minimum>
+                  <minimum exclusive="false">0.785</minimum>
                   <maximum exclusive="false">1000.616</maximum>
                 </bounds>
               </numericDomain>
@@ -744,7 +732,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>3231</numberOfRecords>
+      <numberOfRecords>5240</numberOfRecords>
     </dataTable>
   </dataset>
   <annotations>
