@@ -47,14 +47,17 @@ if (!file.exists("chl-transect-api.csv")) {
   # compile cruise data from api
   api_chl <- read_from_api(type = "chl", cruises = cruiselist)
 
-  # fix known issues with the data as available from the API
-  # EN627 there was no cast 4 per se, rather the btl file 4 for niskins 7-12
-  # should be appended to cast 3
-  api_chl <- api_chl %>% 
-   mutate(
-        cast = ifelse(cruise == "EN627" & cast=="4", 
-                   yes = 3, 
-                   no = api_chl$cast))
+ # no longer needed; correction made in source file
+   # # fix known issues with the data as available from the API
+  # # EN627 there was no cast 4 per se, rather the btl file 4 for niskins 7-12
+  # # should be appended to cast 3
+  # api_chl <- api_chl %>% 
+  #  mutate(
+  #       cast = ifelse(cruise == "EN627" & cast=="4", 
+  #                  yes = 3, 
+  #                  no = api_chl$cast))
+  
+  # ideally would provide these as NA with quality flag = bad
   # Not provided by API due to missing value: EN627 cast 17 niskin 8 filter 20 rep b; EN627 cast 26 niskin 7 filter 20 rep b
   
   # The following replicates are actually missing in the original XLS raw to API: 
@@ -389,16 +392,6 @@ smd_chl_final <- smd_key %>% ungroup() %>%
 # add method_contributor col 
 smd_chl_final$method_contributor <- "method_Menden-Deuer" 
 
-# hard code the three records with no prefiltering  # no longer required because of the way SMD lab provides updated data
-# cruise en627 cast 30 niskin 1-2-3-4 last 3 samples have no 200um prefiltering 
-#smd_chl_final <- smd_chl_final   %>%
- #       mutate(filter_size = paste(filter_size, "<200", sep = "&")) %>%
-#        mutate(filter_size  = case_when(cruise == "EN627" & ra_blank == "139.66" ~ ">0",         
- #                                          cruise == "EN627" & ra_blank == "123.66" ~ ">0", 
-  #                                         cruise == "EN627" & ra_blank == "119.66" ~ ">0",
-   #                                        TRUE ~ filter_size) )
-  
-
 # important to check for NAs after using case_when
 sum(is.na(smd_chl_final$method_contributor))
 
@@ -425,14 +418,6 @@ chl_all <- chl_all %>%
   mutate(chl = round(chl, 3)) %>% 
   mutate(phaeo = round(phaeo, 3)) 
 
-# # row sorting -- now done later
-# # define order for filter size and cast columns
-# size_sort <- c(">0",">5","<10",">10",">20")
-# cast_sort <- str_sort(unique(chl_all$cast), numeric = TRUE)
-# # sort by cruise-cast-size
-# chl_all <- chl_all[with(chl_all, order(cruise, match(cast, cast_sort),
-#                                     match(filter_size, size_sort))), ]
-
 # add project_id
 chl_all$project_id <- ifelse(chl_all$cruise == "AR22" | 
                                      chl_all$cruise == "AR32", 
@@ -444,6 +429,8 @@ chl_all$alternate_sample_id <- NA_character_
 ## Read in AR24 data from OOI's Alfresco and NES-LTER API joined in script "ooi_join_by_url.rmd". 
 
 ```{r}
+
+# fix niskin numbers per github issue
 
 # read in data
 chl_ar24 <- read_csv('ar24.csv')
@@ -541,7 +528,6 @@ but for now we put a csv file into the repo created from the Xls sheet in the RD
 qualities <- read_csv('NESLTERchl20230222_flags.csv')
 qualities$cast <- as.character(qualities$cast)
 
-
 qualities <- qualities %>%
    mutate(filter_size = case_when(filter_size == "10"  ~ "<10",
                                   filter_size == "0"  ~ ">0",
@@ -612,8 +598,8 @@ missing_qual2 <- chl_qual %>%
 # with iode_quality_flag provided in SMD files 
 chl_qual <- chl_qual %>%
    mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer"  ~ iode_quality_flag,
-                                        method_contributor == "method_Rynearson" & cruise == "EN608" ~ 2,
-                                        method_contributor == "method_Sosik" & cruise == "EN649" & quality_flag == "1" ~ 2, 
+                                        #method_contributor == "method_Rynearson" & cruise == "EN608" ~ 2,
+                                        #method_contributor == "method_Sosik" & cruise == "EN649" & quality_flag == "1" ~ 2, 
                                         method_contributor != "method_Menden-Deuer" & is.na(chl) ~ 9,
                                         method_contributor != "method_Menden-Deuer" & quality_flag == "1" ~ 1,
                                         method_contributor != "method_Menden-Deuer" & is.na(quality_flag) ~ 2,
@@ -630,13 +616,16 @@ chl_qual <- chl_qual %>%
   mutate(phaeo=replace(phaeo, iode_quality_flag=="4", NA)) %>%
   mutate(iode_quality_flag=replace(iode_quality_flag, phaeo<0, 3))
 
-# hard code the two records updated in Sosik NAS
-# EN627 MVCO cast 45, Niskin 1, >5 a (chl = 2.610 and phaeo = 0.846) and >20 a (chl = 1.725 and phaeo = 1.110)
-chl_qual <- chl_qual %>%
-  mutate(chl=replace(chl, cruise == "EN627" & cast == "45" & niskin == "1" & filter_size == ">5" & replicate == "a", "2.610"))  %>%       
-  mutate(chl=replace(chl, cruise == "EN627" & cast == "45" & niskin == "1" & filter_size == ">20" & replicate == "a", "1.725")) %>%
-  mutate(phaeo=replace(phaeo, cruise == "EN627" & cast == "45" & niskin == "1" & filter_size == ">5" & replicate == "a", "0.846")) %>%       
-  mutate(phaeo=replace(phaeo, cruise == "EN627" & cast == "45" & niskin == "1" & filter_size == ">20" & replicate == "a", "1.110"))
+# no longer needed
+# # hard code the two records updated in Sosik NAS
+# # EN627 MVCO cast 45, Niskin 1, >5 a (chl = 2.610 and phaeo = 0.846) and >20 a (chl = 1.725 and phaeo = 1.110)
+# chl_qual <- chl_qual %>%
+#   mutate(chl=replace(chl, cruise == "EN627" & cast == "45" & niskin == "1" & filter_size == ">5" & replicate == "a", "2.610"))  %>%       
+#   mutate(chl=replace(chl, cruise == "EN627" & cast == "45" & niskin == "1" & filter_size == ">20" & replicate == "a", "1.725")) %>%
+#   mutate(phaeo=replace(phaeo, cruise == "EN627" & cast == "45" & niskin == "1" & filter_size == ">5" & replicate == "a", "0.846")) %>%       
+#   mutate(phaeo=replace(phaeo, cruise == "EN627" & cast == "45" & niskin == "1" & filter_size == ">20" & replicate == "a", "1.110"))
+
+
 # force chl and phaeo columns back to numeric
 chl_qual$chl <- as.numeric(chl_qual$chl)
 chl_qual$phaeo <- as.numeric(chl_qual$phaeo)
@@ -669,19 +658,25 @@ chl_qual <- chl_qual %>%
                         yes = chl_qual$cast,
                         no = str_pad(chl_qual$cast, width=2, side="left", pad="0"))
                        
-                                    
+#  simply sort by datetime? # puts rows without bottle metadata at end of file     
+  chl_qual <- chl_qual[order(chl_qual$date_time_utc), ]
+ 
 # sort by cruise, cast, niskin, filter size
 size_sort <- c(">0",">0&<10",">5", ">20",">0&<200", ">10&<200", ">5&<200", ">20&<200")
 cruise_sort <- str_sort(unique(chl_qual$cruise))
 cast_sort <- str_sort(unique(chl_qual$cast))
 niskin_sort <- str_sort(unique(chl_qual$niskin), numeric = TRUE)
 
-chl_qual <- chl_qual[with(chl_qual, order(cruise, match(cast, cast_sort), match(niskin, niskin_sort),
-                                    match(filter_size, size_sort))), ]
-chl_qual <- chl_qual[with(chl_qual, order(cruise, cast)), ]
+#chl_qual <- chl_qual[with(chl_qual, order(cruise, match(cast, cast_sort), match(niskin, niskin_sort),
+ #                                   match(filter_size, size_sort))), ]
+
+#chl_qual <- chl_qual[with(chl_qual, order(match(cast, cast_sort), match(niskin, niskin_sort),
+ #                                   match(filter_size, size_sort))), ]
+
+#chl_qual <- chl_qual[with(chl_qual, order(cruise, cast)), ]
 
 
-write.csv(chl_qual, 'nes-lter-chl-transect.csv', row.names=FALSE)
+write.csv(chl_qual, 'nes-lter-chl-transect-rosette.csv', row.names=FALSE)
 ```
 
 ## Compare Paired Menden-Deuer and Transect Samples
@@ -823,7 +818,7 @@ Step 4: Inserting a custom NES-LTER parent project node
 
 # define input files
 metadata <- "chl-transect-info"
-edi_filename <- "nes-lter-chl-transect"
+edi_filename <- "nes-lter-chl-transect-rosette"
 pkg_id <- "knb-lter-nes.8.2"
 
 # Make EML Templates 

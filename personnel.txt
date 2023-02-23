@@ -1,7 +1,7 @@
 givenName	middleInitial	surName	organizationName	electronicMailAddress	userId	role	projectTitle	fundingAgency	fundingNumber
 Heidi	M	Sosik	Northeast U.S. Shelf LTER	hsosik@whoi.edu	0000-0002-4591-2842	creator	Northeast U.S. Shelf LTER	NSF	OCE-1655686
-E.	Taylor	Crockford	Northeast U.S. Shelf LTER	ecrockford@whoi.edu		creator	Northeast U.S. Shelf LTER	NSF	OCE-1655686
-Emily		Peacock	Northeast U.S. Shelf LTER	epeacock@whoi.edu		creator	Northeast U.S. Shelf LTER	NSF	OCE-1655686
+E.	Taylor	Crockford	Northeast U.S. Shelf LTER	ecrockford@whoi.edu	0000-0002-2122-0462	creator	Northeast U.S. Shelf LTER	NSF	OCE-1655686
+Emily		Peacock	Northeast U.S. Shelf LTER	epeacock@whoi.edu	0000-0003-0194-7282	creator	Northeast U.S. Shelf LTER	NSF	OCE-1655686
 Diana		Fontaine	Northeast U.S. Shelf LTER	fontained@uri.edu	0000-0001-9172-6904	creator	Northeast U.S. Shelf LTER	NSF	OCE-1655686
 Tatiana		Rynearson	Northeast U.S. Shelf LTER	rynearson@uri.edu	0000-0003-2951-0066	creator	Northeast U.S. Shelf LTER	NSF	OCE-1655686
 Susanne		Menden-Deuer	Northeast U.S. Shelf LTER	smenden@uri.edu	0000-0002-8434-4251	creator	Northeast U.S. Shelf LTER	NSF	OCE-1655686

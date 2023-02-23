@@ -30,6 +30,7 @@
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
       <electronicMailAddress>ecrockford@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-2122-0462</userId>
     </creator>
     <creator>
       <individualName>
@@ -38,6 +39,7 @@
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
       <electronicMailAddress>epeacock@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0003-0194-7282</userId>
     </creator>
     <creator>
       <individualName>
@@ -102,7 +104,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>metadata Provider</role>
     </associatedParty>
-    <pubDate>2023-02-22</pubDate>
+    <pubDate>2023-02-23</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and phaeopigments are measured from discrete bottle samples collected during CTD-rosette casts on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Size fractions in addition to whole seawater (&gt;0.7 micron) include &gt;5 , &lt;10, &gt;10, and &gt;20 microns with some samples pre-filtered &lt;200 microns. Pigments were analyzed using fluorometers in which fluorescence was measured versus a blank and a standard, and final concentrations were calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
@@ -129,7 +131,6 @@
       <keywordThesaurus>NOAA NODC Data Types Thesaurus</keywordThesaurus>
     </keywordSet>
     <additionalInfo>
-      <para>Acknowledgements to Diana Fontaine and Taylor Crockford, who processed large numbers of samples for this data set. </para>
       <para>This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22) and Joel Llopiz (AR32).&#13;
 We'd like to thank additional team members for sample collection and processing on cruises, including Erin Jones and Patricia Thibodeau.</para>
     </additionalInfo>
@@ -204,8 +205,10 @@ Data cleaning included rounding values. Some hard-coding was needed to match som
 Data assembly, data cleaning and metadata template assembly were performed in R markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-chl-transect.</para>
           <para># Quality Assurance</para>
           <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We checked differences between replicates, visually inspected plots of chl values colored by filter size, and performed range checks. We confirm that all values provided for the OOI-funded replicates are equivalent to the data sheet as in the OOI Alfresco. </para>
-          <para>We provide a column in the data table to indicate quality using IODE Primary Level flags 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. The Menden-Deuer lab provides IODE flags directly, within their data sheets. The Sosik and Rynearson labs provide internal quality flags that are converted to IODE flags. Any sample with a negative phaeopigment value is provided with a flag of 3 (questionable). Samples with a flag of 4 (bad) are provided with chlorophyll/phaeopigment value of NA. A flag of 2 (not evaulated) is applied to Sosik samples from cruise EN649 as processing is not yet complete. &#13;
-[See IODE Ocean Data Standards recommendation here: https://www.iode.org/index.php?option=com_oe&amp;task=viewDocumentRecord&amp;docID=10762]&#13;
+          <para>We provide a column in the data table to indicate quality using IODE Primary Level flags 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. The Menden-Deuer lab provides IODE flags directly, within their data sheets. The Sosik and Rynearson labs provide internal quality flags that are converted to IODE flags. Any sample with a negative phaeopigment value is provided with a flag of 3 (questionable). Samples with a flag of 4 (bad) are provided with chlorophyll/phaeopigment value of NA. &#13;
+[See IODE Ocean Data Standards recommendation here: https://www.iode.org/index.php?option=com_oe&amp;task=viewDocumentRecord&amp;docID=10762]</para>
+          <para># Changes To Previous Version</para>
+          <para>In version 2, samples from several cruises were added, extending the temporal coverage of the data set by approximately 2 years and approximately doubling the number of records compared to version 1. Some records from version 1 were slightly changed, reflecting updated calibration values, and some flags were updated. The order of records was updated to chronological. The data table name has been updated to distinguish from the nes-lter-chl-transect-underway-discrete package. The author list has been updated, reflecting, in part, the large contribution to sample analysis and quality evaluation by Crockford and Fontaine. &#13;
 </para>
         </description>
       </methodStep>
@@ -322,12 +325,12 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
       </relatedProject>
     </project>
     <dataTable>
-      <entityName>nes-lter-chl-transect</entityName>
+      <entityName>nes-lter-chl-transect-rosette</entityName>
       <entityDescription>Chlorophyll from discrete water column bottles compiled for EDI</entityDescription>
       <physical>
-        <objectName>nes-lter-chl-transect.csv</objectName>
-        <size unit="bytes">659303</size>
-        <authentication method="MD5">727d2c74f1888fc38b637e9db21a21fa</authentication>
+        <objectName>nes-lter-chl-transect-rosette.csv</objectName>
+        <size unit="bytes">659305</size>
+        <authentication method="MD5">032dfb132c31e9be0caa1a5ec00f8079</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -396,7 +399,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
             </nominal>
           </measurementScale>
           <missingValueCode>
-            <code>NaN</code>
+            <code>NA</code>
             <codeExplanation>No associated niskin from the other method</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -411,7 +414,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
             </dateTime>
           </measurementScale>
           <missingValueCode>
-            <code>NaN</code>
+            <code>NA</code>
             <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -434,7 +437,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
             </ratio>
           </measurementScale>
           <missingValueCode>
-            <code>NaN</code>
+            <code>NA</code>
             <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -457,7 +460,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
             </ratio>
           </measurementScale>
           <missingValueCode>
-            <code>NaN</code>
+            <code>NA</code>
             <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -480,7 +483,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
             </ratio>
           </measurementScale>
           <missingValueCode>
-            <code>NaN</code>
+            <code>NA</code>
             <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -537,7 +540,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
             </nominal>
           </measurementScale>
           <missingValueCode>
-            <code>NaN</code>
+            <code>NA</code>
             <codeExplanation>Not applicable</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -578,7 +581,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
                     <definition>Filtered on 5 micron filter with 200 micron prefilter</definition>
                   </codeDefinition>
                   <codeDefinition>
-                    <code>&gt;20&lt;200</code>
+                    <code>&gt;20&amp;&lt;200</code>
                     <definition>Filtered on 20 micron filter with 200 micron prefilter</definition>
                   </codeDefinition>
                 </enumeratedDomain>
@@ -605,7 +608,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
             </ratio>
           </measurementScale>
           <missingValueCode>
-            <code>NaN</code>
+            <code>NA</code>
             <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -628,7 +631,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
             </ratio>
           </measurementScale>
           <missingValueCode>
-            <code>NaN</code>
+            <code>NA</code>
             <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -704,7 +707,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
             </nominal>
           </measurementScale>
           <missingValueCode>
-            <code>NaN</code>
+            <code>NA</code>
             <codeExplanation>Distance greater than 2 km from NES-LTER standard station</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -727,7 +730,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
             </ratio>
           </measurementScale>
           <missingValueCode>
-            <code>NaN</code>
+            <code>NA</code>
             <codeExplanation>Distance greater than 2 km from NES-LTER standard station</codeExplanation>
           </missingValueCode>
         </attribute>

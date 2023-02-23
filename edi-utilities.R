@@ -6,7 +6,7 @@
 # read in metadata info and import additional templates
 # write info data frames to text files for EML assembly
 
-xlsx_to_template <- function(metadata.path, edi.filename, rights, bbox = FALSE ) { 
+xlsx_to_template <- function(metadata.path, edi.filename, rights, bbox = FALSE) { 
                             # other.info = FALSE
                             
   # define the file type for the metadata

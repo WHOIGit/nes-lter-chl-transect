@@ -1,0 +1,19 @@
+attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCode	missingValueCodeExplanation
+cruise	Identifier for research cruise generally including abbreviation for research vessel and voyage number	character				
+cast	CTD rosette cast number chronological order per cruise	character				
+niskin	Rosette bottle position number	character				
+niskin_other_method	Associated niskin with samples analyzed by another method	character			"NA"	No associated niskin from the other method
+date_time_utc	Date and time in UTC when rosette bottle closed	Date		YYYY-MM-DD hh:mm:ss	"NA"	Missing value
+latitude	Ships latitude when the rosette bottle closed	numeric	degree		"NA"	Missing value
+longitude	Ships longitude when the rosette bottle closed	numeric	degree		"NA"	Missing value
+depth	Depth of sample below sea surface as recorded by CTD	numeric	meter		"NA"	Missing value
+method_contributor	Method by which the sample was processed	categorical				
+replicate	Lowercase letter indicating replicate subsample drawn from the same rosette bottle	character				
+alternate_sample_id	OOI filter identifier	character			"NA"	Not applicable
+filter_size	Size fraction with filter and when applicable prefilter in micrometers	categorical				
+chl	Concentration of chlorophyll a per unit volume of the water body http://vocab.nerc.ac.uk/collection/P01/current/CPHLZZXX/ corresponding to BCO-DMO chl_a SeaBASS Chl and CF mass_concentration_of_ chlorophyll_a_in_sea_water	numeric	microgramsPerLiter		"NA"	Missing value
+phaeo	Concentration of phaeopigments per unit volume of the water body	numeric	microgramsPerLiter		"NA"	Missing value
+iode_quality_flag	IODE Quality Flag primary level	categorical				
+project_id	Project associated with the sample collected	categorical				
+nearest_station	NES-LTER standard station nearest to the sample location	character			"NA"	Distance greater than 2 km from NES-LTER standard station
+distance	Distance from sample location to nearest NES-LTER standard station	numeric	kilometer		"NA"	Distance greater than 2 km from NES-LTER standard station
