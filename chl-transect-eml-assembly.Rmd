@@ -10,12 +10,10 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
-# define source for functions developed for the EDI packaging workflow
-source("edi-utilities.R")
-
 # define R packages to require 
 require(here)
 library(tidyverse)
+library(ediutilities)
 require(readxl)
 require(lubridate)
 require(devtools)
@@ -90,7 +88,7 @@ Cruises that use 12-bottle rosettes will have hyphenated casts (done in rapid su
 ```{r}
 
 # store and read in the Menden-Deuer (SMD) files in the directory
-files <- Sys.glob("*SMD*.csv")
+files <- Sys.glob("en*SMD*.csv")    # jk don't read in NES-LETER-chla-T0-SMD.csv - only 15 columns error
 cruises <- lapply(files, read_csv)
 # compile the data into on dataframe
 smd_chl <- do.call(rbind, cruises) %>%
@@ -822,9 +820,7 @@ edi_filename <- "nes-lter-chl-transect-rosette"
 pkg_id <- "knb-lter-nes.8.2"
 
 # Make EML Templates 
-xlsx_to_template(metadata.path = metadata, 
-                 edi.filename = edi_filename, 
-                 rights = "CC0")
+excel_to_template(here(metadata), edi_filename, rights='CC0')
 
 # Data Coverage
 # isolate date and geospatial columns for input
