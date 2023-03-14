@@ -1,7 +1,7 @@
 ---
 title: "NES-LTER Chlorophyll Transect"
-author: "Jaxine Wolfe, Kate Morkeski, Stace Beaulieu"
-date: "February 2023"
+author: "Stace Beaulieu, Joanne Koch, Kate Morkeski, Jaxine Wolfe"
+date: "`r Sys.Date()`"
 output: html_document
 ---
 
@@ -46,7 +46,7 @@ here("nes-lter-chl-transect")
 cruiselist <- c("en608","en617", "en627", "en644", "en649", "ar22", "ar32", "ar31a", "ar28a", "ar28b", "ar31b", "ar31c", "ar34a", "ar34b", "ar38", "ar39a", "ar39b", "ar61b", "en655", "en657", "en661", "en668", "en687", "at46")
 #ar66b causes error
 
-# pull from API if compiled cruise data file doesnt exist in directory
+# pull from API if compiled cruise data file doesn't exist in directory
 if (!file.exists("chl-transect-api.csv")) {
 
   # compile cruise data from api
@@ -844,16 +844,42 @@ qa_chl <- chl_qual %>%
 # plot values vs depth
 ggplot(chl_qual, aes(x=chl, y=-depth, color=filter_size))+ geom_point()
 
+ggsave("chl-by-depth-and-filter-size.png")
+
 # plot values vs cruise date
 ggplot(chl_qual, aes(x=date_time_utc, y=chl, color=filter_size))+ geom_point()
+
+ggsave("chl-by-date-and-filter-size.png")
 
 # plot values vs LTER Standard Station
 station <- c("MVCO", "L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10", "L11", "L12", "L13", "NA")
 ggplot(chl_qual, aes(x=factor(nearest_station, level = station), y=chl, color=filter_size))+ geom_point()
 
-# maximum value of the entire data set is EN608 >0&<200 at L1 (chl = 7.742 ug/L) and is notably higher than other replicates from this Niskin (chl = 6.041 and 6.386 ug/L) and the next highest value in the data set (6.824 ug/L)
+ggsave("chl-by-station-and-filter-size.png")
 
-#TODO: plot chl and phaeo by flag (boxplots)
+# box plots by flag
+ggplot(chl_qual, aes(x=as.factor(iode_quality_flag), y=chl)) + 
+   geom_boxplot() + xlab('iode_quality_flag')
+
+ggsave("chl-by-flag.png")
+
+ggplot(chl_qual, aes(x=as.factor(iode_quality_flag), y=chl, color=filter_size)) + 
+   geom_boxplot() + xlab('iode_quality_flag')
+
+ggsave("chl-by-flag-and-filter-size.png")
+
+#ggplot(chl_qual, aes(x=as.factor(iode_quality_flag), y=chl, color=project_id)) + 
+#   geom_boxplot() + xlab('iode_quality_flag')
+
+ggplot(chl_qual, aes(x=as.factor(iode_quality_flag), y=phaeo)) + 
+   geom_boxplot() + xlab('iode_quality_flag')
+
+ggsave("phaeo-by-flag-and-filter-size.png")
+
+ggplot(chl_qual, aes(x=as.factor(iode_quality_flag), y=phaeo, color=filter_size)) + 
+   geom_boxplot() + xlab('iode_quality_flag')
+
+ggsave("phaeo-by-flag.png")
 
 ```
 
