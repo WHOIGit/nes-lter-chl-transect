@@ -43,8 +43,9 @@ here("nes-lter-chl-transect")
 
 #cruiselist <- c("en608","en617", "en627", "en644", "en649", "ar22", "ar32", "ar31a", "ar28a", "ar28b", "ar31b", "ar31c", "ar34a", "ar34b", "ar39a", "ar39b")
 
-cruiselist <- c("en608","en617", "en627", "en644", "en649", "ar22", "ar32", "ar31a", "ar28a", "ar28b", "ar31b", "ar31c", "ar34a", "ar34b", "ar38", "ar39a", "ar39b", "ar61b", "en655", "en657", "en661", "en668", "en687", "at46")
-#ar66b causes error
+cruiselist <- c("ar22", "ar24a", "ar24b", "ar24c", "en608", "ar28a", "ar28b","en617", "ar31a",  "ar31b", "ar31c", "ar32", "en627", "ar34a", "ar34b", "en644", "ar38", "ar39a", "ar39b", "en649", "en655", "en657", "en661", "en668", "ar61b", "at46", "en687")
+#ar66b NOT included here. Sosik lab is not providing for v2. 
+#ar66b IS included in calls to API for ctd and bottle data to populate SMD rows. 
 
 # pull from API if compiled cruise data file doesn't exist in directory
 if (!file.exists("chl-transect-api.csv")) {
@@ -210,6 +211,11 @@ depth_window <- function(x) {
 
 ## Load CTD Bottle Summary and Metadata from API
 ```{r}
+
+cruiselist <- c("ar22", "ar24a", "ar24b", "ar24c", "en608", "ar28a", "ar28b","en617", "ar31a",  "ar31b", "ar31c", "ar32", "en627", "ar34a", "ar34b", "en644", "ar38", "ar39a", "ar39b", "en649", "en655", "en657", "en661", "en668", "ar61b", "at46", "ar66b", "en687")
+#ar66b NOT in call to API for chlorophyll data. Sosik lab is not providing for v2. 
+#ar66b IS included in calls to API for ctd and bottle data to populate SMD rows. 
+
 # compile ctd bottle summary
 # pull from API if compiled cruise data file doesnt exist in directory
 if (!file.exists("ctd-bottle-summary.csv")) {
@@ -405,11 +411,11 @@ api_chl_final <- api_chl_final[, headers]
 smd_chl_final <- smd_chl_final[, headers]
 
 # merge datasets by row
-chl_all <- bind_rows(api_chl_final, smd_chl_final) 
+chl_transect <- bind_rows(api_chl_final, smd_chl_final) 
 # not really all data until joined with OOI cruises in next section
 
 # eliminate extra columns, set cast type, round numeric columns
-chl_all <- chl_all %>% 
+chl_transect <- chl_transect %>% 
   select(-vol_filtered, -tau_calibration, -fd_calibration, -rb, -ra, -blank, -rb_blank, -ra_blank) %>% 
   mutate(cast = as.character(cast)) %>% 
   mutate(latitude = round(latitude, 4)) %>% 
@@ -419,28 +425,24 @@ chl_all <- chl_all %>%
   mutate(phaeo = round(phaeo, 3)) 
 
 # add project_id
-#chl_all$project_id <- ifelse(chl_all$cruise == "AR22" | chl_all$cruise == "AR32" | chl_all$cruise == "AR38", 
-  #                                 yes = "JP", no = "LTER") #TODO: add OOI vs LTER distinction
-
-
-chl_all <- chl_all  %>% 
+chl_transect <- chl_transect  %>% 
     mutate(project_id_basic  = case_when(str_detect(cruise, "AR.*") ~ "OOI",
                                    str_detect(cruise, "EN.*") ~ "LTER"))
-                                   
-chl_all <- chl_all  %>% 
+                           
+chl_transect <- chl_transect  %>% 
     mutate(project_id_fancy  = case_when(cruise == "AR66B" & method_contributor == "method_Menden-Deuer" ~ "LTER",
                                    cruise == "AR22" ~ "JP",
                                    cruise == "AR32" ~ "JP",
                                    cruise == "AR38" ~ "JP",
                                    cruise == "AT46" ~ "LTER"))
-# can get more granular using method contributor
-chl_all <- chl_all  %>% 
+# can get more granular using method contributor if desired
+chl_transect <- chl_transect  %>% 
     mutate(project_id = case_when(is.na(project_id_fancy) ~ project_id_basic,
                                   !is.na(project_id_fancy) ~ project_id_fancy))
                                    
                                            
-# add column for ooi join below
-chl_all$alternate_sample_id <- NA_character_
+# # add column for ooi join below
+# chl_transect$alternate_sample_id <- NA_character_
 
 ```
 # Check the flag and method_contributor column
@@ -448,22 +450,22 @@ chl_all$alternate_sample_id <- NA_character_
 ```{r}
 
 # check that there are no NAs in quality_flag for method_contributor Sosik or Rynearson ie no missing joins
-qual_missing <- chl_all %>%
+qual_missing <- chl_transect %>%
   filter(method_contributor == "method_Sosik" | method_contributor == "method_Rynearson") %>%
   filter(is.na(quality_flag))
 # write csv for providers to evaluate
 #write.csv(qual_missing, "chl-transect-missing-quality.csv", row.names = FALSE)
 
-qual_iode_missing <- chl_all %>%
+qual_iode_missing <- chl_transect %>%
   filter(method_contributor == "method_Menden-Deuer") %>%
   filter(is.na(iode_quality_flag))
 
 # check that there are no values in quality_flag for method_contributor Menden-Deuer ie incorrect join
-qual_incorrect <- chl_all %>%
+qual_incorrect <- chl_transect %>%
   filter(method_contributor == "method_Menden-Deuer") %>%
   filter(!is.na(quality_flag))
 
-qual_iode_incorrect <- chl_all %>%
+qual_iode_incorrect <- chl_transect %>%
   filter(method_contributor == "method_Sosik" | method_contributor == "method_Rynearson") %>%
   filter(!is.na(iode_quality_flag))
 
@@ -475,25 +477,25 @@ qual_iode_incorrect <- chl_all %>%
 
 ```{r}
 
-# fix niskin numbers per github issue
-
-# read in data
-chl_ar24 <- read_csv('ar24.csv')
-
-chl_ar24$bottle_other_method <- NA_character_
-chl_ar24$quality_flag <- NA_integer_
-chl_ar24$iode_quality_flag <- NA_integer_
-
-chl_ar24 <- chl_ar24 %>%
-  mutate(cast = as.character(cast)) %>% 
-  mutate(depth = round(depth, 3))  %>%
-  rename(alternate_sample_id = filter_id_ooi)
-
-# define headers for columns in desired order
-headers_join <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "method_contributor", "replicate", "alternate_sample_id", "filter_size",  "chl", "phaeo","quality_flag", "iode_quality_flag", "project_id")
-# reorder columns as necessary
-chl_ar24 <- chl_ar24[, headers_join]
-chl_all <- chl_all[, headers_join]
+# # fix niskin numbers per github issue
+# 
+# # read in data
+# chl_ar24 <- read_csv('ar24.csv')
+# 
+# chl_ar24$bottle_other_method <- NA_character_
+# chl_ar24$quality_flag <- NA_integer_
+# chl_ar24$iode_quality_flag <- NA_integer_
+# 
+# chl_ar24 <- chl_ar24 %>%
+#   mutate(cast = as.character(cast)) %>% 
+#   mutate(depth = round(depth, 3))  %>%
+#   rename(alternate_sample_id = filter_id_ooi)
+# 
+# # define headers for columns in desired order
+# headers_join <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "method_contributor", "replicate", "alternate_sample_id", "filter_size",  "chl", "phaeo","quality_flag", "iode_quality_flag", "project_id")
+# # reorder columns as necessary
+# chl_ar24 <- chl_ar24[, headers_join]
+# chl_all <- chl_all[, headers_join]
 
 ```
 
@@ -501,8 +503,8 @@ chl_all <- chl_all[, headers_join]
 
 ```{r}
 
-# bind rows
-chl_transect <- bind_rows(chl_all, chl_ar24)
+# # bind rows
+# chl_transect <- bind_rows(chl_all, chl_ar24)
 
 ```
 
@@ -588,8 +590,7 @@ st_dist_outliers <- chl_dis %>%
 ```
 ## Add the Quality Flag for Data from the Sosik Lab
 
-In the future the API will output the quality_flag column,
-but for now we put a csv file into the repo created from the Xls sheet in the RDS 'raw' to API (or in the Sosik NAS)
+# This section no longer needed as flags now come from the API. 
 
 ```{r}
 
@@ -643,7 +644,9 @@ but for now we put a csv file into the repo created from the Xls sheet in the RD
 # AR24B bucket, 3 samples: we are unsure of sampling location; date and comments in XLS do not match event log entry message ID 113.
 #quality_flag
 
-ar24missing <-read_csv('samples_lacking_bottle_metadata.csv')
+#v2 has no AR24A cast 2 samples; removed per ETC communication they are really cast 3 and have been corrected in API 
+
+ar24missing <-read_csv('samples_lacking_bottle_metadata-v2.csv')
 ar24missing <- ar24missing %>%
   mutate(chl = round(chl, 3)) %>% 
   mutate(phaeo = round(phaeo, 3)) %>%
@@ -713,7 +716,7 @@ chl_qual <- chl_qual %>%
 ```{r}
 
 #remove original quality flag
- chl_qual <- select(chl_qual, -quality_flag)
+ chl_qual <- select(chl_qual, -quality_flag, -project_id_basic, -project_id_fancy, -alternate_sample_id)
  
 # add zero to casts with one digit to enable proper sorting
  chl_qual$cast <- ifelse((nchar(chl_qual$cast)) >2, 
