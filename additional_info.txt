@@ -1,2 +1,2 @@
-﻿This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22) and Joel Llopiz (AR32).
+﻿This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22 and AR38) and Joel Llopiz (AR32).
 We'd like to thank additional team members for sample collection and processing on cruises, including Erin Jones and Patricia Thibodeau.
