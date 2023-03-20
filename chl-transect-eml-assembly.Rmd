@@ -908,6 +908,7 @@ Step 3: Making the XML file
 Step 4: Inserting a custom NES-LTER parent project node 
 
 ```{r}
+#chl_qual <- read.csv("nes-lter-chl-transect-rosette.csv")
 
 # define input files
 metadata <- "chl-transect-info"
