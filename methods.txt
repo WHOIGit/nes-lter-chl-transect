@@ -37,7 +37,7 @@ Menden-Deuer: On board ship, filters were extracted for 12 h +/-2 h in darkness 
 
 # Data Assembly and Cleaning
 
-The data table was assembled from four sources: 1) the REST Application Programming Interface (API) of the NES-LTER data system, 2) data sheets provided by the Menden-Deuer lab, 3) a data sheet provided by the Rynearson lab for cruise EN608, 4) a data sheet including 19 values for which the CTD metadata are missing. Assembly starts in the main R markdown by concatenating LTER and MIT-WHOI Joint Program (JP) cruises called from the NES-LTER REST API for values measured for the Sosik and Rynearson labs, and separately concatenating cruises provided by the Menden-Deuer lab.
+The data table was assembled from four sources: 1) the REST Application Programming Interface (API) of the NES-LTER data system, 2) data sheets provided by the Menden-Deuer lab, 3) a data sheet provided by the Rynearson lab for cruise EN608, 4) a data sheet including 19 values for which the CTD metadata are missing.
 
 We added CTD bottle metadata (time, latitude, longitude, depth) from the NES-LTER REST API, identify when there are corresponding samples with values measured for multiple lab groups for the same (or paired) cast at same depth, then merge the REST API and Menden-Deuer data.
 
@@ -56,4 +56,4 @@ We provide a column in the data table to indicate quality using IODE Primary Lev
 
 # Differences From Previous Version
 
-In version 2, samples from several cruises were added, extending the temporal coverage of the data set by approximately 2 years and approximately doubling the number of records compared to version 1. Some records from version 1 were slightly changed, reflecting updated calibration values, and some flags were updated. The order of records was updated to chronological. In version 2, OOI data are sourced alongside LTER data instead of separately from Alfresco as they were in version 1. The data table name has been updated to distinguish from the nes-lter-chl-transect-underway-discrete package. The author list has been updated, reflecting, in part, the large contribution to sample analysis and quality evaluation by Crockford and Fontaine. 
+Samples from several cruises were added, approximately doubling the number of records compared to version 1. Some records from version 1 were slightly changed, reflecting updated calibration values, and some flags were updated. The order of records was updated to chronological. The definition for the column project_id changed. Version 2 does not include the column alternate_sample_id with OOI filter identifier. The data table name has been updated to distinguish from the nes-lter-chl-transect-underway-discrete package. The author list has been updated.
