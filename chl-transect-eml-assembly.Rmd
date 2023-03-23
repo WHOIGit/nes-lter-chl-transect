@@ -653,6 +653,8 @@ ar24missing <- ar24missing %>%
   mutate(cast = as.character(cast)) %>%
   mutate(niskin = as.character(niskin))
 
+ar24missing$date <- as.POSIXct(ar24missing$date, tz = "GMT", "%m/%d/%Y %H:%M")
+
 ar24missing$iode_quality_flag <- NA_integer_
 
 chl_qual <- bind_rows(chl_dis, ar24missing)
@@ -946,7 +948,7 @@ make_eml(path = getwd(),
 ```{r}
 
 # Insert Custom Project Node
-project_insert(edi_pkg = pkg_id, "parent_project_RAPID.txt")
+project_insert(edi_pkg = pkg_id, "parent_project_RAPID_OOI.txt")
 
 #project_insert(edi_pkg = pkg_id, "parent_project.txt")
 
