@@ -338,8 +338,8 @@ On cruise EN608 only: Processing occurred on board the ship. Tubes were removed 
       <entityDescription>Chlorophyll from discrete water column bottles compiled for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-chl-transect-rosette.csv</objectName>
-        <size unit="bytes">714973</size>
-        <authentication method="MD5">ac365758af26ed4fafa0e876ca306cdd</authentication>
+        <size unit="bytes">714625</size>
+        <authentication method="MD5">2dc8d79835e2fff0b353ac0d93a812d7</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -726,7 +726,7 @@ On cruise EN608 only: Processing occurred on board the ship. Tubes were removed 
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>5779</numberOfRecords>
+      <numberOfRecords>5775</numberOfRecords>
     </dataTable>
   </dataset>
   <annotations>
