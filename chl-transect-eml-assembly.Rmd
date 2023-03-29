@@ -82,7 +82,7 @@ Cruises that use 12-bottle rosettes will have hyphenated casts (done in rapid su
 # # store and read in the Menden-Deuer (SMD) files in the directory
 # files <- Sys.glob("en*SMD*.csv")    # jk don't read in NES-LETER-chla-T0-SMD.csv - only 15 columns error
 # cruises <- lapply(files, read_csv)
-# # compile the data into on dataframe
+# # compile the data into one dataframe
 # smd_chl <- do.call(rbind, cruises) %>%
 #   filter(!is.na(cruise))
 
@@ -124,11 +124,6 @@ Note: this function is modified from the utilities function
 
 find_paired_casts <- function(df, min.time) {
   
-  # cruiselist <- unique(df$cruise)
-  # # read in ctd data
-  # ctd_metadata <- read_from_api(type = "metadata", cruises = cruiselist)
-  # ctd_summary <- read_from_api(type = "summary", cruises = cruiselist)
-    
   # define column to display paired cast
   df$paired_cast <- NA_character_
 
@@ -472,42 +467,6 @@ qual_iode_incorrect <- chl_transect %>%
 
 ```
 
-
-## Read in AR24 data from OOI's Alfresco and NES-LTER API joined in script "ooi_join_by_url.rmd". 
-
-```{r}
-
-# # fix niskin numbers per github issue
-# 
-# # read in data
-# chl_ar24 <- read_csv('ar24.csv')
-# 
-# chl_ar24$bottle_other_method <- NA_character_
-# chl_ar24$quality_flag <- NA_integer_
-# chl_ar24$iode_quality_flag <- NA_integer_
-# 
-# chl_ar24 <- chl_ar24 %>%
-#   mutate(cast = as.character(cast)) %>% 
-#   mutate(depth = round(depth, 3))  %>%
-#   rename(alternate_sample_id = filter_id_ooi)
-# 
-# # define headers for columns in desired order
-# headers_join <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "method_contributor", "replicate", "alternate_sample_id", "filter_size",  "chl", "phaeo","quality_flag", "iode_quality_flag", "project_id")
-# # reorder columns as necessary
-# chl_ar24 <- chl_ar24[, headers_join]
-# chl_all <- chl_all[, headers_join]
-
-```
-
-## Join AR24 data to the other cruises
-
-```{r}
-
-# # bind rows
-# chl_transect <- bind_rows(chl_all, chl_ar24)
-
-```
-
 # Check the flag and method_contributor column
 
 ```{r}
@@ -588,63 +547,17 @@ st_dist_outliers <- chl_dis %>%
 # St_dist_outliers expect AR22, AR24A,B, EN627 cast 29, and just greater than 2km EN608 c14 L7, c15 L8, c22 L9, EN617 c21 L11, EN644 c9 L8, EN649 c8 L8, c11 L9
 
 ```
-## Add the Quality Flag for Data from the Sosik Lab
 
-# This section no longer needed as flags now come from the API. 
-
-```{r}
-
-# read in the csv file with quality_flag
-# note there are more cruises because ar31, ar34, and ar39
-#qualities <- read_csv('NESLTERchl_20210623_NAS_quality_flag.csv')
-# qualities <- read_csv('NESLTERchl20230222_flags.csv')
-# qualities$cast <- as.character(qualities$cast)
-# 
-# qualities <- qualities %>%
-#    mutate(filter_size = case_when(filter_size == "10"  ~ "<10",
-#                                   filter_size == "0"  ~ ">0",
-#                                   filter_size == "5"  ~ ">5",
-#                                   filter_size == "20"  ~ ">20",
-#                                   ))
-
-# left join to retain the rows in the chl data frame
-# chl_qual <- left_join(chl_dis, qualities, by = c('cruise','cast','niskin','filter_size','replicate'))
-
-# # check that there are no NAs in quality_flag for method_contributor Sosik or Rynearson ie no missing joins
-# missing_qual <- chl_qual %>%
-#   filter(method_contributor == "method_Sosik" | method_contributor == "method_Rynearson") %>%
-#   filter(is.na(quality_flag))
-# # there is only one missing quality flag, and it actually is missing in the original sheet
-# 
-# # check that there are no values in quality_flag for method_contributor Menden-Deuer ie incorrect join
-# incorrect_qual <- chl_qual %>%
-#   filter(method_contributor == "method_Menden-Deuer") %>%
-#   filter(!is.na(quality_flag))
-
-# # quick check of when station in csv qual doesn't match calculated nearest station
-# station_mismatch <- chl_qual %>%
-#     filter(method_contributor != "method_Menden-Deuer") %>%
-#     filter( nearest_station != station | is.na(nearest_station) | is.na(station) )
-  
-# # exclude station from csv qual
-# chl_qual <- select(chl_qual, -station)
-#  
-```
 ## Read in Sosik AR24 data that are not out put from API because they lack Niskin metadata 
 
 ```{r}
 
-# There were 27 samples that can not be output from API because there are no bottle metadata (20 samples from AR24A and 7 samples from AR24B).
+# samples that can not be output from API because there are no bottle metadata (12 samples from AR24A and 1 bucket sample from AR24B).
 
 # We constructed a csv file manually with the following:
 # AR24A cast 1, 8 samples: No btl file. Bottle metadata may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
-# AR24A cast 2, 8 samples: The btl file only recorded the first niskin. Bottle metadata for additional niskins may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
 # AR24A cast 8, 4 samples: The btl file only recorded bottles 1-4. Bottle metadata for niskin 5 may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
-# AR24B cast 9, 4 samples: The btl file only recorded bottles 1-5. Bottle metadata for niskins 7, 9, 10, and 12 may be possible from btl file ‘009b’. Note Sosik lab may have matched to hand-written logsheets in file 20171028_AR24B_bottle_summary_table.mat.
-# AR24B bucket, 3 samples: we are unsure of sampling location; date and comments in XLS do not match event log entry message ID 113.
-#quality_flag
-
-#v2 has no AR24A cast 2 samples; removed per ETC communication they are really cast 3 and have been corrected in API 
+# AR24B bucket, 1 sample
 
 ar24missing <-read_csv('samples_lacking_bottle_metadata-v2.csv')
 ar24missing <- ar24missing %>%
@@ -949,10 +862,6 @@ make_eml(path = getwd(),
 
 # Insert Custom Project Node
 project_insert(edi_pkg = pkg_id, "parent_project_RAPID_OOI.txt")
-
-#project_insert(edi_pkg = pkg_id, "parent_project.txt")
-
-#ediutilities::project_insert(edi_pkg = pkg_id, "parent_project_RAPID.txt")
 
 ```
 
