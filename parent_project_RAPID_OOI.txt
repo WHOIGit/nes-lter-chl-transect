@@ -112,10 +112,10 @@
         <title>Ocean Observatories Initiative</title>
         <personnel>
           <individualName>
-            <givenName>John</givenName>
-            <surName>Trowbridge</surName>
+            <givenName>James</givenName>
+            <surName>Edson</surName>
           </individualName>
-          <electronicMailAddress>jtrowbridge@whoi.edu</electronicMailAddress>
+          <electronicMailAddress>jedson@whoi.edu</electronicMailAddress>
           <role>Principal Investigator</role>
         </personnel>
         <funding>NSF Award OCE-1743430</funding>

@@ -80,7 +80,7 @@ Cruises that use 12-bottle rosettes will have hyphenated casts (done in rapid su
 ```{r}
 
 # # store and read in the Menden-Deuer (SMD) files in the directory
-# files <- Sys.glob("en*SMD*.csv")    # jk don't read in NES-LETER-chla-T0-SMD.csv - only 15 columns error
+# files <- Sys.glob("en*SMD*.csv")    
 # cruises <- lapply(files, read_csv)
 # # compile the data into one dataframe
 # smd_chl <- do.call(rbind, cruises) %>%
@@ -435,10 +435,6 @@ chl_transect <- chl_transect  %>%
     mutate(project_id = case_when(is.na(project_id_fancy) ~ project_id_basic,
                                   !is.na(project_id_fancy) ~ project_id_fancy))
                                    
-                                           
-# # add column for ooi join below
-# chl_transect$alternate_sample_id <- NA_character_
-
 ```
 # Check the flag and method_contributor column
 
@@ -641,22 +637,8 @@ chl_qual <- chl_qual %>%
 #  simply sort by datetime? # puts rows without bottle metadata at end of file     
   chl_qual <- chl_qual[order(chl_qual$date_time_utc), ]
  
-# # sort by cruise, cast, niskin, filter size
-# size_sort <- c(">0",">0&<10",">5", ">20",">0&<200", ">10&<200", ">5&<200", ">20&<200")
-# cruise_sort <- str_sort(unique(chl_qual$cruise))
-# cast_sort <- str_sort(unique(chl_qual$cast))
-# niskin_sort <- str_sort(unique(chl_qual$niskin), numeric = TRUE)
-
-#chl_qual <- chl_qual[with(chl_qual, order(cruise, match(cast, cast_sort), match(niskin, niskin_sort),
- #                                   match(filter_size, size_sort))), ]
-
-#chl_qual <- chl_qual[with(chl_qual, order(match(cast, cast_sort), match(niskin, niskin_sort),
- #                                   match(filter_size, size_sort))), ]
-
-#chl_qual <- chl_qual[with(chl_qual, order(cruise, cast)), ]
-
-
 write.csv(chl_qual, 'nes-lter-chl-transect-rosette.csv', row.names=FALSE)
+
 ```
 
 ## Compare Paired Menden-Deuer and Transect Samples
@@ -855,13 +837,12 @@ make_eml(path = getwd(),
          user.domain = "LTER",
          package.id = pkg_id)
 
-```
-## Insert Custom Project Node 
- 
-```{r}
-
 # Insert Custom Project Node
 project_insert(edi_pkg = pkg_id, "parent_project_RAPID_OOI.txt")
 
+# check for issues
+issues()
+
 ```
+
 
