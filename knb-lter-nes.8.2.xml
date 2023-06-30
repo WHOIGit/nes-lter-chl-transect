@@ -103,7 +103,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>metadata Provider</role>
     </associatedParty>
-    <pubDate>2023-04-12</pubDate>
+    <pubDate>2023-06-30</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and phaeopigments are measured from discrete bottle samples collected during CTD-rosette casts on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Size fractions in addition to whole seawater (&gt;0.7 micron) include &gt;5 , &lt;10, &gt;10, and &gt;20 microns with some samples pre-filtered &lt;200 microns. Pigments were analyzed using fluorometers in which fluorescence was measured versus a blank and a standard, and final concentrations were calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
@@ -338,8 +338,8 @@ On cruise EN608 only: Processing occurred on board the ship. Tubes were removed 
       <entityDescription>Chlorophyll from discrete water column bottles compiled for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-chl-transect-rosette.csv</objectName>
-        <size unit="bytes">721902</size>
-        <authentication method="MD5">e82651adb11692ec23d9c68d241af741</authentication>
+        <size unit="bytes">719520</size>
+        <authentication method="MD5">002e84bf04a5a07a0b1273c40258814e</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -715,7 +715,7 @@ On cruise EN608 only: Processing occurred on board the ship. Tubes were removed 
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">0</minimum>
-                  <maximum exclusive="false">2</maximum>
+                  <maximum exclusive="false">1.95</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -726,7 +726,7 @@ On cruise EN608 only: Processing occurred on board the ship. Tubes were removed 
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>5836</numberOfRecords>
+      <numberOfRecords>5882</numberOfRecords>
     </dataTable>
   </dataset>
   <annotations>
