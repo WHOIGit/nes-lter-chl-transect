@@ -37,11 +37,7 @@ here("nes-lter-chl-transect")
 ## Compile Chl Transect Data
 ```{r}
 
-# define the list of cruises to acquire data from (cruises LTER and JP)
-# we will call OOI cruises separately
-#cruiselist <- c("en608","en617", "en627", "en644", "en649", "ar22", "ar32")
-
-#cruiselist <- c("en608","en617", "en627", "en644", "en649", "ar22", "ar32", "ar31a", "ar28a", "ar28b", "ar31b", "ar31c", "ar34a", "ar34b", "ar39a", "ar39b")
+# define the list of cruises with API chlorophyll data
 
 cruiselist <- c("ar22", "ar24a", "ar24b", "ar24c", "en608", "ar28a", "ar28b","en617", "ar31a",  "ar31b", "ar31c", "ar32", "en627", "ar34a", "ar34b", "en644", "ar38", "ar39a", "ar39b", "en649", "en655", "en657", "en661", "en668", "ar61b", "at46", "en687")
 #ar66b NOT included here. Sosik lab is not providing for v2. 
@@ -61,14 +57,12 @@ if (!file.exists("chl-transect-api.csv")) {
 }
 
 api_chl <- api_chl  %>% 
+    rename(iode_quality_flag = quality_flag) %>% 
     mutate(method_contributor  = case_when(cruise == "EN608"  ~ "method_Sosik",
                                            filter_size=="<10" ~ "method_Sosik",         
                                            filter_size==">5" ~ "method_Rynearson", 
                                            filter_size==">20" ~ "method_Rynearson", 
                                            filter_size==">0" ~ "method_Sosik")) 
-# this works because of the order of the case_when statements 
-# but more appropriate would be to apply conditional to both cruise and filter size
-
 
 ```
 
@@ -86,10 +80,8 @@ Cruises that use 12-bottle rosettes will have hyphenated casts (done in rapid su
 # smd_chl <- do.call(rbind, cruises) %>%
 #   filter(!is.na(cruise))
 
-smd_chl <- read_csv("NES-LTER-chla-T0-SMD.csv") 
-# TODO: decide how to deal with niskin_second_cast. For now, remove. 
+smd_chl <- read_csv("NES-LTER-chla-T0-SMD-final.csv") 
 smd_chl <- smd_chl %>% 
-  select(-niskin_second_cast)  %>% 
   rename(tau_calibration = tau_calibrated) %>% 
   rename(fd_calibration = fd_calibrated)
 
@@ -99,16 +91,27 @@ smd_chl$cruise <- str_to_upper(smd_chl$cruise)
 smd_expanded <- smd_chl %>%
   select(cruise, cast, niskin) %>%
   # expand cast
-  mutate(cast_expand = strsplit(cast, "-")) %>%
-  unnest(cast_expand) %>%
+  mutate(cast_expand_dash = strsplit(cast, "-" )) %>%
+  unnest(cast_expand_dash) %>%
   # expand niskin
-  mutate(niskin_expand = strsplit(niskin, "-")) %>%
-  unnest(niskin_expand)
+  mutate(niskin_expand_dash = strsplit(niskin, "-")) %>%
+  unnest(niskin_expand_dash)
 
-# The manipulations with regard to cast_expand are only valid if the same bottles in the niskin column apply to both casts. This is the case for EN627 cast 18-19 niskin 11-12, but not for cast 11-12 (cast 11 only used single niskin 11) nor for cast 23-24 (cast 23 used 10-11, luckily cast 23 niskins 10-12 were same depth).
+# where casts are paired, cut out second cast
+smd_expanded <- smd_expanded %>%
+  mutate(cast_expand_pipe = str_remove(cast, '\\|[0-9]+')) %>%
+  mutate(niskin_expand_pipe = str_remove(niskin, '\\|.....')) %>%
+  mutate(niskin_expand_pipe = strsplit(niskin_expand_pipe, "-")) %>%
+  unnest(niskin_expand_pipe)
 
+# merge
+smd_expanded <- smd_expanded %>%
+    mutate(niskin_expand = case_when(str_detect(niskin_expand_dash, "\\|") == TRUE ~ niskin_expand_pipe,
+                                  TRUE ~ niskin_expand_dash)) %>%
+   mutate(cast_expand = case_when(str_detect(cast_expand_dash, "\\|") == TRUE ~ cast_expand_pipe,
+                                  TRUE ~ cast_expand_dash)) 
 # assign expanded columns to numeric type
-smd_expanded$cast_expand <- as.numeric(smd_expanded$cast_expand)
+#smd_expanded$cast_expand <- as.numeric(smd_expanded$cast_expand)
 smd_expanded$niskin_expand <- as.numeric(smd_expanded$niskin_expand)
 
 ```
@@ -234,6 +237,11 @@ if (!file.exists("ctd-metadata.csv")) {
   # read in existant data file
   ctd_metadata <- read_csv("ctd-metadata.csv")
 }
+
+# remove leading zeroes from cast
+ctd_summary$cast <- str_remove(ctd_summary$cast, "^0+") 
+ctd_metadata$cast <- str_remove(ctd_metadata$cast, "^0+") 
+
 ```
 
 ## Add Rynearson EN608 data
@@ -256,6 +264,7 @@ tar_en608 <- tar_en608 %>%
   rename(date = date.y)
 
 tar_en608$method_contributor <- as.character("method_Rynearson")
+tar_en608$iode_quality_flag <- as.integer(2) #quality not evaluated
 
 # retaining df name api_chl but now includes data from API and Rynearson EN608 data not from API
 api_chl <- bind_rows(api_chl, tar_en608)
@@ -270,18 +279,19 @@ This section:
 
 ```{r}
 
-# remove leading zeroes from cast
-ctd_summary$cast <- str_remove(ctd_summary$cast, "^0+") 
-
 # merge geospatial and temporal metadata from bottle summary
-smd_expanded$cast_expand <- as.character(smd_expanded$cast_expand)
-smd_key <- left_join(smd_expanded, ctd_summary,
+smd_expanded <- left_join(smd_expanded, ctd_summary,
                        by = c("cruise",
                               "cast_expand" = "cast",
-                              "niskin_expand" = "niskin")) %>%
-  distinct() %>%
+                              "niskin_expand" = "niskin")) 
+
+smd_key <- smd_expanded %>%
+  select(-cast_expand_dash, -cast_expand_pipe, -niskin_expand_dash, -niskin_expand_pipe) %>%
+  distinct() 
+
+smd_key <- smd_key %>%
   # find the average depth, date, lat & lon across cruise-cast-bottle
-  group_by(cruise, cast_expand, cast, niskin) %>%
+  group_by(cruise, cast, niskin, cast_expand, niskin_expand) %>%
   summarise(depth = mean(depth),
             date = mean(date),
             latitude = mean(latitude),
@@ -292,55 +302,55 @@ smd_key <- left_join(smd_expanded, ctd_summary,
 #smd_key <- find_paired_casts(smd_key, min.time = 50)
 
 # create row to populate with bottle other method
-smd_key$bottle_other_method <- NA_integer_
+#smd_key$bottle_other_method <- NA_integer_
 
-# loop through rows
-for (i in 1:nrow(smd_key)) {
-  # store the cruise, cast, and average depth for current row
-  smd_cruise <- smd_key$cruise[i]
-  smd_cast <- smd_key$cast_expand[i]
-  smd_depth <- smd_key$depth[i]
-
-  # subset the chl transect data by cruise
-  api_cruise <- api_chl %>%
-    select(cruise, cast, niskin, date, latitude, longitude, depth) %>%
-    distinct() %>%
-    filter(cruise == smd_cruise)
-
-  # # Case: the SMD cast is not found in chl transect
-  # if (isFALSE(smd_cast %in% api_cruise$cast)) {
-  # 
-  #   # Case: paired cast exists in chl transect
-  #   if (smd_key$paired_cast[i] %in% api_cruise$cast) {
-  #     smd_cast <- smd_key$paired_cast[i]
-  #   } else {
-  #     print(paste0("No associated cast found for cruise ", smd_cruise,
-  #           ", SMD cast ", smd_cast))
-  #     i <- i + 1
-  #     next
-  #   }
- # }
-
-  # further subset the chl transect to isolate cruise-cast data
-  api_cast <- api_cruise %>% filter(cast == smd_cast)
-
-  # find the index of the nearest depth
-  ind <- which.min(abs(smd_depth - api_cast$depth))
-
-  # # Print minimum depth difference if it exceeds 2m
-  # if (min(abs(smd_depth - api_cast$depth)) > depth_window(smd_depth)) {
-  #   # store min depth window
-  #   depth <- min(abs(smd_depth - api_cast$depth))
-  #   # describe cruise, cast, and depth which exceeds the depth window
-  #   print(paste0("High depth difference of ", depth, " for cruise ",
-  #                smd_cruise, ", cast ", smd_key$cast_expand[i], ", average depth: ", smd_depth))
-  #   # do not populate the bottle other method
-  #   i <- i + 1
-  #   next
-  # }
-  # populate field for niskin number associated with other method
- # smd_key$bottle_other_method[i] <- api_cast$niskin[ind]
-}
+# # loop through rows
+# for (i in 1:nrow(smd_key)) {
+#   # store the cruise, cast, and average depth for current row
+#   smd_cruise <- smd_key$cruise[i]
+#   smd_cast <- smd_key$cast_expand[i]
+#   smd_depth <- smd_key$depth[i]
+# 
+#   # subset the chl transect data by cruise
+#   api_cruise <- api_chl %>%
+#     select(cruise, cast, niskin, date, latitude, longitude, depth) %>%
+#     distinct() %>%
+#     filter(cruise == smd_cruise)
+# 
+#   # # Case: the SMD cast is not found in chl transect
+#   # if (isFALSE(smd_cast %in% api_cruise$cast)) {
+#   # 
+#   #   # Case: paired cast exists in chl transect
+#   #   if (smd_key$paired_cast[i] %in% api_cruise$cast) {
+#   #     smd_cast <- smd_key$paired_cast[i]
+#   #   } else {
+#   #     print(paste0("No associated cast found for cruise ", smd_cruise,
+#   #           ", SMD cast ", smd_cast))
+#   #     i <- i + 1
+#   #     next
+#   #   }
+#  # }
+# 
+#   # further subset the chl transect to isolate cruise-cast data
+#   api_cast <- api_cruise %>% filter(cast == smd_cast)
+# 
+#   # find the index of the nearest depth
+#   ind <- which.min(abs(smd_depth - api_cast$depth))
+# 
+#   # # Print minimum depth difference if it exceeds 2m
+#   # if (min(abs(smd_depth - api_cast$depth)) > depth_window(smd_depth)) {
+#   #   # store min depth window
+#   #   depth <- min(abs(smd_depth - api_cast$depth))
+#   #   # describe cruise, cast, and depth which exceeds the depth window
+#   #   print(paste0("High depth difference of ", depth, " for cruise ",
+#   #                smd_cruise, ", cast ", smd_key$cast_expand[i], ", average depth: ", smd_depth))
+#   #   # do not populate the bottle other method
+#   #   i <- i + 1
+#   #   next
+#   # }
+#   # populate field for niskin number associated with other method
+#  # smd_key$bottle_other_method[i] <- api_cast$niskin[ind]
+# }
 
 ```
 
@@ -360,33 +370,28 @@ Additional steps:
       - This is to accomodate that the api doesnt yet provide project_id
   
 ```{r}
+## TODO: keep cast and niskin to later join with SMD data
+## is this step needed at all? 
 
 ## API transect chl
 api_chl_final <- smd_key %>% ungroup() %>% 
-  select(cruise, cast_expand, niskin, bottle_other_method) %>%
+  select(cruise, cast_expand, niskin_expand) %>%
   left_join(api_chl, .,
-            by = c("cruise", "cast" = "cast_expand", "niskin" = "bottle_other_method")) %>%
-  rename_at("niskin.y", ~"bottle_other_method")
+            by = c("cruise", "cast" = "cast_expand", "niskin" = "niskin_expand")) 
 
-# added method_contributor for Rynearson and Sosik when assembling api_chl
-
-sum(is.na(api_chl_final$method_contributor))
 ```
 ## Join API data and Menden-Deuer data
 
 ```{r}
 # convert data types to enable cbind with smd data
-smd_key$cast <- as.character(smd_key$cast)
-api_chl_final$niskin <- as.character(api_chl_final$niskin)
-
-# add quality flag column 
-api_chl_final$iode_quality_flag <- NA_integer_
+#api_chl_final$cast <- as.integer(api_chl_final$cast)
+#api_chl_final$niskin <- as.integer(api_chl_final$niskin)
 
 ## SMD chl
 smd_chl_final <- smd_key %>% ungroup() %>% 
   select(cruise, cast, niskin, depth, date, 
-         latitude, longitude, bottle_other_method) %>%
-  group_by(cruise, cast, niskin, bottle_other_method) %>%
+         latitude, longitude) %>%
+  group_by(cruise, cast, niskin) %>%
   # collapse the expanded casts
   summarise(depth = mean(depth),
             date = mean(date), 
@@ -396,24 +401,21 @@ smd_chl_final <- smd_key %>% ungroup() %>%
 
 # add method_contributor col 
 smd_chl_final$method_contributor <- "method_Menden-Deuer" 
-# add dummy quality_flag to enable column matching with API
-smd_chl_final$quality_flag <- NA_integer_
 
-# important to check for NAs after using case_when
+# check for missing method_contributor
 sum(is.na(smd_chl_final$method_contributor))
 
-# convert data types to enable cbind with smd data
-smd_chl_final$bottle_other_method <- as.character(smd_chl_final$bottle_other_method)
-
 # define headers for columns in desired order
-headers <- c("cruise", "cast", "niskin", "bottle_other_method", "date", "latitude", "longitude", "depth", "method_contributor", "replicate","vol_filtered", "filter_size", "tau_calibration", "fd_calibration", "rb", "ra", "blank", "rb_blank", "ra_blank", "chl", "phaeo", "quality_flag", "iode_quality_flag")
+headers <- c("cruise", "cast", "niskin", "date", "latitude", "longitude", "depth", "method_contributor", "replicate","vol_filtered", "filter_size", "tau_calibration", "fd_calibration", "rb", "ra", "blank", "rb_blank", "ra_blank", "chl", "phaeo", "iode_quality_flag")
 # reorder columns as necessary
 api_chl_final <- api_chl_final[, headers]
 smd_chl_final <- smd_chl_final[, headers]
 
 # merge datasets by row
+#smd_chl_final$cast <- as.integer(smd_chl_final$cast)
+#smd_chl_final$niskin <- as.integer(smd_chl_final$niskin)
+api_chl_final$niskin <- as.character(api_chl_final$niskin)
 chl_transect <- bind_rows(api_chl_final, smd_chl_final) 
-# not really all data until joined with OOI cruises in next section
 
 # eliminate extra columns, set cast type, round numeric columns
 chl_transect <- chl_transect %>% 
@@ -436,67 +438,19 @@ chl_transect <- chl_transect  %>%
                                    cruise == "AR32" ~ "JP",
                                    cruise == "AR38" ~ "JP",
                                    cruise == "AT46" ~ "LTER"))
-# can get more granular using method contributor if desired
+    # can get more granular using method contributor if desired
 chl_transect <- chl_transect  %>% 
     mutate(project_id = case_when(is.na(project_id_fancy) ~ project_id_basic,
                                   !is.na(project_id_fancy) ~ project_id_fancy))
+
+# check for any missing method_contributor
+ sum(is.na(chl_transect$method_contributor))  
                                    
 ```
-# Check the flag and method_contributor column
-
-```{r}
-
-# check that there are no NAs in quality_flag for method_contributor Sosik or Rynearson ie no missing joins
-qual_missing <- chl_transect %>%
-  filter(method_contributor == "method_Sosik" | method_contributor == "method_Rynearson") %>%
-  filter(is.na(quality_flag))
-# write csv for providers to evaluate
-#write.csv(qual_missing, "chl-transect-missing-quality.csv", row.names = FALSE)
-
-qual_iode_missing <- chl_transect %>%
-  filter(method_contributor == "method_Menden-Deuer") %>%
-  filter(is.na(iode_quality_flag))
-
-# check that there are no values in quality_flag for method_contributor Menden-Deuer ie incorrect join
-qual_incorrect <- chl_transect %>%
-  filter(method_contributor == "method_Menden-Deuer") %>%
-  filter(!is.na(quality_flag))
-
-qual_iode_incorrect <- chl_transect %>%
-  filter(method_contributor == "method_Sosik" | method_contributor == "method_Rynearson") %>%
-  filter(!is.na(iode_quality_flag))
-
-
-```
-
-# Check the flag and method_contributor column
-
-```{r}
-
-# check that there are no NAs in quality_flag for method_contributor Sosik or Rynearson ie no missing joins
-qual_missing <- chl_transect %>%
-  filter(method_contributor == "method_Sosik" | method_contributor == "method_Rynearson") %>%
-  filter(is.na(quality_flag))
-
-qual_iode_missing <- chl_transect %>%
-  filter(method_contributor == "method_Menden-Deuer") %>%
-  filter(is.na(iode_quality_flag))
-
-# check that there are no values in quality_flag for method_contributor Menden-Deuer ie incorrect join
-qual_incorrect <- chl_transect %>%
-  filter(method_contributor == "method_Menden-Deuer") %>%
-  filter(!is.na(quality_flag))
-
-qual_iode_incorrect <- chl_transect %>%
-  filter(method_contributor == "method_Sosik" | method_contributor == "method_Rynearson") %>%
-  filter(!is.na(iode_quality_flag))
-
-
-```
-
 ## Find Nearest Station and Station Distance
 
 ```{r}
+
 chl_dis <- chl_transect
 
 # initialize nearest station and distance columns to NA
@@ -560,17 +514,18 @@ st_dist_outliers <- chl_dis %>%
 # AR24A cast 1, 8 samples: No btl file. Bottle metadata may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
 # AR24A cast 8, 4 samples: The btl file only recorded bottles 1-4. Bottle metadata for niskin 5 may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
 # AR24B bucket, 1 sample
+# more
 
 need_metadata <-read_csv('samples_lacking_bottle_metadata-v2.csv')
 need_metadata <- need_metadata %>%
   mutate(chl = round(chl, 3)) %>% 
-  mutate(phaeo = round(phaeo, 3)) %>%
-  mutate(cast = as.character(cast)) %>%
-  mutate(niskin = as.character(niskin))
+  mutate(phaeo = round(phaeo, 3)) 
 
 need_metadata$date <- as.POSIXct(need_metadata$date, tz = "GMT", "%m/%d/%Y %H:%M")
 
-need_metadata$iode_quality_flag <- NA_integer_
+chl_dis$cast <- as.character(chl_dis$cast)
+need_metadata$cast <- as.character(need_metadata$cast)
+need_metadata$niskin <- as.character(need_metadata$niskin)
 
 chl_dis <- chl_dis %>% anti_join(need_metadata, by = c("cruise", "cast", "niskin", "replicate", "filter_size"))
 
@@ -580,23 +535,13 @@ chl_qual <- bind_rows(chl_dis, need_metadata)
 #chl_qual <- chl_qual[order(chl_qual$date), ]
 
 # check for missing quality flags
-missing_qual2 <- chl_qual %>%
-  filter(method_contributor == "method_Sosik" | method_contributor == "method_Rynearson") %>%
-  filter(is.na(quality_flag))
+missing_qual <- chl_qual %>%
+    filter(is.na(iode_quality_flag))
+sum(is.na(chl_qual$iode_quality_flag)) 
+sum(is.na(chl_qual$cast))
+sum(is.na(chl_qual$niskin))
 
 ```
-
-```{r}
-
-# library(data.table)
-# setDT(chl_dis)             # convert to data.table without copy
-# setDT(need_metadata)         # convert to data.table without copy
-# 
-# # join and update "df" by reference, i.e. without copy 
-# chl_dis[need_metadata, on = c("cruise", "cast", "niskin", "replicate"), date := i.date]
-
-```
-
 
 ## Change Quality Flag to IODE codes, Replace Bad Data With NA, Finalize Column Names, 
 
@@ -605,43 +550,41 @@ missing_qual2 <- chl_qual %>%
 # convert lab quality flag to IODE quality flag
 # Rynearson EN608 flag is not reported, so change those flags to missing quality information
 # with iode_quality_flag provided in SMD files 
-chl_qual <- chl_qual %>%
-   mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer"  ~ iode_quality_flag,
-                                        #method_contributor == "method_Rynearson" & cruise == "EN608" ~ 2,
-                                        #method_contributor == "method_Sosik" & cruise == "EN649" & quality_flag == "1" ~ 2, 
-                                        method_contributor != "method_Menden-Deuer" & is.na(chl) ~ 9,
-                                        method_contributor != "method_Menden-Deuer" & quality_flag == "1" ~ 1,
-                                        method_contributor != "method_Menden-Deuer" & is.na(quality_flag) ~ 2,
-                                        method_contributor != "method_Menden-Deuer" & quality_flag == "2" ~ 3,
-                                        method_contributor != "method_Menden-Deuer" & quality_flag == "3" ~ 4,
-                                        ))
+# chl_qual <- chl_qual %>%
+#    mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer"  ~ iode_quality_flag,
+#                                         #method_contributor == "method_Rynearson" & cruise == "EN608" ~ 2,
+#                                         #method_contributor == "method_Sosik" & cruise == "EN649" & quality_flag == "1" ~ 2, 
+#                                         method_contributor != "method_Menden-Deuer" & is.na(chl) ~ 9,
+#                                         method_contributor != "method_Menden-Deuer" & quality_flag == "1" ~ 1,
+#                                         method_contributor != "method_Menden-Deuer" & is.na(quality_flag) ~ 2,
+#                                         method_contributor != "method_Menden-Deuer" & quality_flag == "2" ~ 3,
+#                                         method_contributor != "method_Menden-Deuer" & quality_flag == "3" ~ 4,
+#                                         ))
 
 # check for any missing flags
- sum(is.na(chl_qual$iode_quality_flag))      
+ #sum(is.na(chl_qual$iode_quality_flag))      
  
 # replace chlorophyll and phaeo with NA for any samples flagged bad data 
 chl_qual <- chl_qual %>%
-  mutate(chl=replace(chl, iode_quality_flag=="4", NA)) %>%
-  mutate(phaeo=replace(phaeo, iode_quality_flag=="4", NA)) %>%
-  mutate(iode_quality_flag=replace(iode_quality_flag, phaeo<0, 3))
+  mutate(iode_quality_flag = replace(iode_quality_flag, is.na(chl), "9")) %>%
+  mutate(chl = replace(chl, iode_quality_flag == "4", NA)) %>%
+  mutate(phaeo = replace(phaeo, iode_quality_flag == "4", NA)) %>%
+  mutate(iode_quality_flag = replace(iode_quality_flag, phaeo < 0, 3)) %>%
+  mutate(iode_quality_flag = replace(iode_quality_flag, is.na(iode_quality_flag), "2"))
+  
+         
+sum(is.na(chl_qual$iode_quality_flag)) 
 
-# force chl and phaeo columns back to numeric
+# set chl and phaeo columns back to numeric
 chl_qual$chl <- as.numeric(chl_qual$chl)
 chl_qual$phaeo <- as.numeric(chl_qual$phaeo)
                               
 # change some column names and properly identify the filtering regime for Sosik prefiltered samples
 chl_qual <- chl_qual %>%
   rename(date_time_utc = date)  %>%
-  rename(niskin_other_method = bottle_other_method) %>%
   mutate(filter_size = case_when(filter_size=="<10" ~ ">0&<10",
                                  TRUE ~ filter_size))
 
-# add prefilter for SMD EN649
-chl_qual <- chl_qual %>%
-  mutate(filter_size = case_when(cruise == "EN649" & method_contributor == "method_Menden-Deuer" & filter_size== ">0" ~ ">0&<200",
-                                 cruise == "EN649" & method_contributor == "method_Menden-Deuer" & filter_size== ">10" ~ ">10&<200",
-                                 TRUE ~ filter_size))
- 
 
 ```
 
@@ -650,15 +593,15 @@ chl_qual <- chl_qual %>%
 ```{r}
 
 #remove original quality flag
- chl_qual <- select(chl_qual, -quality_flag, -project_id_basic, -project_id_fancy, -alternate_sample_id)
+ chl_qual <- select(chl_qual, -project_id_basic, -project_id_fancy, -alternate_sample_id)
  
-# add zero to casts with one digit to enable proper sorting
- chl_qual$cast <- ifelse((nchar(chl_qual$cast)) >2, 
-                        yes = chl_qual$cast,
-                        no = str_pad(chl_qual$cast, width=2, side="left", pad="0"))
+# # add zero to casts with one digit to enable proper sorting
+#  chl_qual$cast <- ifelse((nchar(chl_qual$cast)) >2, 
+#                         yes = chl_qual$cast,
+#                         no = str_pad(chl_qual$cast, width=2, side="left", pad="0"))
                        
 #  simply sort by datetime? # puts rows without bottle metadata at end of file     
-  chl_qual <- chl_qual %>% arrange(date_time_utc, cruise, cast, niskin, filter_size, replicate)
+chl_qual <- chl_qual %>% arrange(date_time_utc, cruise, cast, niskin, filter_size, replicate)
  
 write.csv(chl_qual, 'nes-lter-chl-transect-rosette.csv', row.names=FALSE)
 
@@ -668,10 +611,10 @@ write.csv(chl_qual, 'nes-lter-chl-transect-rosette.csv', row.names=FALSE)
 
 ```{r}
 
-library(compareDF)
-chl_previous <- read_csv('nes-lter-chl-transect-rosette_20230329.csv', show_col_types = FALSE) 
-diff_check <- compare_df(chl_previous, chl_qual)
-create_output_table(diff_check, output_type='xlsx', file_name='chl_diff_check.xlsx')
+# library(compareDF)
+# chl_previous <- read_csv('nes-lter-chl-transect-rosette_20230329.csv', show_col_types = FALSE) 
+# diff_check <- compare_df(chl_previous, chl_qual)
+# create_output_table(diff_check, output_type='xlsx', file_name='chl_diff_check.xlsx')
 
 ```
 
@@ -685,7 +628,7 @@ Compare the average chl for groupings of cruise, cast, bottle, and filter_size.
 # summarize SMD for comparison
 qa_smd <- smd_key %>%
   right_join(smd_chl, by = c("cruise", "cast", "niskin")) %>%
-  group_by(cruise, cast_expand, bottle_other_method, filter_size) %>%
+  group_by(cruise, cast, niskin, filter_size) %>%
   summarise(avg_chl = mean(chl, na.rm = TRUE))
 
 # summarize transect data for comparison
@@ -693,59 +636,59 @@ qa_smd <- smd_key %>%
 qa_transect <- api_chl_final %>%
   group_by(cruise, cast, niskin, filter_size) %>%
   summarise(avg_chl = mean(chl, na.rm = TRUE))
+# 
+# # define fields for logical and numerical comparisons
+# qa_smd$chl_compare <- FALSE
+# qa_smd$chl_diff <- NA_integer_
 
-# define fields for logical and numerical comparisons
-qa_smd$chl_compare <- FALSE
-qa_smd$chl_diff <- NA_integer_
-
-# loop through rows of SMD dataset
-for (k in 1:nrow(qa_smd)) {
-  # isolate variables from SMD data
-  smd_cruise <- qa_smd$cruise[k]
-  smd_cast <- qa_smd$cast_expand[k]
-  smd_bottle <- qa_smd$bottle_other_method[k]
-  smd_filter <- qa_smd$filter_size[k]
-  avg_chl_smd <- round(qa_smd$avg_chl[k], 2)
-  
-  # subset chl transect by cruise
-  qa_cruise <- qa_transect %>% filter(cruise == smd_cruise)
-           
-  # Case: the SMD cast is not found in chl transect 
-  if (isFALSE(smd_cast %in% qa_cruise$cast)) {
-    
-  # Case: paired cast exists in chl transect
-    # if (qa_smd$paired_cast[k] %in% qa_cruise$cast) {
-    #   smd_cast <- qa_smd$paired_cast[k]
-    # } else {
-    #   print(paste0("No associated cast found for cruise ", smd_cruise, 
-    #         ", SMD cast ", smd_cast))
-    #   k <- k + 1
-    #   next
-    # }
-  }
-  
-  # subset chl transect by cast
-  qa_cast <- qa_cruise %>%
-    filter(cast == smd_cast &
-             niskin == smd_bottle &
-             filter_size == smd_filter)
-  # isolate the mean chl from the chl transect
-  avg_chl_trans <- round(qa_cast$avg_chl,2)
-  
-  # next row if no associated mean chl was found
-  if (length(avg_chl_trans) == 0) {
-    k <- k + 1
-    next
-  }
-  
-  # store difference of averages
-  qa_smd$chl_diff[k] <- abs(avg_chl_smd - avg_chl_trans)
-  
-  # logical mean chl comparison 
-  if (avg_chl_smd == avg_chl_trans) {
-    qa_smd$chl_compare[k] <- TRUE
-  } 
-}
+# # loop through rows of SMD dataset
+# for (k in 1:nrow(qa_smd)) {
+#   # isolate variables from SMD data
+#   smd_cruise <- qa_smd$cruise[k]
+#   smd_cast <- qa_smd$cast[k]
+#   smd_bottle <- qa_smd$niskin[k]
+#   smd_filter <- qa_smd$filter_size[k]
+#   avg_chl_smd <- round(qa_smd$avg_chl[k], 2)
+#   
+#   # subset chl transect by cruise
+#   qa_cruise <- qa_transect %>% filter(cruise == smd_cruise)
+#            
+#   # Case: the SMD cast is not found in chl transect 
+#   if (isFALSE(smd_cast %in% qa_cruise$cast)) {
+#     
+#   # Case: paired cast exists in chl transect
+#     # if (qa_smd$paired_cast[k] %in% qa_cruise$cast) {
+#     #   smd_cast <- qa_smd$paired_cast[k]
+#     # } else {
+#     #   print(paste0("No associated cast found for cruise ", smd_cruise, 
+#     #         ", SMD cast ", smd_cast))
+#     #   k <- k + 1
+#     #   next
+#     # }
+#   }
+#   
+#   # subset chl transect by cast
+#   qa_cast <- qa_cruise %>%
+#     filter(cast == smd_cast &
+#              niskin == smd_bottle &
+#              filter_size == smd_filter)
+#   # isolate the mean chl from the chl transect
+#   avg_chl_trans <- round(qa_cast$avg_chl,2)
+#   
+#   # next row if no associated mean chl was found
+#   if (length(avg_chl_trans) == 0) {
+#     k <- k + 1
+#     next
+#   }
+#   
+#   # store difference of averages
+#   qa_smd$chl_diff[k] <- abs(avg_chl_smd - avg_chl_trans)
+#   
+#   # logical mean chl comparison 
+#   if (avg_chl_smd == avg_chl_trans) {
+#     qa_smd$chl_compare[k] <- TRUE
+#   } 
+# }
 
 ```
 ## Summary stats 
@@ -754,14 +697,11 @@ for (k in 1:nrow(qa_smd)) {
 
 # overall summary stats
 qa_chl <- chl_qual %>%
-  group_by(cruise, filter_size) %>%
+  group_by(cruise, cast, niskin, filter_size) %>%
   summarise(avg_chl = mean(chl, na.rm = TRUE), 
             sd_chl = sd(chl, na.rm = TRUE), 
             min_chl = min(chl, na.rm = TRUE), 
             max_chl = max(chl, na.rm = TRUE)) 
-  
-# n() is a function in summarise but isn't working with the rest
-# n_chl = n(chl)
   
 # round columns 
  qa_chl$avg_chl <- round(qa_chl$avg_chl, 3) 
@@ -859,7 +799,7 @@ lon_col <- chl_qual$longitude
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
 # Make EML
-make_eml(path = getwd(),
+make_eml(path = here(),
          dataset.title = "Size-fractionated chlorophyll from water column bottle samples collected during NES-LTER Transect cruises, ongoing since 2017.",
          data.table = paste0(edi_filename, ".csv"),
          data.table.name = edi_filename,

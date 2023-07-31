@@ -103,7 +103,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>metadata Provider</role>
     </associatedParty>
-    <pubDate>2023-06-30</pubDate>
+    <pubDate>2023-07-31</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and phaeopigments are measured from discrete bottle samples collected during CTD-rosette casts on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Size fractions in addition to whole seawater (&gt;0.7 micron) include &gt;5 , &lt;10, &gt;10, and &gt;20 microns with some samples pre-filtered &lt;200 microns. Pigments were analyzed using fluorometers in which fluorescence was measured versus a blank and a standard, and final concentrations were calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
@@ -338,8 +338,8 @@ On cruise EN608 only: Processing occurred on board the ship. Tubes were removed 
       <entityDescription>Chlorophyll from discrete water column bottles compiled for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-chl-transect-rosette.csv</objectName>
-        <size unit="bytes">719520</size>
-        <authentication method="MD5">002e84bf04a5a07a0b1273c40258814e</authentication>
+        <size unit="bytes">711991</size>
+        <authentication method="MD5">246d0d2031bbb21f72350c5bc0edc07e</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -393,24 +393,6 @@ On cruise EN608 only: Processing occurred on board the ship. Tubes were removed 
               </nonNumericDomain>
             </nominal>
           </measurementScale>
-        </attribute>
-        <attribute>
-          <attributeName>niskin_other_method</attributeName>
-          <attributeDefinition>Associated niskin with samples analyzed by another method</attributeDefinition>
-          <storageType>string</storageType>
-          <measurementScale>
-            <nominal>
-              <nonNumericDomain>
-                <textDomain>
-                  <definition>Associated niskin with samples analyzed by another method</definition>
-                </textDomain>
-              </nonNumericDomain>
-            </nominal>
-          </measurementScale>
-          <missingValueCode>
-            <code>NA</code>
-            <codeExplanation>No associated niskin from the other method</codeExplanation>
-          </missingValueCode>
         </attribute>
         <attribute>
           <attributeName>date_time_utc</attributeName>
@@ -726,7 +708,7 @@ On cruise EN608 only: Processing occurred on board the ship. Tubes were removed 
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>5882</numberOfRecords>
+      <numberOfRecords>5884</numberOfRecords>
     </dataTable>
   </dataset>
   <annotations>
