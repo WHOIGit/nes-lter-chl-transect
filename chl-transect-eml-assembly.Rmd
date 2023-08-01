@@ -370,8 +370,8 @@ Additional steps:
       - This is to accomodate that the api doesnt yet provide project_id
   
 ```{r}
-## TODO: keep cast and niskin to later join with SMD data
-## is this step needed at all? 
+
+## is this step needed? 
 
 ## API transect chl
 api_chl_final <- smd_key %>% ungroup() %>% 
@@ -383,9 +383,6 @@ api_chl_final <- smd_key %>% ungroup() %>%
 ## Join API data and Menden-Deuer data
 
 ```{r}
-# convert data types to enable cbind with smd data
-#api_chl_final$cast <- as.integer(api_chl_final$cast)
-#api_chl_final$niskin <- as.integer(api_chl_final$niskin)
 
 ## SMD chl
 smd_chl_final <- smd_key %>% ungroup() %>% 
@@ -412,8 +409,6 @@ api_chl_final <- api_chl_final[, headers]
 smd_chl_final <- smd_chl_final[, headers]
 
 # merge datasets by row
-#smd_chl_final$cast <- as.integer(smd_chl_final$cast)
-#smd_chl_final$niskin <- as.integer(smd_chl_final$niskin)
 api_chl_final$niskin <- as.character(api_chl_final$niskin)
 chl_transect <- bind_rows(api_chl_final, smd_chl_final) 
 
@@ -454,7 +449,6 @@ chl_transect <- chl_transect  %>%
 chl_dis <- chl_transect
 
 # initialize nearest station and distance columns to NA
-
 chl_dis$nearest_station <- NA_character_
 chl_dis$distance <- NA_integer_
 
@@ -531,9 +525,6 @@ chl_dis <- chl_dis %>% anti_join(need_metadata, by = c("cruise", "cast", "niskin
 
 chl_qual <- bind_rows(chl_dis, need_metadata)
 
-# sort by datetime # puts rows without bottle metadata at end of file     
-#chl_qual <- chl_qual[order(chl_qual$date), ]
-
 # check for missing quality flags
 missing_qual <- chl_qual %>%
     filter(is.na(iode_quality_flag))
@@ -547,23 +538,6 @@ sum(is.na(chl_qual$niskin))
 
 ```{r}
 
-# convert lab quality flag to IODE quality flag
-# Rynearson EN608 flag is not reported, so change those flags to missing quality information
-# with iode_quality_flag provided in SMD files 
-# chl_qual <- chl_qual %>%
-#    mutate(iode_quality_flag = case_when(method_contributor == "method_Menden-Deuer"  ~ iode_quality_flag,
-#                                         #method_contributor == "method_Rynearson" & cruise == "EN608" ~ 2,
-#                                         #method_contributor == "method_Sosik" & cruise == "EN649" & quality_flag == "1" ~ 2, 
-#                                         method_contributor != "method_Menden-Deuer" & is.na(chl) ~ 9,
-#                                         method_contributor != "method_Menden-Deuer" & quality_flag == "1" ~ 1,
-#                                         method_contributor != "method_Menden-Deuer" & is.na(quality_flag) ~ 2,
-#                                         method_contributor != "method_Menden-Deuer" & quality_flag == "2" ~ 3,
-#                                         method_contributor != "method_Menden-Deuer" & quality_flag == "3" ~ 4,
-#                                         ))
-
-# check for any missing flags
- #sum(is.na(chl_qual$iode_quality_flag))      
- 
 # replace chlorophyll and phaeo with NA for any samples flagged bad data 
 chl_qual <- chl_qual %>%
   mutate(iode_quality_flag = replace(iode_quality_flag, is.na(chl), "9")) %>%
@@ -592,7 +566,7 @@ chl_qual <- chl_qual %>%
 
 ```{r}
 
-#remove original quality flag
+#remove columns
  chl_qual <- select(chl_qual, -project_id_basic, -project_id_fancy, -alternate_sample_id)
  
 # # add zero to casts with one digit to enable proper sorting
