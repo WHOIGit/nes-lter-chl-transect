@@ -37,7 +37,7 @@ Menden-Deuer: On board ship, filters were extracted for 12 h +/-2 h in darkness 
 
 # Data Assembly and Cleaning
 
-The data table was assembled from four sources: 1) the REST Application Programming Interface (API) of the NES-LTER data system, 2) a data table provided by the Menden-Deuer lab, 3) a data table provided by the Rynearson lab for cruise EN608, 4) a data table including 19 values for which the CTD metadata are missing. We added CTD bottle metadata (time, latitude, longitude, depth) from the NES-LTER REST API and merged the data from all sources. We calculated the distance from each sample collection to the nearest NES-LTER standard station L1 to L13 (standard for cruises starting with EN617 in August 2018). We rounded pigment and depth values to 3 decimal places and coordinates to 4 places. 
+The data table was assembled from four sources: 1) the REST Application Programming Interface (API) of the NES-LTER data system, 2) a data table provided by the Menden-Deuer lab, 3) a data table provided by the Rynearson lab for cruise EN608, 4) a data table with a handful of rows for which the CTD metadata are not provided by the API. We added CTD bottle metadata (time, latitude, longitude, depth) from the NES-LTER REST API and merged the data from all sources. We calculated the distance from each sample collection to the nearest NES-LTER standard station L1 to L13 (standard for cruises starting with EN617 in August 2018). We rounded pigment and depth values to 3 decimal places and coordinates to 4 places. 
 
 Data assembly, data cleaning and metadata template assembly were performed in R markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-chl-transect.
 

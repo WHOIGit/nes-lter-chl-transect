@@ -116,96 +116,6 @@ smd_expanded$niskin_expand <- as.numeric(smd_expanded$niskin_expand)
 
 ```
 
-## MODIFIED Utility Function: Find Paired Casts
-
-Input: df = data frame; min.time = window of minimum time difference (in mins)
-
-Output: Adds a field to the df indicating the associated paired cast if it exists
-
-Note: this function is modified from the utilities function 
-```{r}
-# 
-# find_paired_casts <- function(df, min.time) {
-#   
-#   # define column to display paired cast
-#   df$paired_cast <- NA_character_
-# 
-#   for (j in 1:nrow(df)) {
-#     # store values for current row
-#     df_cruise <- df$cruise[j]
-#     df_cast <- df$cast_expand[j] # the smd cast had to be expanded 
-#   
-#     # isolate cast metadata and bottle summary
-#     cast_metadata <- ctd_metadata %>% filter(cruise == df_cruise & cast == df_cast)
-#     cast_summary <- ctd_summary %>% filter(cruise == df_cruise & cast == df_cast)
-#     
-#     # define the min and max time for the cast 
-#     df_date_max <- max(cast_summary$date)
-#     df_date_min <- min(cast_summary$date)
-#   
-#     # find the cast before from the bottle summary
-#     cast_before <- ctd_summary %>% 
-#       filter(cruise == df_cruise & cast == (df_cast-1))
-#     # find the cast after from the ctd metadata
-#     cast_after <- ctd_metadata %>% 
-#       filter(cruise == df_cruise & cast == (df_cast+1))
-#   
-#     # determine the time difference
-#     time_before <- min(abs(as.numeric(difftime(df_date_min, cast_before$date, units = "mins"))),
-#                        na.rm = TRUE)
-#     time_after <- min(abs(as.numeric(difftime(df_date_max, cast_after$date, units = "mins"))),
-#                       na.rm = TRUE)
-#     
-#     # determine paired casts if they exist
-#     if (time_after > min.time & time_before > min.time) {
-#       j <- j + 1
-#       next
-#     }
-#     if (time_before < min.time) {
-#       # isolate cast metadata to extract station
-#       before_metadata <- ctd_metadata %>% filter(cruise == df_cruise & cast == (df_cast-1))
-#       if (isFALSE(cast_metadata$nearest_station == before_metadata$nearest_station)) {
-#           print(paste0("paired cast found for cruise ", df_cruise, 
-#                        " and cast ", df_cast, ", but nearest station did not match"))
-#         j <- j + 1
-#         next
-#       } else {
-#         df$paired_cast[j] <- df_cast - 1
-#       }
-#     }
-#     if (time_after < min.time) {
-#       if (isFALSE(cast_metadata$nearest_station == cast_after$nearest_station)) {
-#           print(paste0("paired cast found for cruise ", df_cruise, 
-#                        " and cast ", df_cast, ", but nearest station did not match"))
-#         j <- j + 1
-#         next
-#       } else {
-#         df$paired_cast[j] <- df_cast + 1
-#       }
-#     }
-#   }
-# return(df)
-# }
-
-```
-
-## Utility Function: Depth Window
-Input: Depth
-Output: Acceptable depth difference
-
-This is a linear relationship based on our expectations for depth differences in observations. We expect lesser difference at lesser depths, and vice versa.
-```{r}
-
-depth_window <- function(x) {
-  # Define the relationship between the depth and the depth difference
-  y <- (2/29)*x + 2
-  return(y)
-}
-
-# Example
-# depth_window(50.091)
-# output: 5.454552
-```
 
 ## Load CTD Bottle Summary and Metadata from API
 ```{r}
@@ -226,21 +136,21 @@ if (!file.exists("ctd-bottle-summary.csv")) {
   ctd_summary <- read_csv("ctd-bottle-summary.csv")
 }
 
-# compile ctd metadata
-# pull from API if compiled cruise data file doesnt exist in directory
-if (!file.exists("ctd-metadata.csv")) {
-  # compile the ctd metadata
-  ctd_metadata <- read_from_api(type = "metadata", cruises = cruiselist)
-  # write csv file of concatenated cruises
-  write.csv(ctd_metadata, 'ctd-metadata.csv', row.names=FALSE)
-} else {
-  # read in existant data file
-  ctd_metadata <- read_csv("ctd-metadata.csv")
-}
+# # compile ctd metadata
+# # pull from API if compiled cruise data file doesnt exist in directory
+# if (!file.exists("ctd-metadata.csv")) {
+#   # compile the ctd metadata
+#   ctd_metadata <- read_from_api(type = "metadata", cruises = cruiselist)
+#   # write csv file of concatenated cruises
+#   write.csv(ctd_metadata, 'ctd-metadata.csv', row.names=FALSE)
+# } else {
+#   # read in existant data file
+#   ctd_metadata <- read_csv("ctd-metadata.csv")
+# }
 
 # remove leading zeroes from cast
 ctd_summary$cast <- str_remove(ctd_summary$cast, "^0+") 
-ctd_metadata$cast <- str_remove(ctd_metadata$cast, "^0+") 
+#ctd_metadata$cast <- str_remove(ctd_metadata$cast, "^0+") 
 
 ```
 
@@ -273,10 +183,8 @@ api_chl <- bind_rows(api_chl, tar_en608)
 
 ## Determining bottle other method
 
-This section:
-  • determines depth, lat & lon, and datetime for Menden-Deuer data (merged from bottle summary)
-  • determines chl transect bottles associated with SMD bottles based on depth window
-
+This section determines depth, lat & lon, and datetime for Menden-Deuer data (merged from bottle summary).
+  
 ```{r}
 
 # merge geospatial and temporal metadata from bottle summary
@@ -297,90 +205,15 @@ smd_key <- smd_key %>%
             latitude = mean(latitude),
             longitude = mean(longitude))
 
-#smd_key$cast <- as.integer(smd_key$cast)
-# determine paired casts for the dataset
-#smd_key <- find_paired_casts(smd_key, min.time = 50)
-
-# create row to populate with bottle other method
-#smd_key$bottle_other_method <- NA_integer_
-
-# # loop through rows
-# for (i in 1:nrow(smd_key)) {
-#   # store the cruise, cast, and average depth for current row
-#   smd_cruise <- smd_key$cruise[i]
-#   smd_cast <- smd_key$cast_expand[i]
-#   smd_depth <- smd_key$depth[i]
-# 
-#   # subset the chl transect data by cruise
-#   api_cruise <- api_chl %>%
-#     select(cruise, cast, niskin, date, latitude, longitude, depth) %>%
-#     distinct() %>%
-#     filter(cruise == smd_cruise)
-# 
-#   # # Case: the SMD cast is not found in chl transect
-#   # if (isFALSE(smd_cast %in% api_cruise$cast)) {
-#   # 
-#   #   # Case: paired cast exists in chl transect
-#   #   if (smd_key$paired_cast[i] %in% api_cruise$cast) {
-#   #     smd_cast <- smd_key$paired_cast[i]
-#   #   } else {
-#   #     print(paste0("No associated cast found for cruise ", smd_cruise,
-#   #           ", SMD cast ", smd_cast))
-#   #     i <- i + 1
-#   #     next
-#   #   }
-#  # }
-# 
-#   # further subset the chl transect to isolate cruise-cast data
-#   api_cast <- api_cruise %>% filter(cast == smd_cast)
-# 
-#   # find the index of the nearest depth
-#   ind <- which.min(abs(smd_depth - api_cast$depth))
-# 
-#   # # Print minimum depth difference if it exceeds 2m
-#   # if (min(abs(smd_depth - api_cast$depth)) > depth_window(smd_depth)) {
-#   #   # store min depth window
-#   #   depth <- min(abs(smd_depth - api_cast$depth))
-#   #   # describe cruise, cast, and depth which exceeds the depth window
-#   #   print(paste0("High depth difference of ", depth, " for cruise ",
-#   #                smd_cruise, ", cast ", smd_key$cast_expand[i], ", average depth: ", smd_depth))
-#   #   # do not populate the bottle other method
-#   #   i <- i + 1
-#   #   next
-#   # }
-#   # populate field for niskin number associated with other method
-#  # smd_key$bottle_other_method[i] <- api_cast$niskin[ind]
-# }
-
 ```
 
-
-## Preparing Datasets for Merge
-
-This step populates the fields:
-  • bottle_other_method for api_chl
-  • date, lat, long, (avg) depth, and bottle_other_method for smd_chl
-  • method_contributor to indicate which sample collection and processing methods were used 
+## Join API data and Menden-Deuer data
   
-Additional steps:
+  • populate the fields date, lat, long, (avg) depth for smd_chl
   • reorganize the columns
   • merge the api_chl and smd_chl datasets
   • round numerical columns
-  • add project_id column (smd = LTER, api = if cruise AR22/32, yes = "JP", no = "LTER")
-      - This is to accomodate that the api doesnt yet provide project_id
-  
-```{r}
-
-## is this step needed? 
-
-## API transect chl
-api_chl_final <- smd_key %>% ungroup() %>% 
-  select(cruise, cast_expand, niskin_expand) %>%
-  left_join(api_chl, .,
-            by = c("cruise", "cast" = "cast_expand", "niskin" = "niskin_expand")) 
-
-```
-## Join API data and Menden-Deuer data
+  • add project_id column 
 
 ```{r}
 
@@ -399,18 +232,15 @@ smd_chl_final <- smd_key %>% ungroup() %>%
 # add method_contributor col 
 smd_chl_final$method_contributor <- "method_Menden-Deuer" 
 
-# check for missing method_contributor
-sum(is.na(smd_chl_final$method_contributor))
-
 # define headers for columns in desired order
 headers <- c("cruise", "cast", "niskin", "date", "latitude", "longitude", "depth", "method_contributor", "replicate","vol_filtered", "filter_size", "tau_calibration", "fd_calibration", "rb", "ra", "blank", "rb_blank", "ra_blank", "chl", "phaeo", "iode_quality_flag")
 # reorder columns as necessary
-api_chl_final <- api_chl_final[, headers]
+api_chl <- api_chl[, headers]
 smd_chl_final <- smd_chl_final[, headers]
 
 # merge datasets by row
-api_chl_final$niskin <- as.character(api_chl_final$niskin)
-chl_transect <- bind_rows(api_chl_final, smd_chl_final) 
+api_chl$niskin <- as.character(api_chl$niskin)
+chl_transect <- bind_rows(api_chl, smd_chl_final) 
 
 # eliminate extra columns, set cast type, round numeric columns
 chl_transect <- chl_transect %>% 
@@ -443,6 +273,7 @@ chl_transect <- chl_transect  %>%
                                    
 ```
 ## Find Nearest Station and Station Distance
+# could instead join with CTD metadata
 
 ```{r}
 
@@ -508,6 +339,7 @@ st_dist_outliers <- chl_dis %>%
 # AR24A cast 1, 8 samples: No btl file. Bottle metadata may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
 # AR24A cast 8, 4 samples: The btl file only recorded bottles 1-4. Bottle metadata for niskin 5 may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
 # AR24B bucket, 1 sample
+# EN608 cast 14
 # more
 
 need_metadata <-read_csv('samples_lacking_bottle_metadata-v2.csv')
@@ -534,7 +366,7 @@ sum(is.na(chl_qual$niskin))
 
 ```
 
-## Change Quality Flag to IODE codes, Replace Bad Data With NA, Finalize Column Names, 
+## Adjust Quality Flags, Replace Bad Data With NA, Finalize Column Names, 
 
 ```{r}
 
@@ -546,7 +378,6 @@ chl_qual <- chl_qual %>%
   mutate(iode_quality_flag = replace(iode_quality_flag, phaeo < 0, 3)) %>%
   mutate(iode_quality_flag = replace(iode_quality_flag, is.na(iode_quality_flag), "2"))
   
-         
 sum(is.na(chl_qual$iode_quality_flag)) 
 
 # set chl and phaeo columns back to numeric
@@ -567,7 +398,7 @@ chl_qual <- chl_qual %>%
 ```{r}
 
 #remove columns
- chl_qual <- select(chl_qual, -project_id_basic, -project_id_fancy, -alternate_sample_id)
+ chl_qual <- select(chl_qual, -project_id_basic, -project_id_fancy)
  
 # # add zero to casts with one digit to enable proper sorting
 #  chl_qual$cast <- ifelse((nchar(chl_qual$cast)) >2, 
@@ -585,10 +416,11 @@ write.csv(chl_qual, 'nes-lter-chl-transect-rosette.csv', row.names=FALSE)
 
 ```{r}
 
-# library(compareDF)
-# chl_previous <- read_csv('nes-lter-chl-transect-rosette_20230329.csv', show_col_types = FALSE) 
-# diff_check <- compare_df(chl_previous, chl_qual)
-# create_output_table(diff_check, output_type='xlsx', file_name='chl_diff_check.xlsx')
+ # library(compareDF)
+ # chl_previous <- read_csv('nes-lter-chl-transect-rosette-20230731.csv', show_col_types = FALSE) 
+  # chl_previous <- chl_previous %>% arrange(date_time_utc, cruise, cast, niskin, filter_size, replicate)
+  # diff_check <- compare_df(chl_previous, chl_qual)
+  # create_output_table(diff_check, output_type='xlsx', file_name='chl_diff_check.xlsx')
 
 ```
 
@@ -606,8 +438,7 @@ qa_smd <- smd_key %>%
   summarise(avg_chl = mean(chl, na.rm = TRUE))
 
 # summarize transect data for comparison
-# api_chl_final was formerly transect_chl_final 
-qa_transect <- api_chl_final %>%
+qa_transect <- api_chl %>%
   group_by(cruise, cast, niskin, filter_size) %>%
   summarise(avg_chl = mean(chl, na.rm = TRUE))
 # 
@@ -762,7 +593,7 @@ edi_filename <- "nes-lter-chl-transect-rosette"
 pkg_id <- "knb-lter-nes.8.2"
 
 # Make EML Templates 
-excel_to_template(here(metadata), edi_filename, rights='CC0')
+excel_to_template(here(metadata), edi_filename, rights='CC0', del_rights = FALSE)
 
 # Data Coverage
 # isolate date and geospatial columns for input
