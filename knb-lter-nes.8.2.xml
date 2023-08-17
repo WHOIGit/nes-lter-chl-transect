@@ -103,7 +103,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>metadata Provider</role>
     </associatedParty>
-    <pubDate>2023-08-10</pubDate>
+    <pubDate>2023-08-17</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and phaeopigments are measured from discrete bottle samples collected during CTD-rosette casts on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Size fractions in addition to whole seawater (&gt;0.7 micron) include &gt;5 , &lt;10, &gt;10, and &gt;20 microns with some samples pre-filtered &lt;200 microns. Pigments were analyzed using fluorometers in which fluorescence was measured versus a blank and a standard, and final concentrations were calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
@@ -131,7 +131,7 @@
     </keywordSet>
     <additionalInfo>
       <para>This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22 and AR38) and Joel Llopiz (AR32).&#13;
-We'd like to thank additional team members for sample collection and processing on cruises, including Bethany Stevens, Mira Santos, Beth Connors, Erin Jones, Zoe Sandwith, Brett Longworth, John San Soucie, Nicki Lockwood, Alexa Sterling, Patricia Thibodeau, Jack Lawrence, Joe Futrelle, David Welty, Fran Webber, Jill Paquette, Ian Bishop, Brian Silva, Grace Medley, Shalan McDonough, and David Wellwood.&#13;
+We'd like to thank additional team members for sample collection and processing on cruises, including Bethany Stevens, Mira Santos, Beth Connors, Erin Jones, Zoe Sandwith, Brett Longworth, John San Soucie, Niki Lockwood, Alexa Sterling, Patricia Thibodeau, Jack Lawrence, Joe Futrelle, David Welty, Fran Webber, Jill Paquette, Ian Bishop, Brian Silva, Grace Medley, Shalan McDonough, and David Wellwood.&#13;
 </para>
     </additionalInfo>
     <intellectualRights>
