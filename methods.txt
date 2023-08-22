@@ -45,10 +45,7 @@ We assured that the geographic and temporal coverage of the clean data table wer
 Quality is indicated in the data table with IODE Primary Level flags: 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. Any sample with a negative phaeopigment value is provided with a flag of 3 (questionable). Samples with a flag of 4 (bad) are provided with chlorophyll/phaeopigment value of NA. 
 [See IODE Ocean Data Standards recommendation here: https://www.iode.org/index.php?option=com_oe&task=viewDocumentRecord&docID=10762]
 
-For Menden-Deuer data, the quality assurance was assessed from the ratio of fluorescence before and after acidification (Fo/Fa). Data were flagged as good (1) if:
-1. Fo/Fa between 1 and 3. 
-2. Fo/Fa within +/- 2 standard deviations of the triplicate value.
-All values outside these criteria were flagged as questionable (3). 
+For Menden-Deuer data, the quality assurance was assessed from the ratio of fluorescence before and after acidification (Fo/Fa). Data were flagged as good (1) if their Fo/Fa value was between 1 and 3 and was within +/- 2 standard deviations of the triplicate mean Fo/Fa. All values outside these criteria were flagged as questionable (3). 
 
 # Differences From Previous Version
 
