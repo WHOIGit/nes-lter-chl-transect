@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="knb-lter-nes.8.2" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd" system="edi">
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="knb-lter-nes.8.3" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd" system="edi">
   <access authSystem="https://pasta.edirepository.org/authentication" order="allowFirst" scope="document">
     <allow>
       <principal>uid=NES,o=LTER,dc=ecoinformatics,dc=org</principal>
@@ -81,7 +81,7 @@
       <individualName>
         <surName>OOI CGSN Data Team</surName>
       </individualName>
-      <organizationName>Ocean Observatories Initiative</organizationName>
+      <organizationName>NSF Ocean Observatories Initiative</organizationName>
       <electronicMailAddress>help@oceanobservatories.org</electronicMailAddress>
     </creator>
     <associatedParty>
@@ -93,17 +93,7 @@
       <electronicMailAddress>mary_mckenzie@uri.edu</electronicMailAddress>
       <role>technician</role>
     </associatedParty>
-    <associatedParty>
-      <individualName>
-        <givenName>Kate</givenName>
-        <surName>Morkeski</surName>
-      </individualName>
-      <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <electronicMailAddress>kmorkeski@whoi.edu</electronicMailAddress>
-      <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
-      <role>metadata Provider</role>
-    </associatedParty>
-    <pubDate>2023-08-25</pubDate>
+    <pubDate>2025-07-25</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and phaeopigments are measured from discrete bottle samples collected during CTD-rosette casts on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Size fractions in addition to whole seawater (&gt;0.7 micron) include &gt;5 , &lt;10, &gt;10, and &gt;20 microns with some samples pre-filtered &lt;200 microns. Pigments were analyzed using fluorometers in which fluorescence was measured versus a blank and a standard, and final concentrations were calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
@@ -130,8 +120,8 @@
       <keywordThesaurus>NOAA NODC Data Types Thesaurus</keywordThesaurus>
     </keywordSet>
     <additionalInfo>
-      <para>This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22 and AR38) and Joel Llopiz (AR32).&#13;
-We'd like to thank additional team members for sample collection and processing on cruises, including Bethany Stevens, Mira Santos, Beth Connors, Erin Jones, Zoe Sandwith, Brett Longworth, John San Soucie, Niki Lockwood, Alexa Sterling, Patricia Thibodeau, Jack Lawrence, Joe Futrelle, David Welty, Fran Webber, Jill Paquette, Ian Bishop, Brian Silva, Grace Medley, Shalan McDonough, and David Wellwood.&#13;
+      <para>This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22 and AR38) and Joel Llopiz (AR32).
+We'd like to thank additional team members for sample collection and processing on cruises, including Bethany Stevens, Mira Santos, Beth Connors, Erin Jones, Zoe Sandwith, Brett Longworth, John San Soucie, Niki Lockwood, Alexa Sterling, Patricia Thibodeau, Jack Lawrence, Joe Futrelle, David Welty, Fran Webber, Jill Paquette, Ian Bishop, Brian Silva, Grace Medley, Shalan McDonough, and David Wellwood.
 </para>
     </additionalInfo>
     <intellectualRights>
@@ -142,10 +132,10 @@ We'd like to thank additional team members for sample collection and processing 
       <geographicCoverage>
         <geographicDescription>NES-LTER Transect</geographicDescription>
         <boundingCoordinates>
-          <westBoundingCoordinate>-71.068</westBoundingCoordinate>
+          <westBoundingCoordinate>-71.0958</westBoundingCoordinate>
           <eastBoundingCoordinate>-70.2182</eastBoundingCoordinate>
           <northBoundingCoordinate>41.36</northBoundingCoordinate>
-          <southBoundingCoordinate>39.7576</southBoundingCoordinate>
+          <southBoundingCoordinate>39.7551</southBoundingCoordinate>
         </boundingCoordinates>
       </geographicCoverage>
       <temporalCoverage>
@@ -154,7 +144,7 @@ We'd like to thank additional team members for sample collection and processing 
             <calendarDate>2017-09-02</calendarDate>
           </beginDate>
           <endDate>
-            <calendarDate>2022-08-03</calendarDate>
+            <calendarDate>2024-09-11</calendarDate>
           </endDate>
         </rangeOfDates>
       </temporalCoverage>
@@ -174,41 +164,69 @@ We'd like to thank additional team members for sample collection and processing 
     <methods>
       <methodStep>
         <description>
-          <para>Three lab groups led by PIs Sosik, Rynearson, and Menden-Deuer provide size-fractionated chlorophyll data from CTD rosette bottle and bucket sampling on NES-LTER Transect cruises. Methods specific to each lab group are distinguished in each section of methods below, and the method for each sample is identified in the data table column "method_contributor".</para>
-          <para>From 2017 through 2022, spring and fall sample collection typically occurred on cruises funded and operated by the Ocean Observatories Initiative (OOI). These cruises are identified with the project_id OOI, and they include data collected for both the NES-LTER and OOI projects. The Sosik lab methods (described below) are used for the samples from both projects. Please note that OOI data are included here as a convenience to researchers wishing to use the data from both projects, and that the authoritative source for OOI data is the OOI Alfresco document server for Cruise Data from the Coastal Pioneer NES Array (https://alfresco.oceanobservatories.org/).</para>
-          <para># CTD Rosette Bottle and Bucket Sampling on NES-LTER Transect Cruises</para>
-          <para>Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. In some instances, multiple lab groups sampled from a CTD cast at the same depth but from different Niskins. Some samples were collected at the surface with a bucket, and they are identified with cast and Niskin of 0. </para>
-          <para>Sosik: At surface depths and at additional depths at high-priority stations, samples were collected for both &lt;10 micron and whole seawater size fractions, with &lt;10 micron sampling at depth targeted to the subsurface chlorophyll max (SCM) and another depth with detectable CTD fluorescence. At the remaining depths with detectable CTD fluorescence, samples were not size-fractioned. For each size fraction at each depth, two to three replicate volume-calibrated HDPE amber bottles were triple-rinsed and filled from each Niskin and stored in a cooler until filtered on the ship.</para>
-          <para>Rynearson: Samples were collected for &gt;5 and &gt;20 micron size fractions from all main LTER stations at three to four depths depending on the station. Surface and SCM depths were always sampled, with the third (and sometimes fourth) depth targeted to align with Sosik sampling/detectable CTD fluorescence. For each size fraction at each depth, duplicate volume-calibrated amber bottles were triple-rinsed, filled with seawater, placed in a cooler, and returned to the ship's lab for filtering. Rynearson samples were sampled from the same Niskin as Sosik samples whenever possible (except on cruise EN608).</para>
-          <para>On cruises EN608, EN617, and EN627: &gt;5 and &gt;20 micron samples were collected from each depth using a single 1-L sample bottle and returned to the lab for filtering. On EN608, samples were collected from 2-3 depths from 6 stations on EN608. </para>
-          <para>Menden-Deuer: The Menden-Deuer group conducts incubation experiments at some LTER stations; chlorophyll is provided here only for the starting point (time zero). Seawater from 2-4 Niskins collected near the surface (and sometimes at depth) is transferred to a 10-L polycarbonate carboy through a 200 micron mesh prefilter. Pooled Niskins are identified in the "niskin" field as, for example, "11-12-13-14". Occasionally multiple casts in one location were used for these pooled samples, and these are indicated with cast identifiers such as "23|24" and their Niskins similarly separated by cast with a pipe, e.g., "10-11|11-12". In such cases, the date/time, coordinates, and depth in the row are sourced from the metadata of the first cast listed. Triplicate 120-150 mL subsamples were collected from the carboys for each of the size fractions, which included &gt;20, &gt;10, &gt;5, and &gt;0 microns for cruises EN608, EN617, and EN627; and only the &gt;10 and &gt;0 microns for cruise EN644 and beyond.</para>
-          <para>#  Chlorophyll Filtering Protocol</para>
-          <para>Sosik: For each sample, a known volume was filtered through a GF/F filter (nominal 0.7 micron pore size) under low vacuum suction (5-10 in. Hg). The &lt;10 micron size fraction was separated using a filter funnel containing a 10 micron Nitex mesh screen above the GF/F. Filters were transferred to tissue capsules and flash frozen in liquid nitrogen until being extracted. Typically, 2 replicates were filtered from a given Niskin bottle, and these are indicated by a or b in the data table.</para>
-          <para>Rynearson: Size fractionation was accomplished by filtering a known volume of sample water through a 5 micron Sterlitech polycarbonate or 20 micron Sterlitech polycarbonate filter under low vacuum suction (5-10 in. Hg). Filters were transferred to 5 mL cryogenic vials, flash-frozen in liquid nitrogen, and stored in liquid nitrogen until analysis. Rynearson lab group usually collected 2 replicates from the same Niskin bottle, indicated by a or b in the data table. &#13;
-On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle and pouring 200 mL into the filter funnel cup for each sample. One cruise EN627: a 1-L sample bottle was homogenized and poured into smaller polycarbonate bottles of known volume (for more precise volume measurements) and then filtered. Starting in July of 2019, a separate sample bottle of known volume was used for each sample. On EN608 only: each filter was transferred to a glass tube containing 6 mL of 90% acetone previously chilled to -20 C, the tube was returned to -20 C, and the sample was analyzed 20-30 hours later.</para>
-          <para>Menden-Deuer: Size fractionation was accomplished by filtering each sample through a GF/F (nominal 0.7 micron pore size) or 25 mm-diameter 5 micron (Poretics Polyester GVS Life Sciences), 10 micron (Isopore PolyCarbonate Millipore), or 20 micron (Polycarbonate Maine Manufacturing) filter on a manifold with vacuum not exceeding 200 mBar.  Filters were transferred to glass tubes containing 6 mL 95% ethanol at room temperature for extraction on board the ship. Menden-Deuer lab group usually has 3 replicates from multiple Niskin bottles combined from same depth, indicated by a, b, or c in the data table.</para>
-          <para># Chlorophyll a Measurement</para>
-          <para>Sosik: Back at the shore lab, filters were removed from liquid nitrogen storage for analysis. Samples were extracted in 5 mL (10 mL if sample appeared concentrated) of 90% acetone in glass test tubes for 24 hours in a dark refrigerator, then vortexed and centrifuged. The solution was measured on a Turner Designs Handheld Aquafluor fluorometer, acidified with 2 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples. The fluorometer was calibrated approximately annually using a serial dilution of a stock solution made from commercially available chlorophyll a from spinach (Sigma-Aldrich C5753). </para>
-          <para>On cruise EN608, the majority of samples were analyzed at sea. Eight of the extracted samples on cruise EN608 were measured by both the Sosik and Rynearson labs.</para>
-          <para>Rynearson: Filters for the Rynearson group were extracted in the vials in which they were frozen, following the protocol described above for the Sosik group, then vortexed (without being centrifuged), and read on the same Turner Designs Handheld Aquafluor fluorometer as the Sosik group.</para>
-          <para>On cruise EN608 only: Processing occurred on board the ship. Tubes were removed from freezer shortly before processing, vortexed for 10 seconds, and (begining with cast 15) centrifuged for 3 minutes. The supernatant was measured on a Turner Designs 10-AU-005 Benchtop Fluorometer, acidified with 2-3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples. Eight of the EN608 extracted samples were measured by both the Sosik and Rynearson labs.</para>
-          <para>Menden-Deuer: On board the ship, filters were extracted for 12 h +/-2 h in darkness at room temperature. Then, in the presence of only red light, each tube was vortexed for 5 seconds, its filter was removed, and the fluorescence of the solution measured on a Turner Designs 10-AU-005 Benchtop Fluorometer. Two drops of 10% hydrochloric acid were added to each tube, and it was measured again. If the reading after acidification was the same as the reading before acidification, an additional drop of acid was added and the sample was read again. Tubes were measured 30 seconds to one hour after acidification. Before and after each batch of samples, a blank, blank + acid, and a solid standard were measured. </para>
-          <para># Data Assembly and Cleaning</para>
-          <para>The data table was assembled from four sources: 1) the REST Application Programming Interface (API) of the NES-LTER data system, 2) a data table provided by the Menden-Deuer lab, 3) a data table provided by the Rynearson lab for cruise EN608, 4) a data table containing a minimal number of samples for which the CTD metadata are not provided by the API. We added CTD bottle metadata (time, latitude, longitude, depth) from the NES-LTER REST API and merged the data from all sources. We calculated the distance from each sample collection to the nearest NES-LTER standard station L1 to L13 (standard for cruises starting with EN617 in August 2018). We rounded pigment and depth values to 3 decimal places and coordinates to 4 places. </para>
-          <para>Data assembly, data cleaning and metadata template assembly were performed in R markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-chl-transect.</para>
-          <para># Quality Assurance</para>
-          <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We checked differences between replicates, visually inspected plots of chlorophyll values colored by filter size, and performed range checks. </para>
-          <para>Quality is indicated in the data table with IODE Primary Level flags: 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. Any sample with a negative phaeopigment value is provided with a flag of 3 (questionable). Samples with a flag of 4 (bad) are provided with chlorophyll/phaeopigment value of NA. &#13;
-[See IODE Ocean Data Standards recommendation here: https://www.iode.org/index.php?option=com_oe&amp;task=viewDocumentRecord&amp;docID=10762]</para>
-          <para>For Menden-Deuer data, the quality assurance was assessed from the ratio of fluorescence before and after acidification (Fo/Fa). Data were flagged as good (1) if their Fo/Fa value was between 1 and 3 and was within +/- 2 standard deviations of the triplicate mean Fo/Fa. All values outside these criteria were flagged as questionable (3). </para>
-          <para># Differences From Previous Version</para>
-          <para>In version 2, samples from several cruises were added, approximately doubling the number of records compared to version 1. Some records from version 1 were slightly changed, reflecting updated calibration values, and some flags were updated, and for some samples from AR24, Niskin bottle number was corrected and date, time, latitude, and longitude were added. The order of records was updated to chronological. The definition for the column project_id changed. Version 2 does not include the column niskin_other_method or the column alternate_sample_id with OOI filter identifier. The data table name was updated to distinguish from the nes-lter-chl-transect-underway-discrete package. The methods were edited. The author list was updated.&#13;
-</para>
+          <markdown>Three lab groups led by PIs Sosik, Rynearson, and Menden-Deuer provide size-fractionated chlorophyll data from CTD rosette bottle and bucket sampling on NES-LTER Transect cruises. Methods specific to each lab group are distinguished in each section of methods below, and the method for each sample is identified in the data table column "method_contributor".
+
+From 2017 through 2022, spring and fall sample collection typically occurred on cruises funded and operated by the Ocean Observatories Initiative (OOI). OOI data are included here as a convenience to researchers wishing to use the data from both projects; please note that the authoritative source for OOI data is the Raw Data Archive for Cruise Data from the Coastal Pioneer NES Array (https://rawdata.oceanobservatories.org/files/cruise_data/Pioneer-NES/). The Sosik lab methods (described below) are used for samples from both projects. All samples from OOI cruises that were processed with the Sosik lab methods are identified with project\_id OOI, and they include data collected for both the NES-LTER and OOI projects. 
+
+# CTD Rosette Bottle and Bucket Sampling on NES-LTER Transect Cruises
+
+Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. In some instances, multiple lab groups sampled from a CTD cast at the same depth but from different Niskins. Some samples were collected at the surface with a bucket, and they are identified with cast and Niskin of 0. 
+
+Sosik: At surface depths and at additional depths at high-priority stations, samples were collected for both &lt;10 micron and whole seawater size fractions, with &lt;10 micron sampling at depth targeted to the subsurface chlorophyll max (SCM) and another depth with detectable CTD fluorescence. At the remaining depths with detectable CTD fluorescence, samples were not size-fractioned. For each size fraction at each depth, two to three replicate volume-calibrated HDPE amber bottles were triple-rinsed and filled from each Niskin and stored in a cooler until filtered on the ship.
+
+Rynearson: Samples were collected for &gt;5 and &gt;20 micron size fractions from all main LTER stations at three to four depths depending on the station. Surface and SCM depths were always sampled, with the third (and sometimes fourth) depth targeted to align with Sosik sampling/detectable CTD fluorescence. For each size fraction at each depth, duplicate volume-calibrated amber bottles were triple-rinsed, filled with seawater, placed in a cooler, and returned to the ship's lab for filtering. Rynearson samples were sampled from the same Niskin as Sosik samples whenever possible (except on cruise EN608).
+
+On cruises EN608, EN617, and EN627: &gt;5 and &gt;20 micron samples were collected from each depth using a single 1-L sample bottle and returned to the lab for filtering. On EN608, samples were collected from 2-3 depths from 6 stations. 
+
+Menden-Deuer: The Menden-Deuer group conducts incubation experiments at some LTER stations; chlorophyll is provided here only for the starting point (time zero). Seawater from 2-4 Niskins collected near the surface (and sometimes at depth) is transferred to a 10-L polycarbonate carboy through a 200 micron mesh prefilter. Pooled Niskins are identified in the "niskin" field as, for example, "11-12-13-14". Occasionally multiple casts in one location were used for these pooled samples, and these are indicated with cast identifiers such as "23|24" and their Niskins similarly separated by cast with a pipe, e.g., "10-11|11-12". In such cases, the date/time, coordinates, and depth in the row are sourced from the metadata of the first cast listed. Triplicate 120-150 mL subsamples were collected from the carboys for each of the size fractions, which included &gt;20, &gt;10, &gt;5, and &gt;0 micron fractions for cruises EN608, EN617, and EN627; and only the &gt;10 and &gt;0 micron fractions for cruise EN644 and beyond.
+
+# Chlorophyll Filtering Protocol
+
+Sosik: For each sample, a known volume was filtered through a GF/F filter (nominal 0.7 micron pore size) under low vacuum suction (5-10 in. Hg). The &lt;10 micron size fraction was separated using a filter funnel containing a 10 micron Nitex mesh screen above the GF/F. Filters were transferred to tissue capsules and flash frozen in liquid nitrogen until being extracted. Typically, 2 replicates were filtered from a given Niskin bottle, and these are indicated by a or b in the data table.
+
+Rynearson: Size fractionation was accomplished by filtering a known volume of sample water through a 5 micron Sterlitech polycarbonate or 20 micron Sterlitech polycarbonate filter under low vacuum suction (5-10 in. Hg). Filters were transferred to 5 mL cryogenic vials, flash-frozen in liquid nitrogen, and stored in liquid nitrogen until analysis. Rynearson lab group usually collected 2 replicates from the same Niskin bottle, indicated by a or b in the data table. 
+On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle and pouring 200 mL into the filter funnel cup for each sample. On cruise EN627: a 1-L sample bottle was homogenized and poured into smaller polycarbonate bottles of known volume (for more precise volume measurements) and then filtered. Starting in July of 2019, a separate sample bottle of known volume was used for each sample. On EN608 only: each filter was transferred to a glass tube containing 6 mL of 90% acetone previously chilled to -20 C, the tube was returned to -20 C, and the sample was analyzed 20-30 hours later.
+
+Menden-Deuer: Size fractionation was accomplished by filtering each sample through a GF/F (nominal 0.7 micron pore size) or 25 mm-diameter 5 micron (Poretics Polyester GVS Life Sciences), 10 micron (Isopore PolyCarbonate Millipore), or 20 micron (Polycarbonate Maine Manufacturing) filter on a manifold with vacuum not exceeding 200 mBar.  Filters were transferred to glass tubes containing 6 mL 95% ethanol at room temperature for extraction on board the ship. Menden-Deuer lab group usually has 3 replicates from multiple Niskin bottles combined from same depth, indicated by a, b, or c in the data table.
+
+# Chlorophyll a Measurement
+
+Sosik: Back at the shore lab, filters were removed from liquid nitrogen storage for analysis. Samples were extracted in 5 mL (10 mL if sample appeared concentrated) of 90% acetone in glass test tubes for 24 hours in a dark refrigerator, then vortexed and centrifuged. The solution was measured on a Turner Designs Handheld Aquafluor fluorometer, acidified with 2 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples. The fluorometer was calibrated approximately annually using a serial dilution of a stock solution made from commercially available chlorophyll a from spinach (Sigma-Aldrich C5753). 
+
+On cruise EN608, the majority of samples were analyzed at sea. Eight of the extracted samples on cruise EN608 were measured by both the Sosik and Rynearson labs.
+
+Rynearson: Filters for the Rynearson group were extracted in the vials in which they were frozen, following the protocol described above for the Sosik group, then vortexed (without being centrifuged), and read on the same Turner Designs Handheld Aquafluor fluorometer as the Sosik group.
+
+On cruise EN608 only: Processing occurred on board the ship. Tubes were removed from freezer shortly before processing, vortexed for 10 seconds, and (begining with cast 15) centrifuged for 3 minutes. The supernatant was measured on a Turner Designs 10-AU-005 Benchtop Fluorometer, acidified with 2-3 drops of 10% hydrochloric acid, and measured again. If the chlorophyll readings were over the range of the fluorometer, the solution was diluted as needed. A blank and a solid standard were measured at the beginning and end of each batch of samples. Eight of the EN608 extracted samples were measured by both the Sosik and Rynearson labs.
+
+Menden-Deuer: On board the ship, filters were extracted for 12 h +/-2 h in darkness at room temperature. Then, in the presence of only red light, each tube was vortexed for 5 seconds, its filter was removed, and the fluorescence of the solution measured on a Turner Designs 10-AU-005 Benchtop Fluorometer. Two drops of 10% hydrochloric acid were added to each tube, and it was measured again. If the reading after acidification was the same as the reading before acidification, an additional drop of acid was added and the sample was read again. Tubes were measured 30 seconds to one hour after acidification. Before and after each batch of samples, a blank, blank + acid, and a solid standard were measured. 
+
+# Data Assembly and Cleaning
+
+The data table was assembled from four sources: 1) the REST Application Programming Interface (API) of the NES-LTER data system, 2) a data table provided by the Menden-Deuer lab, 3) a data table provided by the Rynearson lab for cruise EN608, 4) a data table containing a minimal number of samples for which the CTD metadata are not provided by the API. We added CTD bottle metadata (time, latitude, longitude, depth) from the NES-LTER REST API and merged the data from all sources. We calculated the distance from each sample collection to the nearest NES-LTER standard station and provided the station identifer and distance to station; if the distance to an LTER station is greater than 2 km, no station is provided. We rounded pigment and depth values to 3 decimal places and coordinates to 4 places. 
+
+Data assembly, data cleaning and metadata template assembly were performed in R markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-chl-transect.
+
+# Quality Assurance
+
+We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We checked differences between replicates, visually inspected plots of chlorophyll values colored by filter size, and performed range checks. 
+
+Quality is indicated in the data table with IODE Primary Level flags: 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. Any sample with a negative phaeopigment value is provided with a flag of 3 (questionable). Samples with a flag of 4 (bad) are provided with chlorophyll/phaeopigment value of NA. 
+[See IODE Ocean Data Standards recommendation here: https://www.iode.org/index.php?option=com_oe&amp;task=viewDocumentRecord&amp;docID=10762]
+
+For Menden-Deuer data, the quality assurance was assessed from the ratio of fluorescence before and after acidification (Fo/Fa). Data were flagged as good (1) if their Fo/Fa value was between 1 and 3 and was within +/- 2 standard deviations of the triplicate mean Fo/Fa. All values outside these criteria were flagged as questionable (3). 
+
+# Differences From Previous Version
+
+In version 3, samples from several cruises were added. The list of stations used to calculate nearest\_station and distance was updated. The column project\_id was updated to identify all Rynearson and Menden-Deuer samples as LTER. The methods section was lightly edited. 
+
+
+</markdown>
         </description>
       </methodStep>
     </methods>
     <project>
-      <title>Northeast U.S. Shelf LTER</title>
+      <title>LTER: Scales of Variability in Ecosystem Dynamics and Production on the Changing Northeast U.S. Shelf (NES II)</title>
       <personnel>
         <individualName>
           <givenName>Heidi</givenName>
@@ -217,15 +235,6 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
         <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
         <userId directory="https://orcid.org">https://orcid.org/0000-0002-4591-2842</userId>
         <role>Principal Investigator</role>
-      </personnel>
-      <personnel>
-        <individualName>
-          <givenName>Stace</givenName>
-          <surName>Beaulieu</surName>
-        </individualName>
-        <electronicMailAddress>sbeaulieu@whoi.edu</electronicMailAddress>
-        <userId directory="https://orcid.org">https://orcid.org/0000-0002-2609-5453</userId>
-        <role>Co-Principal Investigator</role>
       </personnel>
       <personnel>
         <individualName>
@@ -243,15 +252,6 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
         </individualName>
         <electronicMailAddress>rji@whoi.edu</electronicMailAddress>
         <userId directory="https://orcid.org">https://orcid.org/0000-0002-8839-5427</userId>
-        <role>Co-Principal Investigator</role>
-      </personnel>
-      <personnel>
-        <individualName>
-          <givenName>Steven</givenName>
-          <surName>Lentz</surName>
-        </individualName>
-        <electronicMailAddress>slentz@whoi.edu</electronicMailAddress>
-        <userId directory="https://orcid.org">https://orcid.org/0000-0001-7498-0281</userId>
         <role>Co-Principal Investigator</role>
       </personnel>
       <personnel>
@@ -292,6 +292,15 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
       </personnel>
       <personnel>
         <individualName>
+          <givenName>Mei</givenName>
+          <surName>Sato</surName>
+        </individualName>
+        <electronicMailAddress>msato@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
           <givenName>Rachel</givenName>
           <surName>Stanley</surName>
         </individualName>
@@ -299,12 +308,34 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
         <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
         <role>Co-Principal Investigator</role>
       </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Weifeng</givenName>
+          <surName>Zhang</surName>
+        </individualName>
+        <electronicMailAddress>wzhang@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-2819-1780</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
       <abstract>
         <para>The Northeast U.S. Shelf (NES) Long-Term Ecological Research (LTER) project integrates observations, experiments, and models to understand and predict how planktonic food webs are changing, and how those changes impact the productivity of higher trophic levels. The NES-LTER is co-located with the Northeast U.S. Continental Shelf Large Marine Ecosystem, spanning the Middle Atlantic Bight and Gulf of Maine. Our focal cross-shelf transect extends about 150 km southward from Martha’s Vineyard, MA, to just beyond the shelf break. Our overarching question is: How is climate change impacting the pelagic NES ecosystem and, in particular, affecting the relationship between compositional (e.g., species diversity and size structure) and aggregate (e.g., rates of primary production, and transfer of energy to important forage fish species) variability?</para>
       </abstract>
       <funding>
-        <para>NSF Award OCE-1655686</para>
+        <para>NSF Award OCE-2322676</para>
       </funding>
+      <relatedProject>
+        <title>LTER: Linking Pelagic Community Structure with Ecosystem Dynamics and Production Regimes on the Changing Northeast US Shelf (NES I)</title>
+        <personnel>
+          <individualName>
+            <givenName>Heidi</givenName>
+            <surName>Sosik</surName>
+          </individualName>
+          <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">https://orcid.org/0000-0002-4591-2842</userId>
+          <role>Principal Investigator</role>
+        </personnel>
+        <funding>NSF Award OCE-1655686</funding>
+      </relatedProject>
       <relatedProject>
         <title>RAPID: Collaborative Research: Autumn transition in plankton ecology during an ocean heatwave on the Northeast U.S. Shelf</title>
         <personnel>
@@ -313,18 +344,24 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
             <surName>Sosik</surName>
           </individualName>
           <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">0000-0002-4591-2842</userId>
           <role>Principal Investigator</role>
         </personnel>
-        <funding>NSF Award OCE-2102434</funding>
+        <award>
+          <funderName>National Science Foundation</funderName>
+          <awardNumber>NSF Award OCE-210243</awardNumber>
+          <title>RAPID: Collaborative Research: Autumn transition in plankton ecology during an ocean heatwave on the Northeast U.S. Shelf</title>
+        </award>
       </relatedProject>
       <relatedProject>
-        <title>Ocean Observatories Initiative</title>
+        <title>Management and Operation of the Ocean Observatories Initiative (OOI)</title>
         <personnel>
           <individualName>
             <givenName>James</givenName>
             <surName>Edson</surName>
           </individualName>
           <electronicMailAddress>jedson@whoi.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">https://orcid.org/0000-0002-8777-031X</userId>
           <role>Principal Investigator</role>
         </personnel>
         <funding>NSF Award OCE-1743430</funding>
@@ -335,8 +372,8 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
       <entityDescription>Chlorophyll from discrete water column bottles compiled for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-chl-transect-rosette.csv</objectName>
-        <size unit="bytes">712400</size>
-        <authentication method="MD5">92e1afdd492556840830715e159bc750</authentication>
+        <size unit="bytes">1018960</size>
+        <authentication method="MD5">170fafc53c46c5eaa4d220a6ea9a5903</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -418,7 +455,7 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.7576</minimum>
+                  <minimum exclusive="false">39.7551</minimum>
                   <maximum exclusive="false">41.36</maximum>
                 </bounds>
               </numericDomain>
@@ -441,7 +478,7 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.068</minimum>
+                  <minimum exclusive="false">-71.0958</minimum>
                   <maximum exclusive="false">-70.2182</maximum>
                 </bounds>
               </numericDomain>
@@ -572,7 +609,7 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">-0.002</minimum>
-                  <maximum exclusive="false">14.631</maximum>
+                  <maximum exclusive="false">16.625</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -595,7 +632,7 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">-0.369</minimum>
-                  <maximum exclusive="false">5.209</maximum>
+                  <maximum exclusive="false">5.329</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -694,7 +731,7 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">0</minimum>
-                  <maximum exclusive="false">1.95</maximum>
+                  <maximum exclusive="false">2</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -705,7 +742,7 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>5884</numberOfRecords>
+      <numberOfRecords>8423</numberOfRecords>
     </dataTable>
   </dataset>
   <annotations>
@@ -718,7 +755,7 @@ On cruise EN608 and EN617: Samples were filtered by homogenizing a 1-L bottle an
     <metadata>
       <emlEditor>
         <app>EMLassemblyline</app>
-        <release>3.5.5</release>
+        <release>3.5.7</release>
       </emlEditor>
     </metadata>
   </additionalMetadata>

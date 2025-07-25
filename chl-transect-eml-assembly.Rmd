@@ -39,9 +39,7 @@ here("nes-lter-chl-transect")
 
 # define the list of cruises with API chlorophyll data
 
-cruiselist <- c("ar22", "ar24a", "ar24b", "ar24c", "en608", "ar28a", "ar28b","en617", "ar31a",  "ar31b", "ar31c", "ar32", "en627", "ar34a", "ar34b", "en644", "ar38", "ar39a", "ar39b", "en649", "en655", "en657", "en661", "en668", "ar61b", "at46", "en687")
-#ar66b NOT included here. Sosik lab is not providing for v2. 
-#ar66b IS included in calls to API for ctd and bottle data to populate SMD rows. 
+cruiselist <- c("ar22", "ar24a", "ar24b", "ar24c", "ar28a", "ar28b", "ar31a",  "ar31b", "ar31c", "ar32", "ar34a", "ar34b", "ar38", "ar39a", "ar39b", "ar44","ar48a", "ar48b", "ar52a", "ar52b",  "ar61a", "ar61b", "ar66a", "ar66b", "ar77", "at46", "en608", "en617",  "en627",  "en644",  "en649", "en655", "en657", "en661", "en668", "en687", "en695", "en706", "en712", "en712", "en715", "en720")
 
 # pull from API if compiled cruise data file doesn't exist in directory
 if (!file.exists("chl-transect-api.csv")) {
@@ -120,9 +118,7 @@ smd_expanded$niskin_expand <- as.numeric(smd_expanded$niskin_expand)
 ## Load CTD Bottle Summary and Metadata from API
 ```{r}
 
-cruiselist <- c("ar22", "ar24a", "ar24b", "ar24c", "en608", "ar28a", "ar28b","en617", "ar31a",  "ar31b", "ar31c", "ar32", "en627", "ar34a", "ar34b", "en644", "ar38", "ar39a", "ar39b", "en649", "en655", "en657", "en661", "en668", "ar61b", "at46", "ar66b", "en687")
-#ar66b NOT in call to API for chlorophyll data. Sosik lab is not providing for v2. 
-#ar66b IS included in calls to API for ctd and bottle data to populate SMD rows. 
+cruiselist <- c("ar22", "ar24a", "ar24b", "ar24c", "ar28a", "ar28b", "ar31a",  "ar31b", "ar31c", "ar32", "ar34a", "ar34b", "ar38", "ar39a", "ar39b", "ar44","ar48a", "ar48b", "ar52a", "ar52b",  "ar61a", "ar61b", "ar66a", "ar66b", "ar77", "at46", "en608", "en617",  "en627",  "en644",  "en649", "en655", "en657", "en661", "en668", "en687", "en695", "en706", "en712", "en712", "en715", "en720")
 
 # compile ctd bottle summary
 # pull from API if compiled cruise data file doesnt exist in directory
@@ -136,6 +132,7 @@ if (!file.exists("ctd-bottle-summary.csv")) {
   ctd_summary <- read_csv("ctd-bottle-summary.csv")
 }
 
+# ctd metadata could be used to get nearest_station, but this currently breaks because it's empty for AR52 A & B
 # # compile ctd metadata
 # # pull from API if compiled cruise data file doesnt exist in directory
 # if (!file.exists("ctd-metadata.csv")) {
@@ -205,6 +202,8 @@ smd_key <- smd_key %>%
             latitude = mean(latitude),
             longitude = mean(longitude))
 
+#TODO: remove milliseconds here? round_date or floor_date
+
 ```
 
 ## Join API data and Menden-Deuer data
@@ -258,11 +257,13 @@ chl_transect <- chl_transect  %>%
                                    str_detect(cruise, "EN.*") ~ "LTER"))
                            
 chl_transect <- chl_transect  %>% 
-    mutate(project_id_fancy  = case_when(cruise == "AR66B" & method_contributor == "method_Menden-Deuer" ~ "LTER",
+    mutate(project_id_fancy  = case_when(method_contributor == "method_Menden-Deuer" ~ "LTER",
+                                         method_contributor == "method_Rynearson" ~ "LTER",
                                    cruise == "AR22" ~ "JP",
                                    cruise == "AR32" ~ "JP",
                                    cruise == "AR38" ~ "JP",
-                                   cruise == "AT46" ~ "LTER"))
+                                   cruise == "AT46" ~ "LTER", 
+                                   cruise == "AR77" ~ "LTER"))
     # can get more granular using method contributor if desired
 chl_transect <- chl_transect  %>% 
     mutate(project_id = case_when(is.na(project_id_fancy) ~ project_id_basic,
@@ -285,9 +286,9 @@ chl_dis$distance <- NA_integer_
 
 # use a standard list of stations L1-L13
 # read list csv into stations
-stations <- read_csv('NES-LTER_standard_stations_201808.csv')
+stations <- read_csv('NES-LTER_station_list_compilation_202507.csv')
 
-station_matrix <- matrix(data = c(stations$longitude, stations$latitude), nrow = 14, ncol = 2, byrow = FALSE,
+station_matrix <- matrix(data = c(stations$decimalLongitude, stations$decimalLatitude), nrow = 80, ncol = 2, byrow = FALSE,
              dimnames = NULL)
 
 # calculate distance per row of the data frame
@@ -329,20 +330,20 @@ st_dist_outliers <- chl_dis %>%
 
 ```
 
-## Read in Sosik AR24 data that are not out put from API because they lack Niskin metadata 
+## Read in data that are not output from API because they lack Niskin metadata 
 
 ```{r}
 
 # samples that do not have metadata output from API
 
 # We constructed a csv file manually with the following:
-# AR24A cast 1, 8 samples: No btl file. Bottle metadata may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
 # AR24A cast 8, 4 samples: The btl file only recorded bottles 1-4. Bottle metadata for niskin 5 may be possible from CTD re-processing. Otherwise must use hand-written logsheets.
 # AR24B bucket, 1 sample
-# EN608 cast 14
-# more
+# AR28B, cast 1
+# AR38, 4 bucket samples
+# AR39A, cast 13, niskin 7
 
-need_metadata <-read_csv('samples_lacking_bottle_metadata-v2.csv')
+need_metadata <-read_csv('samples_lacking_bottle_metadata-v3.csv')
 need_metadata <- need_metadata %>%
   mutate(chl = round(chl, 3)) %>% 
   mutate(phaeo = round(phaeo, 3)) 
@@ -366,7 +367,7 @@ sum(is.na(chl_qual$niskin))
 
 ```
 
-## Adjust Quality Flags, Replace Bad Data With NA, Finalize Column Names, 
+## Adjust Quality Flags, Replace Bad Data With NA, Finalize Column Names
 
 ```{r}
 
@@ -390,6 +391,10 @@ chl_qual <- chl_qual %>%
   mutate(filter_size = case_when(filter_size=="<10" ~ ">0&<10",
                                  TRUE ~ filter_size))
 
+# eliminate miliseconds
+#chl_qual$date_time_utc <- as.POSIXct(chl_qual$date_time_utc, tz = "UTC", "%Y-%m-%d %H:%M:%S")
+#chl_qual <- chl_qual |>
+#  floor_date(date_time_utc, unit = "seconds") 
 
 ```
 
@@ -416,11 +421,11 @@ write.csv(chl_qual, 'nes-lter-chl-transect-rosette.csv', row.names=FALSE)
 
 ```{r}
 
- # library(compareDF)
- # chl_previous <- read_csv('nes-lter-chl-transect-rosette-20230731.csv', show_col_types = FALSE) 
-  # chl_previous <- chl_previous %>% arrange(date_time_utc, cruise, cast, niskin, filter_size, replicate)
-  # diff_check <- compare_df(chl_previous, chl_qual)
-  # create_output_table(diff_check, output_type='xlsx', file_name='chl_diff_check.xlsx')
+ library(compareDF)
+ chl_previous <- read_csv('v2/nes-lter-chl-transect-rosette.csv', show_col_types = FALSE)
+ chl_previous <- chl_previous %>% arrange(date_time_utc, cruise, cast, niskin, filter_size, replicate)
+ diff_check <- compare_df(chl_qual, chl_previous)
+ create_output_table(diff_check, output_type='xlsx', file_name='chl_diff_check.xlsx')
 
 ```
 
@@ -562,6 +567,35 @@ ggplot(chl_qual, aes(x=as.factor(iode_quality_flag), y=phaeo, color=filter_size)
 ggsave("phaeo-by-flag.png")
 
 ```
+Plot climatology
+
+```{r}
+
+chl_qual$doy <-as.numeric(NA)
+chl_qual$year <-as.numeric(NA)
+
+chl_qual <- chl_qual |>
+  mutate(doy = yday(date_time_utc)) |>
+  mutate(year = year(date_time_utc))
+
+  # ggplot where x = cast, y = value and the lineplots are grouped by cruise
+  p <- ggplot(data = chl_qual, aes(x = doy, y = chl, color = year)) +
+    geom_point() +
+   xlab("day of year") +
+    ylab("chlorophyll concentration (µg/L)") +
+    theme_minimal()
+  print(p)
+  ggsave("chl_doy.png")
+  
+   p <- ggplot(data = chl_qual, aes(x = doy, y = phaeo, color = year)) +
+    geom_point() +
+   xlab("day of year") +
+    ylab("phaeopigment concentration (µg/L)") +
+    theme_minimal()
+  print(p)
+  ggsave("phaeo_doy.png")
+
+```
 
 ## QA: Map Sampling Locations
 
@@ -572,6 +606,8 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 # Map Check
 map_locs(df = chl_qual, xvar = "longitude", yvar = "latitude",
          region = "transect", colorvar = "cruise")
+
+# also check min/max lat/long from coverage element of final EML assembly chunk
 
 ```
 
@@ -590,10 +626,10 @@ Step 4: Inserting a custom NES-LTER parent project node
 # define input files
 metadata <- "chl-transect-info"
 edi_filename <- "nes-lter-chl-transect-rosette"
-pkg_id <- "knb-lter-nes.8.2"
+pkg_id <- "knb-lter-nes.8.3"
 
 # Make EML Templates 
-excel_to_template(here(metadata), edi_filename, rights='CC0', del_rights = FALSE)
+excel_to_template(here(metadata), edi_filename, rights='CC0', file_type=".md", del_rights = FALSE)
 
 # Data Coverage
 # isolate date and geospatial columns for input
@@ -618,7 +654,7 @@ make_eml(path = here(),
          package.id = pkg_id)
 
 # Insert Custom Project Node
-project_insert(edi_pkg = pkg_id, "parent_project_RAPID_OOI.txt")
+project_insert(edi_pkg = pkg_id, "parent_project_NESI-II_RAPID_OOI.txt")
 
 # check for issues
 issues()

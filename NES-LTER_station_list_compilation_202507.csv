@@ -1,0 +1,81 @@
+stationfullname,station,startDate,endDate,decimalLatitude,decimalLongitude,latitudeDegreesN,latitudeMinutesN,longitudeDegreesW,longitudeMinutesW,depth_m,comment
+LTER1,L1,2018-01-01,current,41.1967,-70.8833,41,11.80,70,53.00,21,
+,L1.2,2018-01-01,current,41.1633,-70.8833,41,9.80,70,53.00,,
+,L1.25,2018-01-01,current,41.1550,-70.8833,41,9.30,70,53.00,30,cruise EN706 elog Station 2.5 nmi South of L1
+,L1.5,2018-01-01,current,41.1133,-70.8833,41,6.80,70,53.00,38,
+LTER2,L2,2018-01-01,current,41.0300,-70.8833,41,1.80,70,53.00,47,
+,L2.25,2018-01-01,current,40.9883,-70.8833,40,59.30,70,53.00,,
+,L2.5,2018-01-01,current,40.9467,-70.8833,40,56.80,70,53.00,53,
+LTER3,L3,2018-01-01,current,40.8633,-70.8833,40,51.80,70,53.00,56,
+LTER4,L4,2018-01-01,current,40.6967,-70.8833,40,41.80,70,53.00,66,
+LTER5,L5,2018-01-01,2018-06-30,40.5300,-70.8833,40,31.80,70,53.00,,
+LTER5,L5,2018-07-01,current,40.5133,-70.8833,40,30.80,70,53.00,75,"Nudged south in 2018 to avoid shipping channel. On cruise HRS2303, recorded as L05 in elog. "
+,L5.5,2018-07-01,current,40.4383,-70.8833,40,26.30,70,53.00,,started on cruise HRS2303
+LTER6,L6,2014-01-01,current,40.3633,-70.8833,40,21.80,70,53.00,95,OOI Inshore (IS). Established as OOI Pioneer site circa January 2014. 
+LTER7,L7,2014-01-01,2022-12-31,40.2267,-70.8833,40,13.60,70,53.00,129,OOI Central Inshore (CI)
+LTER7,L7,2023-01-01,current,40.2575,-70.8833,40,15.45,70,53.00,120,"Shifted north post OOI; starting in Jan 2023, L8 was moved West to be on the main line and L7 & L9 were moved slightly North and South respectively to make stations from L6 to L10 equidistant. On cruise HRS2303, recorded as L07 in elog. "
+,L7.5,2018-01-01,2022-12-31,40.1625,-70.8833,40,9.75,70,53.00,,
+LTER8,L8,2014-01-01,2022-12-31,40.1367,-70.7750,40,8.20,70,46.50,137,OOI Central (CN)
+LTER8,L8,2023-01-01,current,40.1517,-70.8833,40,9.10,70,53.00,137,"Shifted NW post OOI; starting in Jan 2023, L8 was moved West to be on the main line and L7 & L9 were moved slightly North and South respectively to make stations from L6 to L10 equidistant"
+,L8.5,2023-01-01,current,40.0988,-70.8833,40,5.93,70,53.00,,started on cruise EN706
+LTER9,L9,2014-01-01,2022-12-31,40.0983,-70.8833,40,5.90,70,53.00,150,OOI Central Offshore (CO)
+LTER9,L9,2023-01-01,current,40.0458,-70.8833,40,2.75,70,53.00,205,"Shifted south post OOI; starting in Jan 2023, L8 was moved West to be on the main line and L7 & L9 were moved slightly North and South respectively to make stations from L6 to L10 equidistant"
+,L9.5,2018-01-01,2022-12-31,40.0192,-70.8833,40,1.15,70,53.00,,
+LTER10,L10,2014-01-01,current,39.9400,-70.8833,39,56.40,70,53.00,462,OOI Offshore (OS)
+,L10.5,2018-01-01,current,39.8567,-70.8833,39,51.40,70,53.00,,
+LTER11,L11,2018-01-01,current,39.7733,-70.8833,39,46.40,70,53.00,1604,Upper slope
+LTER12,L12,2014-01-01,2022-12-31,39.9400,-70.7750,39,56.40,70,46.50,465,OOI Upstream Offshore (UO)
+LTER13,L13,2014-01-01,2022-12-31,40.3650,-70.7750,40,21.90,70,46.50,95,OOI Upstream Inshore (UI)
+upstream1a,u1a,2021-01-01,current,41.1967,-70.7721,41,11.80,70,46.33,,started on cruise EN661
+downstream1a,d1a,2021-01-01,current,41.1967,-70.9946,41,11.80,70,59.68,,started on cruise EN661
+upstreamL2u2a,L2u2a,2018-07-01,current,41.0300,-70.8279,41,1.80,70,49.68,,"started on cruise EN657 as midpoint between the standard station and the ""a"" station; applicable dating back to the establishment of the ""a"" station"
+upstream2a,u2a,2018-07-01,current,41.0300,-70.7725,41,1.80,70,46.35,47,
+upstream2,u2,2018-01-01,2018-06-30,41.0300,-70.6617,41,1.80,70,39.70,48,renamed between EN608 and EN617
+upstream2b,u2b,2018-07-01,current,41.0300,-70.6617,41,1.80,70,39.70,48,
+downstreamL2d2a,L2d2a,2018-07-01,current,41.0300,-70.9387,41,1.80,70,56.33,,"started on cruise EN657 as midpoint between the standard station and the ""a"" station; applicable dating back to the establishment of the ""a"" station"
+downstream2a ,d2a,2018-07-01,current,41.0300,-70.9942,41,1.80,70,59.65,42,
+downstream2,d2,2018-01-01,2018-06-30,41.0300,-71.1050,41,1.80,71,6.30,43,renamed between EN608 and EN617
+downstream2b ,d2b,2018-07-01,current,41.0300,-71.1050,41,1.80,71,6.30,43,
+upstreamL4u4a,L4u4a,2018-07-01,current,40.6967,-70.8283,40,41.80,70,49.70,,"midpoint between the standard station and the ""a"" station; applicable dating back to the establishment of the ""a"" station"
+upstream4a,u4a,2018-07-01,current,40.6967,-70.7733,40,41.80,70,46.40,64,
+upstream4,u4,2018-01-01,2018-06-30,40.6967,-70.6633,40,41.80,70,39.80,63,renamed between EN608 and EN617
+upstream4b,u4b,2018-07-01,current,40.6967,-70.6633,40,41.80,70,39.80,63,
+downstreamL4d4a,L4d4a,2018-07-01,current,40.6967,-70.9383,40,41.80,70,56.30,,"midpoint between the standard station and the ""a"" station; applicable dating back to the establishment of the ""a"" station"
+downstream4a,d4a,2018-07-01,current,40.6967,-70.9933,40,41.80,70,59.60,62,
+downstream4,d4,2018-01-01,2018-06-30,40.6967,-71.1033,40,41.80,71,6.20,62,renamed between EN608 and EN617
+downstream4b,d4b,2018-07-01,current,40.6967,-71.1033,40,41.80,71,6.20,62,
+downstream4.5bc,d4.5bc,2023-10-11,2023-10-16,40.5970,-71.2120,40,35.82,71,12.72,66,special station on AR77
+downstream5b,d5b,2023-10-11,current,40.5133,-71.1050,40,30.80,71,6.30,77,started on cruise AR77
+downstream5d,d5d,2023-10-11,current,40.5133,-71.3240,40,30.80,71,19.46,70,started on cruise AR77
+upstream5b,u5b,2023-10-11,current,40.5133,-70.6650,40,30.80,70,39.90,74,started on cruise AR77
+upstream5d,u5d,2023-10-11,current,40.5133,-70.446,40,30.80,70,26.78,70,started on cruise AR77
+upstreamL6u6a,L6u6a,2018-07-01,current,40.3633,-70.8287,40,21.80,70,49.73,,"started on cruise EN657 as midpoint between the standard station and the ""a"" station; applicable dating back to the establishment of the ""a"" station"
+upstream6a,u6a,2018-07-01,current,40.3633,-70.7742,40,21.80,70,46.45,93,
+upstream6,u6,2018-01-01,2018-06-30,40.3633,-70.6650,40,21.80,70,39.90,93,renamed between EN608 and EN617
+upstream6b,u6b,2018-07-01,current,40.3633,-70.6650,40,21.80,70,39.90,93,
+downstreamL6d6a,L6d6a,2018-07-01,current,40.3633,-70.9379,40,21.80,70,56.28,,"started on cruise EN657 as midpoint between the standard station and the ""a"" station; applicable dating back to the establishment of the ""a"" station"
+downstream6a,d6a,2018-07-01,current,40.3633,-70.9925,40,21.80,70,59.55,90,
+downstream6,d6,2018-01-01,2018-06-30,40.3633,-71.1017,40,21.80,71,6.10,90,renamed between EN608 and EN617
+downstream6b ,d6b,2018-07-01,current,40.3633,-71.1017,40,21.80,71,6.10,90,
+downstream6d,d6d,2023-10-11,current,40.3633,-71.3220,40,21.80,71,19.30,83,started on cruise AR77
+upstream9a,u9a,2018-07-01,2022-12-31,40.0983,-70.7742,40,5.90,70,46.45,137,
+upstream9a,u9a,2023-01-01,current,40.0458,-70.7742,40,2.75,70,46.45,,
+upstream9,u9,2018-01-01,2018-06-30,40.0983,-70.6650,40,5.90,70,39.90,130,renamed between EN608 and EN617
+upstream9b,u9b,2018-07-01,2022-12-31,40.0983,-70.6650,40,5.90,70,39.90,130,
+upstream9b,u9b,2023-01-01,current,40.0458,-70.6650,40,2.75,70,39.90,,
+downstream9a,d9a,2018-07-01,2022-12-31,40.0983,-70.9925,40,5.90,70,59.55,166,
+downstream9a,d9a,2023-01-01,current,40.0458,-70.9925,40,2.75,70,59.55,,
+downstream9,d9,2018-01-01,2018-06-30,40.0983,-71.1017,40,5.90,71,6.10,169,renamed between EN608 and EN617
+downstream9b,d9b,2018-07-01,2022-12-31,40.0983,-71.1017,40,5.90,71,6.10,169,
+downstream9b,d9b,2023-01-01,current,40.0458,-71.1017,40,2.75,71,6.10,,
+upstreamL11u11a,L11u11a,2018-07-01,current,39.7733,-70.8292,39,46.40,70,49.75,,"started on cruise EN657 as midpoint between the standard station and the ""a"" station; applicable dating back to the establishment of the ""a"" station"
+upstream11a,u11a,2018-07-01,current,39.7733,-70.7750,39,46.40,70,46.50,1772,
+upstream11,u11,2018-01-01,2018-06-30,39.7733,-70.6667,39,46.40,70,40.00,1628,renamed between EN608 and EN617
+upstream11b,u11b,2018-07-01,current,39.7733,-70.6667,39,46.40,70,40.00,1628,
+upstream11c,u11c,2019-02-01,current,39.7733,-70.4450,39,46.40,70,31.30,,specific to cruise EN627
+downstreamL11d11a,L11d11a,2018-07-01,current,39.7733,-70.9375,39,46.40,70,56.25,,"started on cruise EN657 as midpoint between the standard station and the ""a"" station; applicable dating back to the establishment of the ""a"" station"
+downstream11a,d11a,2018-07-01,current,39.7733,-70.9917,39,46.40,70,59.50,1629,
+downstream11,d11,2018-01-01,2018-06-30,39.7733,-71.1000,39,46.40,71,6.00,1572,renamed between EN608 and EN617
+downstream11b,d11b,2018-07-01,current,39.7733,-71.1000,39,46.40,71,6.00,1572,
+Martha's Vineyard Coastal Observatory,MVCO,2003-01-01,current,41.3250,-70.5667,41,19.50,70,34.00,17,data from ASIT Tower may start as early as 2003
+Narragansett Bay Long-Term Plankton Time Series Site,NBLTTS1,1957-01-01,current,41.569983,-71.391717,41,34.2,71,23.4,,Sampled on cruise EN695 with visits to station recorded as NPTS1 and NPTS2 in elog. The plankton time series started in 1957. 
