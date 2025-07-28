@@ -54,4 +54,15 @@ For Menden-Deuer data, the quality assurance was assessed from the ratio of fluo
 
 In version 3, samples from several cruises were added. The list of stations used to calculate nearest\_station and distance was updated. The column project\_id was updated to identify all Rynearson and Menden-Deuer samples as LTER. The methods section was lightly edited. 
 
+# Related Data Sets
+
+Menden-Deuer, S. and P. Marrec. 2023. Phytoplankton growth and microzooplankton grazing rates from NES-LTER transect cruises, ongoing since 2018. ver 2. Environmental Data Initiative. https://doi.org/10.6073/pasta/b3366e0d4206a401b415953ed3e60389 (Accessed 2025-07-28).
+
+Fontaine, D.N. and T.A. Rynearson. 2023. Size-fractionated net primary productivity (NPP) estimates based on 13C uptake during cruises along the Northeast U.S. Shelf Long Term Ecological Research (NES-LTER) Transect, ongoing since 2019 ver 4. Environmental Data Initiative. https://doi.org/10.6073/pasta/95dde1f0c5bb3da0cac9bc47be2526b0 (Accessed 2025-07-28).
+
+Sosik, H.M., E. Crockford, and E. Peacock. 2022. Size-fractionated chlorophyll from the Martha’s Vineyard Coastal Observatory (MVCO), ongoing since 2003 (NES-LTER since 2017) ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/29ecb409988f09597ee268d6926e1cd9 (Accessed 2025-07-28).
+
+Menden-Deuer, S., P. Marrec, and A. Herbst. 2022. Underway discrete chlorophyll and post-calibrated underway fluorometer data during NES-LTER Transect cruises, ongoing since 2019 ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/16c8e5937a860c882b524fda73408baf (Accessed 2025-07-28).
+
+Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from Northeast U.S. Shelf Long Term Ecological Research (NES-LTER) Transect cruises, ongoing since 2017 ver 2. Environmental Data Initiative. https://doi.org/10.6073/pasta/0cde75ba26923d87e107a1c440613209 (Accessed 2025-07-28).
 
