@@ -37,22 +37,17 @@ here("nes-lter-chl-transect")
 ## Compile Chl Transect Data
 ```{r}
 
-# define the list of cruises with API chlorophyll data
+base_api_url <- config::get("base_api_url")   # set in local config.yml
 
-cruiselist <- c("ar22", "ar24a", "ar24b", "ar24c", "ar28a", "ar28b", "ar31a",  "ar31b", "ar31c", "ar32", "ar34a", "ar34b", "ar38", "ar39a", "ar39b", "ar44","ar48a", "ar48b", "ar52a", "ar52b",  "ar61a", "ar61b", "ar66a", "ar66b", "ar77", "at46", "en608", "en617",  "en627",  "en644",  "en649", "en655", "en657", "en661", "en668", "en687", "en695", "en706", "en712", "en712", "en715", "en720")
+chl_url <- glue::glue('{base_api_url}/chl/all.csv')
 
-# pull from API if compiled cruise data file doesn't exist in directory
-if (!file.exists("chl-transect-api.csv")) {
+api_chl <- tryCatch(read_csv(chl_url), 
+                 error=function(cond) 
+                     { message(cond)
+                       return(NULL) })
 
-  # compile cruise data from api
-  api_chl <- read_from_api(type = "chl", cruises = cruiselist)
-
-   # write csv file of concatenated cruises
-  write.csv(api_chl, 'chl-transect-api.csv', row.names=FALSE)
-} else {
-  # read in existant data file # have to specify formats in order to specify cast as character
-  api_chl <- read_csv("chl-transect-api.csv", col_types = cols("c", "c", "d", "c", "n", "c", "d", "d", "d", "d","d", "d","d", "d","d", "d","T", "d","d", "d"))
-}
+# write csv file of concatenated cruises
+write.csv(api_chl, 'chl-transect-api.csv', row.names=FALSE)
 
 api_chl <- api_chl  %>% 
     rename(iode_quality_flag = quality_flag) %>% 
@@ -118,13 +113,34 @@ smd_expanded$niskin_expand <- as.numeric(smd_expanded$niskin_expand)
 ## Load CTD Bottle Summary and Metadata from API
 ```{r}
 
-cruiselist <- c("ar22", "ar24a", "ar24b", "ar24c", "ar28a", "ar28b", "ar31a",  "ar31b", "ar31c", "ar32", "ar34a", "ar34b", "ar38", "ar39a", "ar39b", "ar44","ar48a", "ar48b", "ar52a", "ar52b",  "ar61a", "ar61b", "ar66a", "ar66b", "ar77", "at46", "en608", "en617",  "en627",  "en644",  "en649", "en655", "en657", "en661", "en668", "en687", "en695", "en706", "en712", "en712", "en715", "en720")
+cruises_url <- glue::glue('{base_api_url}ctd/cruises/all.csv')
+
+all_cruises <- tryCatch(read_csv(cruises_url), 
+                 error=function(cond) 
+                     { message(cond)
+                       return(NULL) })
+
 
 # compile ctd bottle summary
 # pull from API if compiled cruise data file doesnt exist in directory
 if (!file.exists("ctd-bottle-summary.csv")) {
   # compile the bottle summary
-  ctd_summary <- read_from_api(type = "summary", cruises = cruiselist)
+  ctd_summary <- tibble()
+  for (cruise_id in all_cruises$name) {
+    cruise_id <- str_to_lower(cruise_id)
+    url <- glue::glue('{base_api_url}ctd/bottle_summary/{cruise_id}.csv')
+
+    btl_sum <- tryCatch(read_csv(url), 
+                  error=function(cond) 
+                      { message(cond)
+                        return(NULL) })
+
+   if (!is.null(btl_sum) && nrow(btl_sum) > 0) {
+        btl_sum <- btl_sum %>%
+            mutate(cast = as.character(cast))
+        ctd_summary <- bind_rows(ctd_summary, btl_sum)
+    }
+  }
   # write csv file of concatenated cruises
   write.csv(ctd_summary, 'ctd-bottle-summary.csv', row.names=FALSE)
 } else {
@@ -132,22 +148,45 @@ if (!file.exists("ctd-bottle-summary.csv")) {
   ctd_summary <- read_csv("ctd-bottle-summary.csv")
 }
 
-# ctd metadata could be used to get nearest_station, but this currently breaks because it's empty for AR52 A & B
-# # compile ctd metadata
-# # pull from API if compiled cruise data file doesnt exist in directory
-# if (!file.exists("ctd-metadata.csv")) {
-#   # compile the ctd metadata
-#   ctd_metadata <- read_from_api(type = "metadata", cruises = cruiselist)
-#   # write csv file of concatenated cruises
-#   write.csv(ctd_metadata, 'ctd-metadata.csv', row.names=FALSE)
-# } else {
-#   # read in existant data file
-#   ctd_metadata <- read_csv("ctd-metadata.csv")
-# }
+
+# compile ctd metadata
+# pull from API if compiled cruise data file doesnt exist in directory
+ if (!file.exists("ctd-metadata.csv")) {
+  # compile the ctd metadata
+  ctd_metadata <- tibble()
+  for (cruise_id in all_cruises$name) {
+    cruise_id <- str_to_lower(cruise_id)
+    url <- glue::glue('{base_api_url}ctd/metadata/{cruise_id}.csv')
+
+    metadata <- tryCatch(read_csv(url), 
+                  error=function(cond) 
+                      { message(cond)
+                        return(NULL) })
+
+    if (!is.null(metadata)) {
+      metadata <- metadata %>%
+        mutate(cast = as.character(cast))
+        metadata <- metadata %>%
+          mutate(
+            date = as.POSIXct(date, tz = "UTC"),
+            latitude = as.numeric(latitude),
+            longitude = as.numeric(longitude),
+            distance_km = as.numeric(distance_km)
+          )
+
+      ctd_metadata <- bind_rows(ctd_metadata, metadata)
+    }
+  }
+   # write csv file of concatenated cruises
+   write.csv(ctd_metadata, 'ctd-metadata.csv', row.names=FALSE)
+ } else {
+   # read in existant data file
+   ctd_metadata <- read_csv("ctd-metadata.csv")
+ }
 
 # remove leading zeroes from cast
 ctd_summary$cast <- str_remove(ctd_summary$cast, "^0+") 
-#ctd_metadata$cast <- str_remove(ctd_metadata$cast, "^0+") 
+ctd_metadata$cast <- str_remove(ctd_metadata$cast, "^0+") 
 
 ```
 
@@ -174,6 +213,8 @@ tar_en608$method_contributor <- as.character("method_Rynearson")
 tar_en608$iode_quality_flag <- as.integer(2) #quality not evaluated
 
 # retaining df name api_chl but now includes data from API and Rynearson EN608 data not from API
+api_chl$cast <- as.character(api_chl$cast)
+tar_en608$cast <- as.character(tar_en608$cast)
 api_chl <- bind_rows(api_chl, tar_en608)
 
 ```                           
@@ -274,47 +315,16 @@ chl_transect <- chl_transect  %>%
                                    
 ```
 ## Find Nearest Station and Station Distance
-# could instead join with CTD metadata
+# join with CTD metadata
 
 ```{r}
 
-chl_dis <- chl_transect
-
-# initialize nearest station and distance columns to NA
-chl_dis$nearest_station <- NA_character_
-chl_dis$distance <- NA_integer_
-
-# use a standard list of stations L1-L13
-# read list csv into stations
-stations <- read_csv('NES-LTER_station_list_compilation_202507.csv')
-
-station_matrix <- matrix(data = c(stations$decimalLongitude, stations$decimalLatitude), nrow = 80, ncol = 2, byrow = FALSE,
-             dimnames = NULL)
-
-# calculate distance per row of the data frame
-for (df_row in 1:nrow(chl_dis)) {
-  df_lon <- chl_dis$longitude[df_row]
-  df_lat <- chl_dis$latitude[df_row]
-  # add an if to skip the row if df lon and/or lat is NA
-  if (!is.na(df_lon) & !is.na(df_lat)) {
-    df_lon_lat <- c(df_lon,df_lat)
-    km_from_df <- distHaversine(station_matrix, df_lon_lat, r=6378.137)
-    # index the minimum distance
-    index <- which.min(km_from_df)
-    # use that index to pull the station name and its distance
-    nearest_station_list <- stations[index,'station']
-    # need to change this from a list to char
-    nearest_station <- unname(unlist(nearest_station_list))
-    distance <- km_from_df[index]
-    # If distance less than 2 km, use base R to add to respective columns in the full data table within the for loop
-    if (distance < 2) {
-      chl_dis$nearest_station[df_row] <- nearest_station
-      chl_dis$distance[df_row] <- distance
-    }
-  }
-}
-
-chl_dis$distance <- round(chl_dis$distance, 2)
+chl_dis <- chl_transect %>%
+  left_join(
+    ctd_metadata %>%
+      select(cruise, cast, nearest_station, distance_km),
+      by = c("cruise", "cast")
+  )
 
 ```
 
@@ -325,7 +335,7 @@ Isolate samples that were taken at a distance greater than 2km from the nearest 
 ```{r}
 
 st_dist_outliers <- chl_dis %>%
-  filter(is.na(distance))
+  filter(is.na(distance_km))
 # St_dist_outliers expect AR22, AR24A,B, EN627 cast 29, and just greater than 2km EN608 c14 L7, c15 L8, c22 L9, EN617 c21 L11, EN644 c9 L8, EN649 c8 L8, c11 L9
 
 ```
@@ -403,7 +413,7 @@ chl_qual <- chl_qual %>%
 ```{r}
 
 #remove columns
- chl_qual <- select(chl_qual, -project_id_basic, -project_id_fancy)
+ chl_qual <- select(chl_qual, -project_id_basic, -project_id_fancy, -distance)
  
 # # add zero to casts with one digit to enable proper sorting
 #  chl_qual$cast <- ifelse((nchar(chl_qual$cast)) >2, 
@@ -412,7 +422,7 @@ chl_qual <- chl_qual %>%
                        
 #  simply sort by datetime? # puts rows without bottle metadata at end of file     
 chl_qual <- chl_qual %>% arrange(date_time_utc, cruise, cast, niskin, filter_size, replicate)
- 
+names(chl_qual) 
 write.csv(chl_qual, 'nes-lter-chl-transect-rosette.csv', row.names=FALSE)
 
 ```
