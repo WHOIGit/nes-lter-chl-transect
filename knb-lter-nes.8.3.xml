@@ -93,7 +93,7 @@
       <electronicMailAddress>mary_mckenzie@uri.edu</electronicMailAddress>
       <role>technician</role>
     </associatedParty>
-    <pubDate>2026-06-03</pubDate>
+    <pubDate>2026-06-04</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and phaeopigments are measured from discrete bottle samples collected during CTD-rosette casts on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Size fractions in addition to whole seawater (&gt;0.7 micron) include &gt;5 , &lt;10, &gt;10, and &gt;20 microns with some samples pre-filtered &lt;200 microns. Pigments were analyzed using fluorometers in which fluorescence was measured versus a blank and a standard, and final concentrations were calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
@@ -383,8 +383,8 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
       <entityDescription>Chlorophyll from discrete water column bottles compiled for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-chl-transect-rosette.csv</objectName>
-        <size unit="bytes">949365</size>
-        <authentication method="MD5">6a8557eccf078041a674b0486e1b0714</authentication>
+        <size unit="bytes">1052042</size>
+        <authentication method="MD5">902e6dc7be7a262a4cc723bb1c01fedf</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -741,8 +741,8 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">0.08554446154</minimum>
-                  <maximum exclusive="false">48.43587929732</maximum>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">48.60283655137</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
