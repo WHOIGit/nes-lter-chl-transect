@@ -144,7 +144,7 @@ We'd like to thank additional team members for sample collection and processing 
             <calendarDate>2017-09-02</calendarDate>
           </beginDate>
           <endDate>
-            <calendarDate>2024-09-11</calendarDate>
+            <calendarDate>2026-01-18</calendarDate>
           </endDate>
         </rangeOfDates>
       </temporalCoverage>
@@ -383,8 +383,8 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
       <entityDescription>Chlorophyll from discrete water column bottles compiled for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-chl-transect-rosette.csv</objectName>
-        <size unit="bytes">1052042</size>
-        <authentication method="MD5">902e6dc7be7a262a4cc723bb1c01fedf</authentication>
+        <size unit="bytes">1263301</size>
+        <authentication method="MD5">2bc855e61c7371ffc1119e0ffe372c9b</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -753,7 +753,7 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>8056</numberOfRecords>
+      <numberOfRecords>9732</numberOfRecords>
     </dataTable>
   </dataset>
   <annotations>
