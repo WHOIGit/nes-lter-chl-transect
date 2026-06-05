@@ -397,8 +397,8 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
       <entityDescription>Chlorophyll from discrete water column bottles compiled for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-chl-transect-rosette.csv</objectName>
-        <size unit="bytes">1013034</size>
-        <authentication method="MD5">6b2acd3ef2bfee3758cb6b65f3e16100</authentication>
+        <size unit="bytes">1013378</size>
+        <authentication method="MD5">a6805d9627412af8d7b69b157272105e</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>

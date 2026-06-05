@@ -40,15 +40,15 @@ base_api_url <- config::get("base_api_url")   # set in local config.yml
 
 chl_url <- glue::glue('{base_api_url}/chl/all.csv')
 
-# api_chl <- tryCatch(read_csv(chl_url),
-#                  error=function(cond)
-#                      { message(cond)
-#                        return(NULL) })
+api_chl <- tryCatch(read_csv(chl_url),
+                 error=function(cond)
+                     { message(cond)
+                       return(NULL) })
 
 # write csv file of concatenated cruises
-#write.csv(api_chl, 'chl-transect-api.csv', row.names=FALSE)
+write.csv(api_chl, 'chl-transect-api.csv', row.names=FALSE)
 # if needed:
-api_chl <- read_csv('chl-transect-api.csv')
+#api_chl <- read_csv('chl-transect-api.csv')
 
 api_chl <- api_chl  %>% 
     rename(iode_quality_flag = quality_flag) %>% 
@@ -60,17 +60,18 @@ api_chl <- api_chl  %>%
 
 
 ##### special cases for v3 ######
-# EN727 one TAR sample needs quality changed from NaN to 1 (cast 5) Where cast == 5, change to 1. 
-# EN727 Sosik samples missing need flag. Where flag and rb are NA, change flag to 9
-# EN727 where method is NA and filter size is 3, replace with TAR and >20; 
 # AE2426 needs all TAR samples filtered out -- only a few were run so far
 # filter out all of AR88 and AR95 plus AR92 TAR
 
+# Fixed in API, saved here just in case. EN727 one TAR sample needs quality changed from NaN to 1 (cast 5) Where cast == 5, change to 1. # EN727 Sosik samples missing need flag. Where flag and rb are NA, change flag to 9 # EN727 where method is NA and filter size is 3, replace with TAR and >20; 
+# api_chl <- api_chl |>
+#   mutate(iode_quality_flag = case_when(str_detect(cruise, "EN727") & cast == 5 & is.na(iode_quality_flag) ~ 1, TRUE ~ iode_quality_flag)) |>
+#   mutate(iode_quality_flag = case_when(str_detect(cruise, "EN727") & is.na(rb) & is.na(iode_quality_flag) ~9, TRUE ~ iode_quality_flag)) |>
+#   mutate(method_contributor = case_when(str_detect(cruise, "EN727") & is.na(method_contributor) ~ "method_Rynearson", TRUE ~ method_contributor)) |>
+#   mutate(filter_size = case_when(str_detect(cruise, "EN727") & str_detect(filter_size, "3") ~ ">20", TRUE ~ filter_size))
+
 api_chl <- api_chl |>
-  mutate(iode_quality_flag = case_when(str_detect(cruise, "EN727") & cast == 5 & is.na(iode_quality_flag) ~ 1, TRUE ~ iode_quality_flag)) |>
-  mutate(iode_quality_flag = case_when(str_detect(cruise, "EN727") & is.na(rb) & is.na(iode_quality_flag) ~9, TRUE ~ iode_quality_flag)) |>
-  mutate(method_contributor = case_when(str_detect(cruise, "EN727") & is.na(method_contributor) ~ "method_Rynearson", TRUE ~ method_contributor)) |>
-  mutate(filter_size = case_when(str_detect(cruise, "EN727") & str_detect(filter_size, "3") ~ ">20", TRUE ~ filter_size))
+  mutate(method_contributor = case_when(str_detect(cruise, "EN727") & is.na(method_contributor) ~ "method_Rynearson", TRUE ~ method_contributor)) 
 
 api_chl <- api_chl |>
   mutate(filter_size = case_when(str_detect(cruise, "AE2426") & str_detect(method_contributor, "method_Rynearson") ~ "FLAG", TRUE ~ filter_size)) |>
@@ -328,7 +329,10 @@ chl_transect <- chl_transect %>%
 # add project_id
 chl_transect <- chl_transect  %>% 
     mutate(project_id_basic  = case_when(str_detect(cruise, "AR.*") ~ "OOI",
-                                   str_detect(cruise, "EN.*") ~ "LTER"))
+                                   str_detect(cruise, "EN.*") ~ "LTER",
+                                   str_detect(cruise, "AE.*") ~ "LTER",
+                                   str_detect(cruise, "HRS.*") ~ "LTER"
+                                   ))
                            
 chl_transect <- chl_transect  %>% 
     mutate(project_id_fancy  = case_when(method_contributor == "method_Menden-Deuer" ~ "LTER",
