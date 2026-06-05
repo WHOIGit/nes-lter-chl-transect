@@ -27,7 +27,6 @@ library(EMLassemblyline)
 library(EML)
 library(maps)
 library(xml2)
-library(geosphere)
 library(httr)
 
 #set path to root of project
@@ -41,13 +40,15 @@ base_api_url <- config::get("base_api_url")   # set in local config.yml
 
 chl_url <- glue::glue('{base_api_url}/chl/all.csv')
 
-api_chl <- tryCatch(read_csv(chl_url), 
-                 error=function(cond) 
-                     { message(cond)
-                       return(NULL) })
+# api_chl <- tryCatch(read_csv(chl_url),
+#                  error=function(cond)
+#                      { message(cond)
+#                        return(NULL) })
 
 # write csv file of concatenated cruises
-write.csv(api_chl, 'chl-transect-api.csv', row.names=FALSE)
+#write.csv(api_chl, 'chl-transect-api.csv', row.names=FALSE)
+# if needed:
+api_chl <- read_csv('chl-transect-api.csv')
 
 api_chl <- api_chl  %>% 
     rename(iode_quality_flag = quality_flag) %>% 
@@ -57,6 +58,29 @@ api_chl <- api_chl  %>%
                                            filter_size==">20" ~ "method_Rynearson", 
                                            filter_size==">0" ~ "method_Sosik")) 
 
+
+##### special cases for v3 ######
+# EN727 one TAR sample needs quality changed from NaN to 1 (cast 5) Where cast == 5, change to 1. 
+# EN727 Sosik samples missing need flag. Where flag and rb are NA, change flag to 9
+# EN727 where method is NA and filter size is 3, replace with TAR and >20; 
+# AE2426 needs all TAR samples filtered out -- only a few were run so far
+# filter out all of AR88 and AR95 plus AR92 TAR
+
+api_chl <- api_chl |>
+  mutate(iode_quality_flag = case_when(str_detect(cruise, "EN727") & cast == 5 & is.na(iode_quality_flag) ~ 1, TRUE ~ iode_quality_flag)) |>
+  mutate(iode_quality_flag = case_when(str_detect(cruise, "EN727") & is.na(rb) & is.na(iode_quality_flag) ~9, TRUE ~ iode_quality_flag)) |>
+  mutate(method_contributor = case_when(str_detect(cruise, "EN727") & is.na(method_contributor) ~ "method_Rynearson", TRUE ~ method_contributor)) |>
+  mutate(filter_size = case_when(str_detect(cruise, "EN727") & str_detect(filter_size, "3") ~ ">20", TRUE ~ filter_size))
+
+api_chl <- api_chl |>
+  mutate(filter_size = case_when(str_detect(cruise, "AE2426") & str_detect(method_contributor, "method_Rynearson") ~ "FLAG", TRUE ~ filter_size)) |>
+  mutate(filter_size = case_when(str_detect(cruise, "AR92") & str_detect(method_contributor, "method_Rynearson") ~ "FLAG", TRUE ~ filter_size)) |>
+  mutate(filter_size = case_when(str_detect(cruise, "AR88")  ~ "FLAG", TRUE ~ filter_size)) |>
+  mutate(filter_size = case_when(str_detect(cruise, "AR95")  ~ "FLAG", TRUE ~ filter_size)) |>
+  filter(filter_size != "FLAG")
+  
+# for testing
+write.csv(api_chl, 'check-chl-transect-api.csv', row.names=FALSE)
 ```
 
 
@@ -66,19 +90,24 @@ Cruises that use 12-bottle rosettes will have hyphenated casts (done in rapid su
 
 ```{r}
 
-# # store and read in the Menden-Deuer (SMD) files in the directory
-# files <- Sys.glob("en*SMD*.csv")    
-# cruises <- lapply(files, read_csv)
-# # compile the data into one dataframe
-# smd_chl <- do.call(rbind, cruises) %>%
-#   filter(!is.na(cruise))
-
-smd_chl <- read_csv("NES-LTER-chla-T0-SMD-final.csv") 
+# read in the Menden-Deuer (SMD) file
+smd_chl <- read_csv("NES-LTER-chla-T0-SMD-IM_flag.csv") # this version of the file has some flags edited to match growth and grazing package chl values
 smd_chl <- smd_chl %>% 
   rename(tau_calibration = tau_calibrated) %>% 
   rename(fd_calibration = fd_calibrated)
 
 smd_chl$cruise <- str_to_upper(smd_chl$cruise)
+
+# remove apostrophes
+#chlor$cast <- str_remove(chlor$cast, "'")
+#chlor$niskin <- str_remove(chlor$niskin, "'")
+smd_chl$niskin_second_cast <- str_remove(smd_chl$niskin_second_cast, "'")
+
+# add niskin_second_cast to niskin
+smd_chl <- smd_chl |>
+  mutate(niskin_second_cast = case_when(niskin_second_cast == "NA" ~ NA, TRUE ~ niskin_second_cast)) |>
+  mutate(niskin = case_when(!is.na(niskin_second_cast) ~ paste0(niskin, "|", niskin_second_cast), TRUE ~ niskin))
+smd_chl <- smd_chl |> select(-niskin_second_cast)
 
 # expand SMD data
 smd_expanded <- smd_chl %>%
@@ -243,8 +272,6 @@ smd_key <- smd_key %>%
             latitude = mean(latitude),
             longitude = mean(longitude))
 
-#TODO: remove milliseconds here? round_date or floor_date
-
 ```
 
 ## Join API data and Menden-Deuer data
@@ -282,6 +309,12 @@ smd_chl_final <- smd_chl_final[, headers]
 api_chl$niskin <- as.character(api_chl$niskin)
 chl_transect <- bind_rows(api_chl, smd_chl_final) 
 
+```
+
+## Format columns, add project ID
+
+```{r}
+
 # eliminate extra columns, set cast type, round numeric columns
 chl_transect <- chl_transect %>% 
   select(-vol_filtered, -tau_calibration, -fd_calibration, -rb, -ra, -blank, -rb_blank, -ra_blank) %>% 
@@ -314,29 +347,19 @@ chl_transect <- chl_transect  %>%
  sum(is.na(chl_transect$method_contributor))  
                                    
 ```
-## Find Nearest Station and Station Distance
-# join with CTD metadata
+## Join with CTD metadata to obtain nearest station and station distance
 
 ```{r}
 
-chl_dis <- chl_transect %>%
-  left_join(
-    ctd_metadata %>%
-      select(cruise, cast, nearest_station, distance_km),
-      by = c("cruise", "cast")
-  )
+ctd_metadata <- ctd_metadata |>
+  select(cruise, cast, nearest_station, distance_km) |>
+  rename(distance = distance_km) |>
+  mutate(distance = round(distance, 2)) 
+  
+ctd_metadata$nearest_station <- replace(ctd_metadata$nearest_station, ctd_metadata$nearest_station == "MVCO-ASIT", "MVCO") 
 
-```
-
-## QA: Station Distance Outliers
-
-Isolate samples that were taken at a distance greater than 2km from the nearest station
-
-```{r}
-
-st_dist_outliers <- chl_dis %>%
-  filter(is.na(distance_km))
-# St_dist_outliers expect AR22, AR24A,B, EN627 cast 29, and just greater than 2km EN608 c14 L7, c15 L8, c22 L9, EN617 c21 L11, EN644 c9 L8, EN649 c8 L8, c11 L9
+chl_dis <- chl_transect |>
+  left_join(ctd_metadata, by = c("cruise", "cast"))
 
 ```
 
@@ -377,6 +400,14 @@ sum(is.na(chl_qual$niskin))
 
 ```
 
+## QA: Check for samples missing nearest station
+
+```{r}
+
+sum(is.na(chl_qual$nearest_station))
+st_dist_check <- chl_qual |> filter(is.na(nearest_station) | is.na(distance))
+
+```
 ## Adjust Quality Flags, Replace Bad Data With NA, Finalize Column Names
 
 ```{r}
@@ -401,10 +432,8 @@ chl_qual <- chl_qual %>%
   mutate(filter_size = case_when(filter_size=="<10" ~ ">0&<10",
                                  TRUE ~ filter_size))
 
-# eliminate miliseconds
-#chl_qual$date_time_utc <- as.POSIXct(chl_qual$date_time_utc, tz = "UTC", "%Y-%m-%d %H:%M:%S")
-#chl_qual <- chl_qual |>
-#  floor_date(date_time_utc, unit = "seconds") 
+# eliminate milliseconds to format date correctly
+chl_qual$date_time_utc <- floor_date(chl_qual$date_time_utc, unit = "seconds")
 
 ```
 
@@ -413,7 +442,7 @@ chl_qual <- chl_qual %>%
 ```{r}
 
 #remove columns
- chl_qual <- select(chl_qual, -project_id_basic, -project_id_fancy, -distance)
+ chl_qual <- select(chl_qual, -project_id_basic, -project_id_fancy)
  
 # # add zero to casts with one digit to enable proper sorting
 #  chl_qual$cast <- ifelse((nchar(chl_qual$cast)) >2, 
@@ -423,7 +452,8 @@ chl_qual <- chl_qual %>%
 #  simply sort by datetime? # puts rows without bottle metadata at end of file     
 chl_qual <- chl_qual %>% arrange(date_time_utc, cruise, cast, niskin, filter_size, replicate)
 names(chl_qual) 
-write.csv(chl_qual, 'nes-lter-chl-transect-rosette.csv', row.names=FALSE)
+#write.csv(chl_qual, 'nes-lter-chl-transect-rosette.csv', row.names=FALSE)
+write_csv(chl_qual, 'nes-lter-chl-transect-rosette.csv', na = "NaN")
 
 ```
 
@@ -665,9 +695,6 @@ make_eml(path = here(),
 
 # Insert Custom Project Node
 project_insert(edi_pkg = pkg_id, "parent_project_NESI-II_RAPID_OOI.txt")
-
-# check for issues
-issues()
 
 ```
 

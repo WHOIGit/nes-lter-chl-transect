@@ -10,7 +10,7 @@
       <permission>read</permission>
     </allow>
   </access>
-  <dataset id="dataset">
+  <dataset>
     <title>Size-fractionated chlorophyll from water column bottle samples collected during NES-LTER Transect cruises, ongoing since 2017.</title>
     <creator>
       <individualName>
@@ -43,6 +43,15 @@
     </creator>
     <creator>
       <individualName>
+        <givenName>Megan</givenName>
+        <surName>Ferguson</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>megan.ferguson@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0009-0002-4496-6600</userId>
+    </creator>
+    <creator>
+      <individualName>
         <givenName>Tatiana</givenName>
         <surName>Rynearson</surName>
       </individualName>
@@ -70,6 +79,16 @@
     </creator>
     <creator>
       <individualName>
+        <givenName>Frankie</givenName>
+        <givenName>L</givenName>
+        <surName>Lopez</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>frankie.lopez@uri.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0009-0002-4309-2374</userId>
+    </creator>
+    <creator>
+      <individualName>
         <givenName>Pierre</givenName>
         <surName>Marrec</surName>
       </individualName>
@@ -93,7 +112,7 @@
       <electronicMailAddress>mary_mckenzie@uri.edu</electronicMailAddress>
       <role>technician</role>
     </associatedParty>
-    <pubDate>2026-06-04</pubDate>
+    <pubDate>2026-06-05</pubDate>
     <abstract>
       <para>Size-fractionated chlorophyll a and phaeopigments are measured from discrete bottle samples collected during CTD-rosette casts on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises (ongoing since 2017), as a proxy for phytoplankton biomass. Sampling frequency is approximately seasonal. Samples were processed by three lab groups using different methods. Size fractions in addition to whole seawater (&gt;0.7 micron) include &gt;5 , &lt;10, &gt;10, and &gt;20 microns with some samples pre-filtered &lt;200 microns. Pigments were analyzed using fluorometers in which fluorescence was measured versus a blank and a standard, and final concentrations were calculated in micrograms per liter (or mg per cubic meter). Some of the data are from cruises in collaboration with the Ocean Observatories Initiative (OOI).</para>
     </abstract>
@@ -120,12 +139,11 @@
       <keywordThesaurus>NOAA NODC Data Types Thesaurus</keywordThesaurus>
     </keywordSet>
     <additionalInfo>
-      <para>This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22 and AR38) and Joel Llopiz (AR32).
-We'd like to thank additional team members for sample collection and processing on cruises, including Bethany Stevens, Mira Santos, Beth Connors, Erin Jones, Zoe Sandwith, Brett Longworth, John San Soucie, Niki Lockwood, Alexa Sterling, Patricia Thibodeau, Jack Lawrence, Joe Futrelle, David Welty, Fran Webber, Jill Paquette, Ian Bishop, Brian Silva, Grace Medley, Shalan McDonough, and David Wellwood.
-</para>
+      <para>This data package includes data from MIT-WHOI Joint Program (JP) cruises funded by WHOI Academic Programs Office, with Chief Scientists Glen Gawarkiewicz (AR22 and AR38) and Joel Llopiz (AR32). </para>
+      <para>We'd like to thank additional team members for sample collection and processing on cruises, including Bethany Stevens, Mira Santos, Beth Connors, Erin Jones, Zoe Sandwith, Brett Longworth, John San Soucie, Niki Lockwood, Alexa Sterling, Patricia Thibodeau, Jack Lawrence, Joe Futrelle, David Welty, Fran Webber, Jill Paquette, Ian Bishop, Brian Silva, Grace Medley, Shalan McDonough, David Wellwood, and many others.</para>
     </additionalInfo>
     <intellectualRights>
-      <para>This data package is released to the "public domain" under Creative Commons CC0 1.0 "No Rights Reserved" (see: https://creativecommons.org/publicdomain/zero/1.0/). It is considered professional etiquette to provide attribution of the original work if this data package is shared in whole or by individual components. A generic citation is provided for this data package on the website https://portal.edirepository.org (herein "website") in the summary metadata page. Communication (and collaboration) with the creators of this data package is recommended to prevent duplicate research or publication. This data package (and its components) is made available "as is" and with no warranty of accuracy or fitness for use. The creators of this data package and the website shall not be liable for any damages resulting from misinterpretation or misuse of the data package or its components. For those data identified in the data table from the Ocean Observatories Initiative (OOI), see the Limitation of Liability and Disclaimer in the OOI User Terms and Conditions (https://oceanobservatories.org/how-to-use-acknowledge-and-cite-data/). Periodic updates of this data package may be available from the website. Thank you.
+      <para>This data package is released to the "public domain" under Creative Commons CC0 1.0 "No Rights Reserved" (see: https://creativecommons.org/publicdomain/zero/1.0/). It is considered professional etiquette to provide attribution of the original work if this data package is shared in whole or by individual components. A generic citation is provided for this data package on the website https://portal.edirepository.org (herein "website") in the summary metadata page. Communication (and collaboration) with the creators of this data package is recommended to prevent duplicate research or publication. This data package (and its components) is made available "as is" and with no warranty of accuracy or fitness for use. The creators of this data package and the website shall not be liable for any damages resulting from misinterpretation or misuse of the data package or its components. Periodic updates of this data package may be available from the website. Thank you.
 </para>
     </intellectualRights>
     <coverage>
@@ -135,7 +153,7 @@ We'd like to thank additional team members for sample collection and processing 
           <westBoundingCoordinate>-71.0958</westBoundingCoordinate>
           <eastBoundingCoordinate>-70.2182</eastBoundingCoordinate>
           <northBoundingCoordinate>41.36</northBoundingCoordinate>
-          <southBoundingCoordinate>39.7551</southBoundingCoordinate>
+          <southBoundingCoordinate>39.755</southBoundingCoordinate>
         </boundingCoordinates>
       </geographicCoverage>
       <temporalCoverage>
@@ -149,10 +167,6 @@ We'd like to thank additional team members for sample collection and processing 
         </rangeOfDates>
       </temporalCoverage>
     </coverage>
-    <annotation>
-      <propertyURI label="is about">http://purl.obolibrary.org/obo/IAO_0000136</propertyURI>
-      <valueURI label="Chlorophyll pigment concentrations in water bodies">http://vocab.nerc.ac.uk/collection/P02/current/CPWC/</valueURI>
-    </annotation>
     <maintenance>
       <description>ongoing</description>
     </maintenance>
@@ -209,7 +223,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
 
 # Quality Assurance
 
-We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We checked differences between replicates, visually inspected plots of chlorophyll values colored by filter size, and performed range checks. 
+We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We checked differences between replicates, visually inspected plots of chlorophyll values by filter size, and performed range checks. 
 
 Quality is indicated in the data table with IODE Primary Level flags: 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. Any sample with a negative phaeopigment value is provided with a flag of 3 (questionable). Samples with a flag of 4 (bad) are provided with chlorophyll/phaeopigment value of NA. 
 [See IODE Ocean Data Standards recommendation here: https://www.iode.org/index.php?option=com_oe&amp;task=viewDocumentRecord&amp;docID=10762]
@@ -218,7 +232,7 @@ For Menden-Deuer data, the quality assurance was assessed from the ratio of fluo
 
 # Differences From Previous Version
 
-In version 3, samples from several cruises were added. The list of stations used to calculate nearest\_station and distance was updated. The column project\_id was updated to identify all Rynearson and Menden-Deuer samples as LTER. The methods section was lightly edited. 
+In version 3, samples from several cruises were added. Some previously published flags were updated. The list of stations used to calculate nearest\_station and distance was updated. The column project\_id was updated to identify all Rynearson and Menden-Deuer samples as LTER. The date-time format was updated to ISO 8601 format. The methods section was lightly edited. 
 
 # Related Data Sets
 
@@ -226,7 +240,7 @@ Menden-Deuer, S. and P. Marrec. 2023. Phytoplankton growth and microzooplankton 
 
 Fontaine, D.N. and T.A. Rynearson. 2023. Size-fractionated net primary productivity (NPP) estimates based on 13C uptake during cruises along the Northeast U.S. Shelf Long Term Ecological Research (NES-LTER) Transect, ongoing since 2019 ver 4. Environmental Data Initiative. https://doi.org/10.6073/pasta/95dde1f0c5bb3da0cac9bc47be2526b0 (Accessed 2025-07-28).
 
-Sosik, H.M., E. Crockford, and E. Peacock. 2022. Size-fractionated chlorophyll from the Martha’s Vineyard Coastal Observatory (MVCO), ongoing since 2003 (NES-LTER since 2017) ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/29ecb409988f09597ee268d6926e1cd9 (Accessed 2025-07-28).
+Sosik, H.M., E.T. Crockford, E. Peacock, and M. Ferguson. 2026. Size-fractionated chlorophyll from the Martha’s Vineyard Coastal Observatory (MVCO), ongoing since 2003 (NES-LTER since 2017) ver 2. Environmental Data Initiative. https://doi.org/10.6073/pasta/7cb25cdf7a9ed43f593c50ebadc69023 (Accessed 2026-06-05).
 
 Menden-Deuer, S., P. Marrec, and A. Herbst. 2022. Underway discrete chlorophyll and post-calibrated underway fluorometer data during NES-LTER Transect cruises, ongoing since 2019 ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/16c8e5937a860c882b524fda73408baf (Accessed 2025-07-28).
 
@@ -383,12 +397,12 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
       <entityDescription>Chlorophyll from discrete water column bottles compiled for EDI</entityDescription>
       <physical>
         <objectName>nes-lter-chl-transect-rosette.csv</objectName>
-        <size unit="bytes">1263301</size>
-        <authentication method="MD5">2bc855e61c7371ffc1119e0ffe372c9b</authentication>
+        <size unit="bytes">1013034</size>
+        <authentication method="MD5">6b2acd3ef2bfee3758cb6b65f3e16100</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
-            <recordDelimiter>\r\n</recordDelimiter>
+            <recordDelimiter>\n</recordDelimiter>
             <attributeOrientation>column</attributeOrientation>
             <simpleDelimited>
               <fieldDelimiter>,</fieldDelimiter>
@@ -445,14 +459,10 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
           <storageType>date</storageType>
           <measurementScale>
             <dateTime>
-              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <formatString>YYYY-MM-DDThh:mm:ssZ</formatString>
               <dateTimeDomain/>
             </dateTime>
           </measurementScale>
-          <missingValueCode>
-            <code>NA</code>
-            <codeExplanation>Missing value</codeExplanation>
-          </missingValueCode>
         </attribute>
         <attribute>
           <attributeName>latitude</attributeName>
@@ -466,14 +476,14 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.7551</minimum>
+                  <minimum exclusive="false">39.755</minimum>
                   <maximum exclusive="false">41.36</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
           </measurementScale>
           <missingValueCode>
-            <code>NA</code>
+            <code>NaN</code>
             <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -496,7 +506,7 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
             </ratio>
           </measurementScale>
           <missingValueCode>
-            <code>NA</code>
+            <code>NaN</code>
             <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -519,7 +529,7 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
             </ratio>
           </measurementScale>
           <missingValueCode>
-            <code>NA</code>
+            <code>NaN</code>
             <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -626,7 +636,7 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
             </ratio>
           </measurementScale>
           <missingValueCode>
-            <code>NA</code>
+            <code>NaN</code>
             <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -642,14 +652,14 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-0.369</minimum>
+                  <minimum exclusive="false">-0.626</minimum>
                   <maximum exclusive="false">5.329</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
           </measurementScale>
           <missingValueCode>
-            <code>NA</code>
+            <code>NaN</code>
             <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
@@ -725,12 +735,12 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
             </nominal>
           </measurementScale>
           <missingValueCode>
-            <code>NA</code>
-            <codeExplanation>Distance greater than 2 km from NES-LTER standard station</codeExplanation>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
         <attribute>
-          <attributeName>distance_km</attributeName>
+          <attributeName>distance</attributeName>
           <attributeDefinition>Distance from sample location to nearest NES-LTER standard station</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
@@ -742,31 +752,25 @@ Northeast U.S. Shelf LTER, H.M. Sosik, and E.T. Crockford. 2025. Event logs from
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">0</minimum>
-                  <maximum exclusive="false">48.60283655137</maximum>
+                  <maximum exclusive="false">48.6</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
           </measurementScale>
           <missingValueCode>
-            <code>NA</code>
-            <codeExplanation>Distance greater than 2 km from NES-LTER standard station</codeExplanation>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>9732</numberOfRecords>
+      <numberOfRecords>9708</numberOfRecords>
     </dataTable>
   </dataset>
-  <annotations>
-    <annotation references="dataset">
-      <propertyURI label="is about">http://purl.obolibrary.org/obo/IAO_0000136</propertyURI>
-      <valueURI label="Chlorophyll pigment concentrations in water bodies">http://vocab.nerc.ac.uk/collection/P02/current/CPWC/</valueURI>
-    </annotation>
-  </annotations>
   <additionalMetadata>
     <metadata>
       <emlEditor>
         <app>EMLassemblyline</app>
-        <release>3.5.5</release>
+        <release>3.6.0</release>
       </emlEditor>
     </metadata>
   </additionalMetadata>

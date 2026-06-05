@@ -43,7 +43,7 @@ Data assembly, data cleaning and metadata template assembly were performed in R 
 
 # Quality Assurance
 
-We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We checked differences between replicates, visually inspected plots of chlorophyll values colored by filter size, and performed range checks. 
+We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We checked differences between replicates, visually inspected plots of chlorophyll values by filter size, and performed range checks. 
 
 Quality is indicated in the data table with IODE Primary Level flags: 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. Any sample with a negative phaeopigment value is provided with a flag of 3 (questionable). Samples with a flag of 4 (bad) are provided with chlorophyll/phaeopigment value of NA. 
 [See IODE Ocean Data Standards recommendation here: https://www.iode.org/index.php?option=com_oe&task=viewDocumentRecord&docID=10762]
@@ -52,7 +52,7 @@ For Menden-Deuer data, the quality assurance was assessed from the ratio of fluo
 
 # Differences From Previous Version
 
-In version 3, samples from several cruises were added. The list of stations used to calculate nearest\_station and distance was updated. The column project\_id was updated to identify all Rynearson and Menden-Deuer samples as LTER. The methods section was lightly edited. 
+In version 3, samples from several cruises were added. Some previously published flags were updated. The list of stations used to calculate nearest\_station and distance was updated. The column project\_id was updated to identify all Rynearson and Menden-Deuer samples as LTER. The date-time format was updated to ISO 8601 format. The methods section was lightly edited. 
 
 # Related Data Sets
 
@@ -60,7 +60,7 @@ Menden-Deuer, S. and P. Marrec. 2023. Phytoplankton growth and microzooplankton 
 
 Fontaine, D.N. and T.A. Rynearson. 2023. Size-fractionated net primary productivity (NPP) estimates based on 13C uptake during cruises along the Northeast U.S. Shelf Long Term Ecological Research (NES-LTER) Transect, ongoing since 2019 ver 4. Environmental Data Initiative. https://doi.org/10.6073/pasta/95dde1f0c5bb3da0cac9bc47be2526b0 (Accessed 2025-07-28).
 
-Sosik, H.M., E. Crockford, and E. Peacock. 2022. Size-fractionated chlorophyll from the Martha’s Vineyard Coastal Observatory (MVCO), ongoing since 2003 (NES-LTER since 2017) ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/29ecb409988f09597ee268d6926e1cd9 (Accessed 2025-07-28).
+Sosik, H.M., E.T. Crockford, E. Peacock, and M. Ferguson. 2026. Size-fractionated chlorophyll from the Martha’s Vineyard Coastal Observatory (MVCO), ongoing since 2003 (NES-LTER since 2017) ver 2. Environmental Data Initiative. https://doi.org/10.6073/pasta/7cb25cdf7a9ed43f593c50ebadc69023 (Accessed 2026-06-05).
 
 Menden-Deuer, S., P. Marrec, and A. Herbst. 2022. Underway discrete chlorophyll and post-calibrated underway fluorometer data during NES-LTER Transect cruises, ongoing since 2019 ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/16c8e5937a860c882b524fda73408baf (Accessed 2025-07-28).
 
